@@ -1,0 +1,7 @@
+import Task.{Task}
+
+extern pub let println: Fn(String) -> Task<Unit>
+
+extern pub let print: Fn(String) -> Task<Unit>
+
+extern pub let readline: Task<String>

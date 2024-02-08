@@ -1,0 +1,8 @@
+{
+  "type": "package",
+  "name": "kestrel/core",
+  "version": "0.0.1",
+  "source-directories": [
+    "src"
+  ]
+}
