@@ -1,3 +1,5 @@
+import Tuple.{Tuple2(..)}
+
 pub(..) type Maybe<a> {
   Just(a),
   Nothing,
@@ -14,5 +16,26 @@ pub let and_then = fn m, f {
   match m {
     Just(x) => f(x),
     Nothing => Nothing,
+  }
+}
+
+pub let map2 = fn m1, m2, f {
+  let#and_then x1 = m1;
+  let#and_then x2 = m2;
+  Just(f(x1, x2))
+}
+
+pub let map3 = fn m1, m2, m3, f {
+  let#and_then x1 = m1;
+  let#and_then x2 = m2;
+  let#and_then x3 = m3;
+  Just(f(x1, x2, x3))
+}
+
+
+pub let with_default = fn m, x {
+  match m {
+    Nothing => x,
+    Just(x) => x,
   }
 }
