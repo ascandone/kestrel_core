@@ -1,6 +1,6 @@
 import Basics.{Bool(..), (+), (-), (>=), (<=)}
-import Tuple.{Tuple2(..)}
 import Maybe.{Maybe(..)}
+import Tuple.{Tuple2(..)}
 
 pub(..) type List<a> {
   Nil,
@@ -18,13 +18,13 @@ pub let range = fn from, to {
 pub let map = fn lst, f {
   match lst {
     Nil => Nil,
-    hd :: tl => hd :: map(tl, f)
+    hd :: tl => hd :: map(tl, f),
   }
 }
 
 pub let map2 = fn lst1, lst2, f {
-  match Tuple2(lst1, lst2) {
-    (Cons(hd1, tl1), Cons(hd2, tl2)) => f(hd1, hd2) :: map2(tl1, tl2, f),
+  match (lst1, lst2) {
+    (hd1 :: tl1, hd2 :: tl2) => f(hd1, hd2) :: map2(tl1, tl2, f),
     _ => Nil,
   }
 }
@@ -34,10 +34,10 @@ pub let filter = fn lst, pred {
     Nil => Nil,
     hd :: tl =>
       if pred(hd) {
-        hd :: filter(tl, pred)
-      } else {
-        filter(tl, pred)
-      }
+      hd :: filter(tl, pred)
+    } else {
+      filter(tl, pred)
+    }
   }
 }
 
@@ -60,14 +60,16 @@ pub let concat = fn lst1, lst2 {
 }
 
 pub let sum_ints = fn lst {
-  reduce(lst, 0, fn a, b { a + b })
+  reduce(lst, 0, fn a, b {
+    a + b
+  })
 }
 
 pub let flatten = fn lst {
   reduce_right(lst, Nil, concat)
 }
 
-pub let flat_map = fn lst, f{
+pub let flat_map = fn lst, f {
   lst
   |> map(f)
   |> flatten()
@@ -77,7 +79,7 @@ pub let filter_map = fn lst, f {
   reduce_right(lst, Nil, fn x, xs {
     match f(x) {
       Nothing => xs,
-      Just(hd) => Cons(hd, xs),
+      Just(hd) => hd :: xs,
     }
   })
 }
@@ -108,10 +110,12 @@ pub let drop = fn lst, n {
 pub let is_empty = fn lst {
   match lst {
     Nil => True,
-    Cons(_, _) => False,
+    _ :: _ => False,
   }
 }
 
 pub let length = fn lst {
-  reduce(lst, 0, fn acc, _ { acc + 1 })
+  reduce(lst, 0, fn acc, _ {
+    acc + 1
+  })
 }
