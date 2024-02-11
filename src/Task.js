@@ -4,7 +4,7 @@ class Task$Task {
   }
 }
 
-function Task$task_of(x) {
+function Task$of(x) {
   return new Task$Task((resolve) => {
     resolve(x);
   });
@@ -29,4 +29,3 @@ function Task$sleep(ms) {
     return () => clearTimeout(id);
   });
 }
-
