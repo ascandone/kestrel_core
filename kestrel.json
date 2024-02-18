@@ -1,6 +1,6 @@
 {
   "type": "package",
-  "name": "kestrel/core",
+  "name": "kestrel_core",
   "version": "0.0.1",
   "source-directories": [
     "src"
