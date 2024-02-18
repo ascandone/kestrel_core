@@ -1,12 +1,12 @@
 pub(..) type Result<a, err> {
   Ok(a),
-  Err(err)
+  Err(err),
 }
 
 pub let map = fn r, f {
   match r {
     Ok(x) => Ok(f(x)),
-    Err(err) => Err(err)
+    Err(err) => Err(err),
   }
 }
 

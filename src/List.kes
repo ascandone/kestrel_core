@@ -32,12 +32,11 @@ pub let map2 = fn lst1, lst2, f {
 pub let filter = fn lst, pred {
   match lst {
     Nil => Nil,
-    hd :: tl =>
-      if pred(hd) {
+    hd :: tl => if pred(hd) {
       hd :: filter(tl, pred)
     } else {
       filter(tl, pred)
-    }
+    },
   }
 }
 
@@ -87,12 +86,11 @@ pub let filter_map = fn lst, f {
 pub let take = fn lst, n {
   match lst {
     Nil => Nil,
-    hd :: tl =>
-      if n <= 0 {
-        Nil
-      } else {
-        hd :: take(tl, n - 1)
-      }
+    hd :: tl => if n <= 0 {
+      Nil
+    } else {
+      hd :: take(tl, n - 1)
+    },
   }
 }
 
