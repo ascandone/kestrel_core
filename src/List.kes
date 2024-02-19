@@ -43,7 +43,7 @@ pub let filter = fn lst, pred {
 pub let reduce = fn lst, acc, f {
   match lst {
     Nil => acc,
-    hd :: tl => reduce(lst, f(acc, hd), f),
+    hd :: tl => reduce(tl, f(acc, hd), f),
   }
 }
 
