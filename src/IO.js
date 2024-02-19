@@ -1,6 +1,3 @@
-const { stdin } = require("node:process");
-const { createInterface } = require("node:readline");
-
 function IO$println(str) {
   return new Task$Task((resolve) => {
     console.log(str);
@@ -9,13 +6,16 @@ function IO$println(str) {
 }
 
 function IO$print(str) {
+  const { stdout } = require("node:process");
   return new Task$Task((resolve) => {
-    process.stdout.write(str);
+    stdout.write(str);
     resolve(null);
   });
 }
 
 const IO$readline = new Task$Task((resolve) => {
+  const { stdin } = require("node:process");
+  const { createInterface } = require("node:readline");
   const rl = createInterface({ input: stdin });
   rl.question("", (line) => {
     rl.close();
@@ -23,3 +23,11 @@ const IO$readline = new Task$Task((resolve) => {
   });
   return () => rl.close();
 });
+
+const IO$exit = (code) =>
+  new Task$Task(() => {
+    setImmediate(() => {
+      const proc = require("node:process");
+      proc.exit(code);
+    }, 0);
+  });
