@@ -3,6 +3,88 @@ import Expect
 import IO
 import Test
 
+let basics_test = Test.describe("Basics", [
+  Test.test("+ of ints", {
+    1 + 2
+    |> Expect.equals(3)
+  }),
+  Test.test("+. of floats", {
+    1.1 +. 2.1
+    |> Expect.equals(3.2)
+  }),
+  Test.describe("Logic &&", [
+    Test.test("True && False", {
+      True && True
+      |> Expect.equals(True)
+    }),
+    Test.test("True && False", {
+      True && False
+      |> Expect.equals(False)
+    }),
+  ]),
+  Test.describe("Logic ||", [
+    Test.test("True || False", {
+      True || True
+      |> Expect.equals(True)
+    }),
+    Test.test("True || False", {
+      True || False
+      |> Expect.equals(True)
+    }),
+  ]),
+  Test.describe("structural equality", [
+    Test.test("of boxed type that are equal", {
+      Just(42) == Just(42)
+      |> Expect.equals(True)
+    }),
+    Test.test("of boxed type that are not equal", {
+      Just(42) == Just(100)
+      |> Expect.equals(False)
+    }),
+    Test.test("of nested types that are equal", {
+      Ok(Just(42)) == Ok(Just(42))
+      |> Expect.equals(True)
+    }),
+    Test.test("of different variants", {
+      Just(42) == Nothing
+      |> Expect.equals(False)
+    }),
+  ]),
+])
+
+let maybe_tests = Test.describe("Maybe", [
+  Test.describe("map", [
+    Test.test("of Just", {
+      Just(100)
+      |> Maybe.map(fn x {
+        x + 1
+      })
+      |> Expect.equals(Just(101))
+    }),
+    Test.test("of Nothing", {
+      Nothing
+      |> Maybe.map(fn x {
+        x + 1
+      })
+      |> Expect.equals(Nothing)
+    }),
+  ]),
+  Test.describe("map2", [
+    Test.test("Just and Just", {
+      Maybe.map2(Just(10), Just(20), fn a, b {
+        a + b
+      })
+      |> Expect.equals(Just(30))
+    }),
+    Test.test("Nothing and Just", {
+      Maybe.map2(Nothing, Just(20), fn a, b {
+        a + b
+      })
+      |> Expect.equals(Nothing)
+    }),
+  ]),
+])
+
 let list_tests = Test.describe("List", [
   Test.describe("List.range", [
     Test.test("empty", {
@@ -29,7 +111,7 @@ let list_tests = Test.describe("List", [
 ])
 
 pub let main = {
-  [list_tests]
+  [basics_test, maybe_tests, list_tests]
   |> Test.concat()
   |> Test.run()
 }

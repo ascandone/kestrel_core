@@ -57,7 +57,7 @@ let collect_tests = fn suite, descr_stack {
     Test(descr, exp) => match Expect.to_result(exp) {
       Ok(Unit) => Task.of((1, 0)),
       Err(failure_desc) => {
-        let stack_msg = List.reduce(descr_stack, "", fn acc, x {
+        let stack_msg = List.reduce_right(descr_stack, "", fn x, acc {
           acc <> "↓ " <> x <> "\n"
         });
         let failure_msg = col_bright_red("✗ " <> descr <> "\n");
