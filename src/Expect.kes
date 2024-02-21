@@ -1,0 +1,25 @@
+pub type Expectation {
+  Pass,
+  Fail(String, String),
+}
+
+pub let pass = Pass
+
+pub let equals = fn x, y {
+  if x == y {
+    Pass
+  } else {
+    Fail(String.inspect(x), String.inspect(y))
+  }
+}
+
+pub let to_result = fn expectation {
+  match expectation {
+    Pass => Ok(Unit),
+    Fail(left, right) => {
+      let l = "     Got:  " <> left;
+      let r = "Expected:  " <> right;
+      Err(l <> "\n" <> r)
+    },
+  }
+}
