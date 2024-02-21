@@ -61,7 +61,9 @@ let collect_tests = fn suite, descr_stack {
           acc <> "↓ " <> x <> "\n"
         });
         let failure_msg = col_bright_red("✗ " <> descr <> "\n");
-        let#await _unit = IO.println(dim(stack_msg) <> failure_msg <> failure_desc <> "\n\n");
+        let#await _unit = IO.println(
+          dim(stack_msg) <> failure_msg <> failure_desc <> "\n\n",
+        );
         Task.of((0, 1))
       },
     },
