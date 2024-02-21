@@ -4,8 +4,8 @@ import IO
 import Test
 
 let list_tests = Test.describe("List", [
-  Test.describe("List.range               ", [
-    Test.test("empty               ", {
+  Test.describe("List.range", [
+    Test.test("empty", {
       List.range(0, 2)
       |> Expect.equals([0, 1])
     }),
@@ -14,8 +14,8 @@ let list_tests = Test.describe("List", [
       |> Expect.equals([0, 1, 2])
     }),
   ]),
-  Test.describe("List.map               ", [
-    Test.test("empty                  ", {
+  Test.describe("List.map", [
+    Test.test("empty", {
       List.map([0, 1, 2], fn x {
         x * 10
       })
