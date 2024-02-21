@@ -14,3 +14,5 @@ jobs:
         run: kestrel format
       - name: Typecheck the project
         run: kestrel check
+      - name: Run tests
+        run: kestrel run SpecsMain
