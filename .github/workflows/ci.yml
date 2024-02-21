@@ -15,4 +15,4 @@ jobs:
       - name: Typecheck the project
         run: kestrel check
       - name: Run tests
-        run: kestrel run SpecsMain
+        run: kestrel run TestMain

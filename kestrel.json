@@ -2,7 +2,5 @@
   "type": "package",
   "name": "kestrel_core",
   "version": "0.0.1",
-  "source-directories": [
-    "src"
-  ]
+  "source-directories": ["src", "test"]
 }
