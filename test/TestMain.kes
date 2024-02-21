@@ -1,0 +1,35 @@
+import Basics
+import Expect
+import IO
+import Test
+
+let list_tests = Test.describe("List", [
+  Test.describe("List.range", [
+    Test.test("empty", {
+      List.range(0, 2)
+      |> Expect.equals([0, 1])
+    }),
+    Test.test("not empty", {
+      List.range(0, 3)
+      |> Expect.equals([0, 1, 2])
+    }),
+  ]),
+  Test.describe("List.map", [
+    Test.test("empty", {
+      List.map([0, 1, 2], fn x {
+        x * 10
+      })
+      |> Expect.equals([0, 10, 20])
+    }),
+    Test.test("not empty", {
+      List.range(0, 3)
+      |> Expect.equals([0, 1, 2])
+    }),
+  ]),
+])
+
+pub let main = {
+  [list_tests]
+  |> Test.concat()
+  |> Test.run()
+}

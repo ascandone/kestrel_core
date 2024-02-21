@@ -1,0 +1,93 @@
+import Expect.{Expectation}
+import IO
+import Task.{await}
+
+let color_reset_code = "\x1b[39m"
+
+let dim = fn str {
+  "\x1b[2m" <> str <> "\x1b[22m"
+}
+
+let col_bright_red = fn str {
+  "\x1b[91m" <> str <> color_reset_code
+}
+
+let col_bright_green = fn str {
+  "\x1b[92m" <> str <> color_reset_code
+}
+
+let underline = fn str {
+  "\x1b[4m" <> str <> "\x1b[24m"
+}
+
+pub type Test {
+  Test(String, Expectation),
+  Concat(List<Test>),
+  Describe(String, Test),
+}
+
+pub let test = Test
+
+pub let concat = Concat
+
+pub let describe = fn descr, tests {
+  Describe(descr, Concat(tests))
+}
+
+let test_recap = fn passed_count, failed_count {
+  let recap_msg = if failed_count == 0 {
+    underline(col_bright_green("TEST RUN PASSED"))
+  } else {
+    underline(col_bright_red("TEST RUN FAILED"))
+  };
+  let passed_msg = dim("Passed: ") <> String.from_int(passed_count);
+  let failed_msg = dim("Failed: ") <> String.from_int(failed_count);
+  recap_msg <> "\n\n" <> passed_msg <> "\n" <> failed_msg
+}
+
+let sum_counts = fn x, y {
+  match (x, y) {
+    ((pass_x, fail_x), (pass_y, fail_y)) => (pass_x + pass_y, fail_x + fail_y),
+  }
+}
+
+let collect_tests = fn suite, descr_stack {
+  match suite {
+    Describe(descr, test) => collect_tests(test, descr :: descr_stack),
+    Test(descr, exp) => match Expect.to_result(exp) {
+      Ok(Unit) => Task.of((1, 0)),
+      Err(failure_desc) => {
+        let stack_msg = List.reduce(descr_stack, "", fn acc, x {
+          acc <> "↓ " <> x <> "\n"
+        });
+        let failure_msg = col_bright_red("✗ " <> descr <> "\n");
+        let#await _unit = IO.println(
+          dim(stack_msg) <> failure_msg <> failure_desc <> "\n\n",
+        );
+        Task.of((0, 1))
+      },
+    },
+    Concat(tests) => match tests {
+      Nil => Task.of((0, 0)),
+      hd :: tl => {
+        let#await hd_counts = collect_tests(hd, descr_stack);
+        let#await tl_counts = collect_tests(Concat(tl), descr_stack);
+        Task.of(sum_counts(hd_counts, tl_counts))
+      },
+    },
+  }
+}
+
+pub let run = fn test {
+  let#await results = collect_tests(test, []);
+  match results {
+    (passed_count, failed_count) => {
+      let#await _unit = IO.println(test_recap(passed_count, failed_count));
+      if failed_count == 0 {
+        Task.of(Unit)
+      } else {
+        IO.exit(1)
+      }
+    },
+  }
+}

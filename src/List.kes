@@ -9,7 +9,7 @@ pub(..) type List<a> {
 
 pub let range = fn from, to {
   if from >= to {
-    Nil
+    []
   } else {
     from :: range(from + 1, to)
   }
@@ -17,21 +17,21 @@ pub let range = fn from, to {
 
 pub let map = fn lst, f {
   match lst {
-    Nil => Nil,
-    hd :: tl => hd :: map(tl, f),
+    Nil => [],
+    hd :: tl => f(hd) :: map(tl, f),
   }
 }
 
 pub let map2 = fn lst1, lst2, f {
   match (lst1, lst2) {
     (hd1 :: tl1, hd2 :: tl2) => f(hd1, hd2) :: map2(tl1, tl2, f),
-    _ => Nil,
+    _ => [],
   }
 }
 
 pub let filter = fn lst, pred {
   match lst {
-    Nil => Nil,
+    Nil => [],
     hd :: tl => if pred(hd) {
       hd :: filter(tl, pred)
     } else {
@@ -65,7 +65,7 @@ pub let sum_ints = fn lst {
 }
 
 pub let flatten = fn lst {
-  reduce_right(lst, Nil, concat)
+  reduce_right(lst, [], concat)
 }
 
 pub let flat_map = fn lst, f {
@@ -75,7 +75,7 @@ pub let flat_map = fn lst, f {
 }
 
 pub let filter_map = fn lst, f {
-  reduce_right(lst, Nil, fn x, xs {
+  reduce_right(lst, [], fn x, xs {
     match f(x) {
       Nothing => xs,
       Just(hd) => hd :: xs,
@@ -85,9 +85,9 @@ pub let filter_map = fn lst, f {
 
 pub let take = fn lst, n {
   match lst {
-    Nil => Nil,
+    Nil => [],
     hd :: tl => if n <= 0 {
-      Nil
+      []
     } else {
       hd :: take(tl, n - 1)
     },
@@ -99,7 +99,7 @@ pub let drop = fn lst, n {
     lst
   } else {
     match lst {
-      Nil => Nil,
+      Nil => [],
       _ :: tl => drop(tl, n - 1),
     }
   }
