@@ -23,6 +23,39 @@ test("A Task can be executed many times", (ctx) => {
   assert.equal(f.mock.callCount(), 2);
 });
 
+test("handles cancellation function", (context) => {
+  const cleanUp = context.mock.fn();
+
+  const t = new api.Task$Task(() => {
+    return () => {
+      cleanUp();
+    };
+  });
+
+  const cancelTask = t.run(() => {});
+
+  assert.equal(
+    cleanUp.mock.callCount(),
+    0,
+    "cleanUp fn is not called initially"
+  );
+  cancelTask();
+  assert.equal(
+    cleanUp.mock.callCount(),
+    1,
+    "cleanUp fn is called when task is cancelled"
+  );
+});
+
+test("Task.await", (_ctx, done) => {
+  api
+    .Task$await(api.Task$of(100), (value) => api.Task$of(value + 1))
+    .run((value) => {
+      assert.equal(value, 101);
+      done();
+    });
+});
+
 test("Task.of always resolves with given value", (ctx, done) => {
   api.Task$of(42).run((value) => {
     assert.equal(value, 42);
