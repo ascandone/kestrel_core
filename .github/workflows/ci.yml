@@ -14,5 +14,7 @@ jobs:
         run: kestrel format
       - name: Typecheck the project
         run: kestrel check
-      - name: Run tests
+      - name: Run unit tests
         run: kestrel run TestMain
+      - name: Run integration tests
+        run: node integration/Task.test.mjs
