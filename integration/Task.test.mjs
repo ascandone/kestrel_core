@@ -1,4 +1,4 @@
-import { test, before, mock } from "node:test";
+import { test, before, describe } from "node:test";
 import { readFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 
@@ -47,19 +47,55 @@ test("handles cancellation function", (context) => {
   );
 });
 
-test("Task.await", (_ctx, done) => {
-  api
-    .Task$await(api.Task$of(100), (value) => api.Task$of(value + 1))
-    .run((value) => {
-      assert.equal(value, 101);
+describe("Task.of", () => {
+  test("always resolves with given value", (ctx, done) => {
+    api.Task$of(42).run((value) => {
+      assert.equal(value, 42);
       done();
     });
+  });
 });
 
-test("Task.of always resolves with given value", (ctx, done) => {
-  api.Task$of(42).run((value) => {
-    assert.equal(value, 42);
-    done();
+describe("Task.await", () => {
+  test("creates a new task using the given function", (_ctx, done) => {
+    api
+      .Task$await(api.Task$of(100), (value) => api.Task$of(value + 1))
+      .run((value) => {
+        assert.equal(value, 101);
+        done();
+      });
+  });
+
+  test("run cleanup function on the first task if second hasn't been executed yet", (ctx) => {
+    const cleanUp = ctx.mock.fn();
+
+    const t = api.Task$await(
+      new api.Task$Task(() => {
+        return cleanUp;
+      }),
+      () => {
+        assert.fail("The first task should never be resolved");
+      }
+    );
+
+    const cancel = t.run();
+    cancel();
+
+    assert.deepEqual(cleanUp.mock.callCount(), 1);
+  });
+
+  test("run cleanup function on the second task if it has started", (ctx) => {
+    const cleanUp = ctx.mock.fn();
+
+    const t = api.Task$await(
+      api.Task$of(null),
+      () => new api.Task$Task(() => cleanUp)
+    );
+
+    const cancel = t.run();
+    cancel();
+
+    assert.deepEqual(cleanUp.mock.callCount(), 1);
   });
 });
 

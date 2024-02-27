@@ -12,14 +12,21 @@ function Task$of(x) {
 
 function Task$await(t, f) {
   return new Task$Task((resolveV) => {
-    const c1 = t.run((valueA) => {
+    let cleanup;
+    let runInner = false;
+    const outerCleanup = t.run((valueA) => {
       const newTask = f(valueA);
-      const c2 = newTask.run((valueB) => {
+      cleanup = newTask.run((valueB) => {
         resolveV(valueB);
-        return () => c2?.();
       });
+      runInner = true;
     });
-    return () => c1?.();
+
+    if (!runInner) {
+      cleanup = outerCleanup;
+    }
+
+    return () => cleanup?.();
   });
 }
 
