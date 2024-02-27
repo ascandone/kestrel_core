@@ -48,7 +48,7 @@ test("handles cancellation function", (context) => {
 });
 
 describe("Task.of", () => {
-  test("always resolves with given value", (ctx, done) => {
+  test("always resolves with given value", (_ctx, done) => {
     api.Task$of(42).run((value) => {
       assert.equal(value, 42);
       done();
@@ -99,6 +99,42 @@ describe("Task.await", () => {
   });
 });
 
+describe("forking", () => {
+  test("runs the inner task", (_ctx, done) => {
+    api
+      .Task$fork(
+        new api.Task$Task(() => {
+          done();
+        })
+      )
+      .exec();
+  });
+
+  test("child process is cancelled when parent process is cancelled", (ctx) => {
+    const cleanup = ctx.mock.fn();
+    const t = new api.Task$Task(() => {
+      return cleanup;
+    });
+
+    const cancel = api.Task$fork(t).run(() => {});
+    cancel();
+    assert.deepEqual(cleanup.mock.callCount(), 1);
+  });
+
+  test("returned Id allows to kill the process", (ctx) => {
+    const cleanup = ctx.mock.fn();
+    const t = new api.Task$Task(() => {
+      return cleanup;
+    });
+
+    const main = api.Task$await(api.Task$fork(t), (id) => api.Task$kill(id));
+
+    main.run(() => {});
+
+    assert.deepEqual(cleanup.mock.callCount(), 1);
+  });
+});
+
 before(async () => {
   const file = await readFile("src/Task.js");
   const content = file.toString();
@@ -111,6 +147,8 @@ before(async () => {
       Task$of,
       Task$await,
       Task$sleep,
+      Task$fork,
+      Task$kill,
     }
   `)();
 });

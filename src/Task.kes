@@ -10,6 +10,12 @@ extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
 
 extern pub let sleep: Fn(Int) -> Task<Unit>
 
+extern pub type Id
+
+extern pub let fork: Fn(Task<Unit>) -> Task<Id>
+
+extern pub let kill: Fn(Id) -> Task<Unit>
+
 pub let await_ok = fn async_res, f {
   await(async_res, fn err {
     match err {
