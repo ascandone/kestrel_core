@@ -1,0 +1,76 @@
+import List
+import MVar
+import Task.{await}
+
+type Position {
+  First,
+  Second,
+}
+
+pub let both = fn t1, t2 {
+  let#await mvar = MVar.empty;
+  let#await _id = Task.fork({
+    let#await res = t2;
+    MVar.put(mvar, res)
+  });
+  let#await value1 = t1;
+  let#await value2 = MVar.take(mvar);
+  Task.of((value1, value2))
+}
+
+pub let both_ok = fn t1, t2 {
+  let#await mvar = MVar.empty;
+  let fork_task = fn t, position {
+    Task.fork({
+      let#await res = t;
+      MVar.put(mvar, (res, position))
+    })
+  };
+  let#await id1 = fork_task(t1, First);
+  let#await id2 = fork_task(t2, Second);
+  let handle_failure = fn e, position {
+    let#await _unit = Task.kill(match position {
+      First => id2,
+      Second => id1,
+    });
+    Task.of(Err(e))
+  };
+  let#await res = MVar.take(mvar);
+  match res {
+    (Err(e), position) => handle_failure(e, position),
+    (Ok(x), _) => {
+      let#await res = MVar.take(mvar);
+      match res {
+        (Err(e), position) => handle_failure(e, position),
+        (Ok(y), First) => Task.of(Ok((y, x))),
+        (Ok(y), Second) => Task.of(Ok((x, y))),
+      }
+    },
+  }
+}
+
+let race_2 = fn t1, t2 {
+  let#await mvar = MVar.empty;
+  let fork_task = fn t, position {
+    Task.fork({
+      let#await res = t;
+      MVar.put(mvar, (res, position))
+    })
+  };
+  let#await id1 = fork_task(t1, First);
+  let#await id2 = fork_task(t2, Second);
+  let#await res = MVar.take(mvar);
+  match res {
+    (res, position) => {
+      let#await _unit = Task.kill(match position {
+        First => id2,
+        Second => id1,
+      });
+      Task.of(res)
+    },
+  }
+}
+
+pub let race = fn tasks {
+  List.reduce(tasks, Task.never, race_2)
+}
