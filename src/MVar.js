@@ -18,7 +18,11 @@ function MVar$put(mvar, value) {
 
     if (!mvar.state.empty) {
       mvar.pendingPuts.push([resolve, value]);
-      return;
+      return () => {
+        mvar.pendingPuts = mvar.pendingPuts.filter(
+          ([resolve_, _]) => resolve_ !== resolve
+        );
+      };
     }
 
     mvar.state = {
@@ -47,5 +51,10 @@ function MVar$take(mvar) {
     }
 
     mvar.pendingTakes.push(resolve);
+    return () => {
+      mvar.pendingTakes = mvar.pendingTakes.filter((resolve_) => {
+        resolve_ !== resolve;
+      });
+    };
   });
 }
