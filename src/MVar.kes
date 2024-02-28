@@ -1,0 +1,25 @@
+import Task.{Task, await}
+
+extern pub type MVar<a>
+
+extern pub let empty: Task<MVar<a>>
+
+extern pub let put: Fn(MVar<a>, a) -> Task<Unit>
+
+extern pub let take: Fn(MVar<a>) -> Task<a>
+
+pub let of = fn a {
+  let#await mvar = empty;
+  let#await _unit = put(mvar, a);
+  Task.of(mvar)
+}
+
+pub let update_returning = fn mvar, f {
+  let#await value = take(mvar);
+  match f(value) {
+    (returning, new_value) => {
+      let#await _unit = put(mvar, new_value);
+      Task.of(returning)
+    },
+  }
+}

@@ -1,4 +1,4 @@
-import Basics.{Int, Unit}
+import Basics.{Int, Unit(..)}
 import Result.{Result(..)}
 import String.{String}
 
@@ -6,9 +6,23 @@ extern pub type Task<a>
 
 extern pub let of: Fn(a) -> Task<a>
 
+extern pub let never: Task<a>
+
 extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
 
+pub let map = fn task, f {
+  await(task, fn x {
+    of(f(x))
+  })
+}
+
 extern pub let sleep: Fn(Int) -> Task<Unit>
+
+extern pub type Id
+
+extern pub let fork: Fn(Task<Unit>) -> Task<Id>
+
+extern pub let kill: Fn(Id) -> Task<Unit>
 
 pub let await_ok = fn async_res, f {
   await(async_res, fn err {
@@ -18,3 +32,5 @@ pub let await_ok = fn async_res, f {
     }
   })
 }
+
+pub let none = of(Unit)
