@@ -56,7 +56,8 @@ function Task$fork(t) {
 }
 
 function Task$kill(id) {
-  return new Task$Task(() => {
+  return new Task$Task((resolve) => {
     id.cancel();
+    resolve(null);
   });
 }
