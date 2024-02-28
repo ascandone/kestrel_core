@@ -6,6 +6,8 @@ extern pub type Task<a>
 
 extern pub let of: Fn(a) -> Task<a>
 
+extern pub let never: Task<a>
+
 extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
 
 extern pub let sleep: Fn(Int) -> Task<Unit>

@@ -17,6 +17,8 @@ function Task$of(x) {
   });
 }
 
+const Task$never = new Task$Task(() => {});
+
 function Task$await(t, f) {
   return new Task$Task((resolveV) => {
     let innerCleanup;
