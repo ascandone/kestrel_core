@@ -1,4 +1,4 @@
-import Basics.{Int, Unit}
+import Basics.{Int, Unit(..)}
 import Result.{Result(..)}
 import String.{String}
 
@@ -24,3 +24,5 @@ pub let await_ok = fn async_res, f {
     }
   })
 }
+
+pub let none = of(Unit)
