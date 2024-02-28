@@ -108,6 +108,20 @@ let list_tests = Test.describe("List", [
       |> Expect.equals([0, 1, 2])
     }),
   ]),
+  Test.describe("List.zip", [
+    Test.test("when the first list is shorter, truncate the second", {
+      List.zip([0, 1], ["a", "b", "c", "d"])
+      |> Expect.equals([(0, "a"), (1, "b")])
+    }),
+    Test.test("when the second list is shorter, truncate the first", {
+      List.zip([0, 1, 2], ["a"])
+      |> Expect.equals([(0, "a")])
+    }),
+    Test.test("same len", {
+      List.zip([0, 1], ["a", "b"])
+      |> Expect.equals([(0, "a"), (1, "b")])
+    }),
+  ]),
 ])
 
 pub let main = {

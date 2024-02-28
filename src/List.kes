@@ -117,3 +117,11 @@ pub let length = fn lst {
     acc + 1
   })
 }
+
+pub let zip = fn lst1, lst2 {
+  match (lst1, lst2) {
+    (Nil, _) => [],
+    (_, Nil) => [],
+    (hd1 :: lst1, hd2 :: lst2) => (hd1, hd2) :: zip(lst1, lst2),
+  }
+}
