@@ -10,6 +10,12 @@ extern pub let never: Task<a>
 
 extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
 
+pub let map = fn task, f {
+  await(task, fn x {
+    of(f(x))
+  })
+}
+
 extern pub let sleep: Fn(Int) -> Task<Unit>
 
 extern pub type Id
