@@ -29,6 +29,17 @@ pub let map2 = fn lst1, lst2, f {
   }
 }
 
+pub let find = fn lst, pred {
+  match lst {
+    Nil => Nothing,
+    hd :: tl => if pred(hd) {
+      Just(hd)
+    } else {
+      find(tl, pred)
+    },
+  }
+}
+
 pub let filter = fn lst, pred {
   match lst {
     Nil => [],

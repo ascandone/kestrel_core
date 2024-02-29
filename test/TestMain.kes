@@ -96,6 +96,26 @@ let list_tests = Test.describe("List", [
       |> Expect.equals([0, 1, 2])
     }),
   ]),
+  Test.describe("List.find", [
+    Test.test("on an empty list", {
+      List.find([], fn _ {
+        False
+      })
+      |> Expect.equals(Nothing)
+    }),
+    Test.test("when value is not found", {
+      List.find([1, 2, 3], fn _ {
+        False
+      })
+      |> Expect.equals(Nothing)
+    }),
+    Test.test("when value is found", {
+      List.find([1, 2, 3], fn x {
+        x == 2
+      })
+      |> Expect.equals(Just(2))
+    }),
+  ]),
   Test.describe("List.map", [
     Test.test("empty", {
       List.map([0, 1, 2], fn x {
