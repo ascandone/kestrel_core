@@ -2,6 +2,18 @@ pub(..) type Tuple2<a, b> {
   Tuple2(a, b),
 }
 
+pub let first = fn tuple2 {
+  match tuple2 {
+    (x, _) => x,
+  }
+}
+
+pub let second = fn tuple2 {
+  match tuple2 {
+    (_, x) => x,
+  }
+}
+
 pub(..) type Tuple3<a, b, c> {
   Tuple3(a, b, c),
 }
