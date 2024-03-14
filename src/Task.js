@@ -8,6 +8,7 @@ class Task$Task {
     cancel = this.run(() => {
       cancel?.();
     });
+    return cancel;
   }
 }
 
