@@ -3,10 +3,11 @@ class Task$Task {
     this.run = run;
   }
 
-  exec() {
+  exec(onTerminated = () => {}) {
     let cancel;
     cancel = this.run(() => {
       cancel?.();
+      onTerminated();
     });
     return cancel;
   }
