@@ -7,6 +7,24 @@ type Position {
   Second,
 }
 
+/// Run the two tasks concurrently and collect the results.
+/// 
+/// ### Example
+/// ```rust
+/// pub let main = {
+///   let#await (a, b) = Async.both(
+///     Task.map(Task.sleep(1000), fn _ {
+///       0
+///     }),
+///     Task.map(Task.sleep(1000), fn _ {
+///       1
+///     }),
+///   );
+///   // Resolves with a=0 and b=1
+///   // in 1 second instead of 2
+///   Task.none
+/// }
+/// ```
 pub let both = fn t1, t2 {
   let#await mvar = MVar.empty;
   let#await _id = Task.fork({
@@ -18,6 +36,8 @@ pub let both = fn t1, t2 {
   Task.of((value1, value2))
 }
 
+/// Run the two `Task`s concurrently.
+/// Return `Ok` if both `Task`s succeeed, otherwise return `Err` with the first task that fails, and cancel the other.
 pub let both_ok = fn t1, t2 {
   let#await mvar = MVar.empty;
   let fork_task = fn t, position {
@@ -71,6 +91,24 @@ let race_2 = fn t1, t2 {
   }
 }
 
+/// Run the tasks concurrently and yield the value of the first `Task` to complete.
+/// All the other tasks are cancelled.
+///
+/// ### Example
+/// ```rust
+/// pub let main = {
+///   let#await a = Async.race([
+///     Task.map(Task.sleep(1000), fn _ {
+///       0
+///     }),
+///     Task.map(Task.sleep(200), fn _ {
+///       1
+///     }),
+///   ]);
+///   // Resolves with a=1 in 200ms
+///   Task.none
+/// }
+/// ```
 pub let race = fn tasks {
   List.reduce(tasks, Task.never, race_2)
 }

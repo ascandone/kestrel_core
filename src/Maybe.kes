@@ -1,5 +1,6 @@
 import Tuple.{Tuple2(..)}
 
+/// A type representing an optional value.
 pub(..) type Maybe<a> {
   Just(a),
   Nothing,

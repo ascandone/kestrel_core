@@ -16,5 +16,7 @@ jobs:
         run: kestrel check
       - name: Run unit tests
         run: kestrel run TestMain
+      - name: Check docs.json
+        run: kestrel docs check
       - name: Run integration tests
         run: node integration/Task.test.mjs
