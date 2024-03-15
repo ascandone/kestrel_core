@@ -2,12 +2,31 @@ import Basics.{Int, Unit(..)}
 import Result.{Result(..)}
 import String.{String}
 
+/// A task represents a computation (either synchronous or asynchronous) that yiels a value of type `a`.
+/// Unlike javascript's `Promise`, creating a `Task` doesn't actually do anything.
+/// The only way to actually run the task is to assign it to the `main` function of the entrypoint module.
+///
+/// Another difference from `Promise` is that `Task` doesn't encode failure:
+/// to represent a `Task` that might yield an error value you can use the `Task<Result<value, error>>` type.
+/// Also unlike `Promise`, a task might either be a synchronous operation or a microtask.
 extern pub type Task<a>
 
+/// Lift a value into a `Task`.
+/// The resulting `Task` might be either synchronous or asynchronous (the behaviour is unspecified).
 extern pub let of: Fn(a) -> Task<a>
 
+/// A task that never resolves.
 extern pub let never: Task<a>
 
+/// Use the result of a `Task` to create a new `Task`. This function does not execute the `Task`, it only describes a new computation. It is the main primitive to (_sequentially_) chain computation.
+///
+/// ### Example
+/// ```rust
+/// IO.readline
+/// |> Task.await(fn value {
+///   IO.println("Input: " <> value)
+/// })
+/// ```
 extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
 
 pub let map = fn task, f {
@@ -16,12 +35,34 @@ pub let map = fn task, f {
   })
 }
 
+/// Pause the execution for the given number of milliseconds
 extern pub let sleep: Fn(Int) -> Task<Unit>
 
+/// Identifier of a forked `Task`.
 extern pub type Id
 
+/// Run the given computation concurrently.
+/// The `Id` is returned synchronously, thus there is no way to receive data from the forked `Task` or wait for it to finish.
+/// In order to accomplish that, the `MVar` synchronization primitive is provided in the `MVar` module.
+///
+/// `fork` is a low-level primitive and you probably might want to use the higher-level `Async` module to perform concurrent computation.
 extern pub let fork: Fn(Task<Unit>) -> Task<Id>
 
+/// Kill the computation with the given `Id`. Cancellation will be propagated recursively though its forks and awaited tasks.
+/// For example:
+/// ```rust
+/// pub let main = {
+///   let#await task_id = Task.fork({
+///     let#await _unit = Task.sleep(2000);
+///     Task.println("Finished sleeping")
+///   });
+///   // Killing this computation prevents the
+///   // message to be printed
+///   Task.kill(task_id)
+/// }
+/// ```
+/// 
+/// Killing a terminated computation is a noop.
 extern pub let kill: Fn(Id) -> Task<Unit>
 
 pub let await_ok = fn async_res, f {
@@ -33,4 +74,6 @@ pub let await_ok = fn async_res, f {
   })
 }
 
+/// A task that does not do anything.
+/// Same as `Task.of(Unit)`.
 pub let none = of(Unit)
