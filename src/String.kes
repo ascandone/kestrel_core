@@ -5,5 +5,3 @@ extern pub type String
 extern pub let (<>): Fn(String, String) -> String
 
 extern pub let from_int: Fn(Int) -> String
-
-extern pub let inspect: Fn(a) -> String

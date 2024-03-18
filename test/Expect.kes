@@ -1,3 +1,5 @@
+import Debug
+
 pub type Expectation {
   Pass,
   Fail(String, String),
@@ -9,7 +11,7 @@ pub let equals = fn x, y {
   if x == y {
     Pass
   } else {
-    Fail(String.inspect(x), String.inspect(y))
+    Fail(Debug.inspect(x), Debug.inspect(y))
   }
 }
 
