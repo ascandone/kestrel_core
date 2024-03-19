@@ -1,3 +1,7 @@
+//// Debugging utilities
+
 import String.{String}
 
 extern pub let inspect: Fn(a) -> String
+
+extern pub let todo: Fn(String) -> a

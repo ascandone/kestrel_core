@@ -10,9 +10,8 @@ type Position {
 }
 
 /// Run the two tasks concurrently and collect the results.
-/// 
-/// ### Example
-/// ```rust
+///
+/// ```kestrel
 /// pub let main = {
 ///   let#await (a, b) = Async.both(
 ///     Task.map(Task.sleep(1000), fn _ {
@@ -96,8 +95,7 @@ let race_2 = fn t1, t2 {
 /// Run the tasks concurrently and yield the value of the first `Task` to complete.
 /// All the other tasks are cancelled.
 ///
-/// ### Example
-/// ```rust
+/// ```kestrel
 /// pub let main = {
 ///   let#await a = Async.race([
 ///     Task.map(Task.sleep(1000), fn _ {

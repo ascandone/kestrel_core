@@ -44,3 +44,7 @@ function Debug$inspect(x) {
     return `${type}(${keysList})`;
   }
 }
+
+function Debug$todo(description) {
+  throw new Error(`TODO: ${description}`);
+}
