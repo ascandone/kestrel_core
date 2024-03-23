@@ -37,37 +37,74 @@ pub let both = fn t1, t2 {
   Task.of((value1, value2))
 }
 
+pub let all = fn tasks {
+  List.reduce(tasks, Task.of([]), fn acc, t {
+    let#await pair = Async.both(acc, t);
+    match pair {
+      (acc, t) => Task.of(t :: acc),
+    }
+  })
+}
+
+type Either<a, b> {
+  Left(a),
+  Right(b),
+}
+
 /// Run the two `Task`s concurrently.
 /// Return `Ok` if both `Task`s succeeed, otherwise return `Err` with the first task that fails, and cancel the other.
 pub let both_ok = fn t1, t2 {
   let#await mvar = MVar.empty;
-  let fork_task = fn t, position {
-    Task.fork({
-      let#await res = t;
-      MVar.put(mvar, (res, position))
-    })
+  let#await left_id = Task.fork({
+    let#await res = t1;
+    MVar.put(mvar, Left(res))
+  });
+  let#await right_id = Task.fork({
+    let#await res = t2;
+    MVar.put(mvar, Right(res))
+  });
+  let expect_ok = {
+    let#await either = MVar.take(mvar);
+    match either {
+      Left(Err(err)) => {
+        let#await _unit = Task.kill(right_id);
+        Task.of(Err(err))
+      },
+      Right(Err(err)) => {
+        let#await _unit = Task.kill(left_id);
+        Task.of(Err(err))
+      },
+      Left(Ok(value)) => Task.of(Ok(Left(value))),
+      Right(Ok(value)) => Task.of(Ok(Right(value))),
+    }
   };
-  let#await id1 = fork_task(t1, First);
-  let#await id2 = fork_task(t2, Second);
-  let handle_failure = fn e, position {
-    let#await _unit = Task.kill(match position {
-      First => id2,
-      Second => id1,
-    });
-    Task.of(Err(e))
-  };
-  let#await res = MVar.take(mvar);
-  match res {
-    (Err(e), position) => handle_failure(e, position),
-    (Ok(x), _) => {
-      let#await res = MVar.take(mvar);
-      match res {
-        (Err(e), position) => handle_failure(e, position),
-        (Ok(y), First) => Task.of(Ok((y, x))),
-        (Ok(y), Second) => Task.of(Ok((x, y))),
+  let#Task.await_ok first_result = expect_ok;
+  match first_result {
+    Left(left) => {
+      let#Task.await_ok second_result = expect_ok;
+      match second_result {
+        Right(right) => Task.of(Ok((left, right))),
+        Left(_) => both_ok(t1, t2),
+      }
+    },
+    Right(right) => {
+      let#Task.await_ok second_result = expect_ok;
+      match second_result {
+        Left(left) => Task.of(Ok((left, right))),
+        Right(_) => both_ok(t1, t2),
       }
     },
   }
+}
+
+pub let all_ok = fn tasks {
+  List.reduce(tasks, Task.of(Ok([])), fn acc, t {
+    let#await pair = Async.both_ok(acc, t);
+    match pair {
+      Ok((acc, t)) => Task.of(Ok(t :: acc)),
+      Err(e) => Task.of(Err(e)),
+    }
+  })
 }
 
 let race_2 = fn t1, t2 {

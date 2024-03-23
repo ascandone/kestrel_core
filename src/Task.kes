@@ -76,3 +76,14 @@ pub let await_ok = fn async_res, f {
 /// A task that does not do anything.
 /// Same as `Task.of(Unit)`.
 pub let none = of(Unit)
+
+pub let discard = fn t {
+  Task.map(t, fn _ {
+    Unit
+  })
+}
+
+pub let forever = fn t {
+  let#await _unit = t;
+  forever(t)
+}

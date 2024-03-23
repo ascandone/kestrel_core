@@ -11,6 +11,12 @@ extern pub let empty: Task<MVar<a>>
 /// If the `MVar` is filled, it will block until it is possible to put.
 extern pub let put: Fn(MVar<a>, a) -> Task<Unit>
 
+/// Non-blocking version of `put`.
+/// Equivalent to wrapping a `put` inside a `Task.fork`
+pub let put_async = fn mvar, value {
+  Task.fork(put(mvar, value))
+}
+
 /// Take the value from the given `MVar`.
 /// If the `MVar` is not filled, it will block until it is possible to take.
 extern pub let take: Fn(MVar<a>) -> Task<a>
