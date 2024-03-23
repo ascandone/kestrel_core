@@ -52,6 +52,39 @@ let basics_test = Test.describe("Basics", [
   ]),
 ])
 
+let string_tests = Test.describe("String", [
+  Test.describe("length", [
+    Test.test("of a non-empty string", {
+      String.length("abc")
+      |> Expect.equal(3)
+    }),
+  ]),
+  Test.describe("parse_int", [
+    Test.test("when the input is an int", {
+      String.parse_int("42")
+      |> Expect.equal(Just(42))
+    }),
+    Test.test("when the input is not a number", {
+      String.parse_int("abc")
+      |> Expect.equal(Nothing)
+    }),
+    Test.test("when input is a float", {
+      String.parse_int("42.2")
+      |> Expect.equal(Nothing)
+    }),
+  ]),
+  Test.describe("split", [
+    Test.test("empty string", {
+      String.split("", "-")
+      |> Expect.equal([""])
+    }),
+    Test.test("split string", {
+      String.split("ab-cde-fg", "-")
+      |> Expect.equal(["ab", "cde", "fg"])
+    }),
+  ]),
+])
+
 let maybe_tests = Test.describe("Maybe", [
   Test.describe("map", [
     Test.test("of Just", {
@@ -145,7 +178,7 @@ let list_tests = Test.describe("List", [
 ])
 
 pub let main = {
-  [basics_test, maybe_tests, list_tests]
+  [basics_test, string_tests, maybe_tests, list_tests]
   |> Test.concat()
   |> Test.run()
 }
