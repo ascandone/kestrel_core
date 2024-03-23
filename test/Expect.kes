@@ -7,7 +7,7 @@ pub type Expectation {
 
 pub let pass = Pass
 
-pub let equals = fn x, y {
+pub let equal = fn x, y {
   if x == y {
     Pass
   } else {

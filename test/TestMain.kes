@@ -6,48 +6,48 @@ import Test
 let basics_test = Test.describe("Basics", [
   Test.test("+ of ints", {
     1 + 2
-    |> Expect.equals(3)
+    |> Expect.equal(3)
   }),
   Test.test("+. of floats", {
     1.1 +. 2.1
-    |> Expect.equals(3.2)
+    |> Expect.equal(3.2)
   }),
   Test.describe("Logic &&", [
     Test.test("True && False", {
       True && True
-      |> Expect.equals(True)
+      |> Expect.equal(True)
     }),
     Test.test("True && False", {
       True && False
-      |> Expect.equals(False)
+      |> Expect.equal(False)
     }),
   ]),
   Test.describe("Logic ||", [
     Test.test("True || False", {
       True || True
-      |> Expect.equals(True)
+      |> Expect.equal(True)
     }),
     Test.test("True || False", {
       True || False
-      |> Expect.equals(True)
+      |> Expect.equal(True)
     }),
   ]),
   Test.describe("structural equality", [
     Test.test("of boxed type that are equal", {
       Just(42) == Just(42)
-      |> Expect.equals(True)
+      |> Expect.equal(True)
     }),
     Test.test("of boxed type that are not equal", {
       Just(42) == Just(100)
-      |> Expect.equals(False)
+      |> Expect.equal(False)
     }),
     Test.test("of nested types that are equal", {
       Ok(Just(42)) == Ok(Just(42))
-      |> Expect.equals(True)
+      |> Expect.equal(True)
     }),
     Test.test("of different variants", {
       Just(42) == Nothing
-      |> Expect.equals(False)
+      |> Expect.equal(False)
     }),
   ]),
 ])
@@ -59,14 +59,14 @@ let maybe_tests = Test.describe("Maybe", [
       |> Maybe.map(fn x {
         x + 1
       })
-      |> Expect.equals(Just(101))
+      |> Expect.equal(Just(101))
     }),
     Test.test("of Nothing", {
       Nothing
       |> Maybe.map(fn x {
         x + 1
       })
-      |> Expect.equals(Nothing)
+      |> Expect.equal(Nothing)
     }),
   ]),
   Test.describe("map2", [
@@ -74,13 +74,13 @@ let maybe_tests = Test.describe("Maybe", [
       Maybe.map2(Just(10), Just(20), fn a, b {
         a + b
       })
-      |> Expect.equals(Just(30))
+      |> Expect.equal(Just(30))
     }),
     Test.test("Nothing and Just", {
       Maybe.map2(Nothing, Just(20), fn a, b {
         a + b
       })
-      |> Expect.equals(Nothing)
+      |> Expect.equal(Nothing)
     }),
   ]),
 ])
@@ -89,11 +89,11 @@ let list_tests = Test.describe("List", [
   Test.describe("List.range", [
     Test.test("empty", {
       List.range(0, 2)
-      |> Expect.equals([0, 1])
+      |> Expect.equal([0, 1])
     }),
     Test.test("not empty", {
       List.range(0, 3)
-      |> Expect.equals([0, 1, 2])
+      |> Expect.equal([0, 1, 2])
     }),
   ]),
   Test.describe("List.find", [
@@ -101,19 +101,19 @@ let list_tests = Test.describe("List", [
       List.find([], fn _ {
         False
       })
-      |> Expect.equals(Nothing)
+      |> Expect.equal(Nothing)
     }),
     Test.test("when value is not found", {
       List.find([1, 2, 3], fn _ {
         False
       })
-      |> Expect.equals(Nothing)
+      |> Expect.equal(Nothing)
     }),
     Test.test("when value is found", {
       List.find([1, 2, 3], fn x {
         x == 2
       })
-      |> Expect.equals(Just(2))
+      |> Expect.equal(Just(2))
     }),
   ]),
   Test.describe("List.map", [
@@ -121,25 +121,25 @@ let list_tests = Test.describe("List", [
       List.map([0, 1, 2], fn x {
         x * 10
       })
-      |> Expect.equals([0, 10, 20])
+      |> Expect.equal([0, 10, 20])
     }),
     Test.test("not empty", {
       List.range(0, 3)
-      |> Expect.equals([0, 1, 2])
+      |> Expect.equal([0, 1, 2])
     }),
   ]),
   Test.describe("List.zip", [
     Test.test("when the first list is shorter, truncate the second", {
       List.zip([0, 1], ["a", "b", "c", "d"])
-      |> Expect.equals([(0, "a"), (1, "b")])
+      |> Expect.equal([(0, "a"), (1, "b")])
     }),
     Test.test("when the second list is shorter, truncate the first", {
       List.zip([0, 1, 2], ["a"])
-      |> Expect.equals([(0, "a")])
+      |> Expect.equal([(0, "a")])
     }),
     Test.test("same len", {
       List.zip([0, 1], ["a", "b"])
-      |> Expect.equals([(0, "a"), (1, "b")])
+      |> Expect.equal([(0, "a"), (1, "b")])
     }),
   ]),
 ])
