@@ -28,14 +28,14 @@ function Debug$inspect(x) {
     if (type === "Cons") {
       const buf = [];
       while (x.type === "Cons") {
-        buf.push(String$inspect(x.a0));
+        buf.push(Debug$inspect(x.a0));
         x = x.a1;
       }
 
       return `[${buf.join(", ")}]`;
     }
 
-    const keysList = keys.map((k) => String$inspect(args[k])).join(", ");
+    const keysList = keys.map((k) => Debug$inspect(args[k])).join(", ");
 
     if (type.startsWith("Tuple")) {
       return `(${keysList})`;
