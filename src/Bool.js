@@ -3,6 +3,10 @@ function Bool$_eq(x, y) {
     return true;
   }
 
+  if (x instanceof String) {
+    return x.toString() === y.toString();
+  }
+
   if (
     typeof x === "boolean" ||
     typeof x === "number" ||

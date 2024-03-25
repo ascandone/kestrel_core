@@ -74,15 +74,21 @@ let debug_tests = Test.describe("Debug", [
   ]),
 ])
 
-let basics_test = Test.describe("Basics", [
+let int_tests = Test.describe("Int", [
   Test.test("+ of ints", fn {
     1 + 2
     |> Expect.equal(3)
   }),
+])
+
+let float_tests = Test.describe("Float", [
   Test.test("+. of floats", fn {
     1.1 +. 2.1
     |> Expect.equal(3.2)
   }),
+])
+
+let bool_tests = Test.describe("Bool", [
   Test.describe("Logic &&", [
     Test.test("True && False", fn {
       True && True
@@ -104,6 +110,22 @@ let basics_test = Test.describe("Basics", [
     }),
   ]),
   Test.describe("structural equality", [
+    Test.test("of strings that are equal", fn {
+      Some("ab") == Some("ab")
+      |> Expect.equal(True)
+    }),
+    Test.test("of strings that are not equal", fn {
+      Some("ab") == Some("abc")
+      |> Expect.equal(False)
+    }),
+    Test.test("of chars that are equal", fn {
+      Some('a') == Some('a')
+      |> Expect.equal(True)
+    }),
+    Test.test("of chars that are not equal", fn {
+      Some('a') == Some('b')
+      |> Expect.equal(False)
+    }),
     Test.test("of boxed type that are equal", fn {
       Some(42) == Some(42)
       |> Expect.equal(True)
@@ -266,7 +288,16 @@ let list_tests = Test.describe("List", [
 ])
 
 pub let main = {
-  [debug_tests, basics_test, char_tests, string_tests, option_tests, list_tests]
+  [
+    debug_tests,
+    int_tests,
+    float_tests,
+    bool_tests,
+    char_tests,
+    string_tests,
+    option_tests,
+    list_tests,
+  ]
   |> Test.concat()
   |> Test.run()
 }
