@@ -1,5 +1,5 @@
-import Basics.{Int}
 import Char.{Char}
+import Int.{Int}
 import List.{List}
 import Maybe.{Maybe}
 

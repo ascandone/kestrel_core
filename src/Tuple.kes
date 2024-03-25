@@ -1,3 +1,7 @@
+pub(..) type Unit {
+  Unit,
+}
+
 pub(..) type Tuple2<a, b> {
   Tuple2(a, b),
 }

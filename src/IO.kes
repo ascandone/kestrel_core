@@ -1,4 +1,7 @@
+import Int.{Int}
+import String.{String}
 import Task.{Task}
+import Tuple.{Unit}
 
 extern pub let println: Fn(String) -> Task<Unit>
 

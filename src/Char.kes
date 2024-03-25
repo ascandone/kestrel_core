@@ -1,4 +1,4 @@
-import Basics.{Int}
+import Int.{Int}
 
 extern pub type Char
 

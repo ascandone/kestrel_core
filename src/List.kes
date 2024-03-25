@@ -1,4 +1,5 @@
-import Basics.{Bool(..), (+), (-), (>=), (<=)}
+import Bool.{Bool(..), (>=), (<=)}
+import Int.{(+), (-)}
 import Maybe.{Maybe(..)}
 import Tuple.{Tuple2(..)}
 

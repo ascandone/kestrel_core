@@ -1,4 +1,4 @@
-function Basics$_eq(x, y) {
+function Bool$_eq(x, y) {
   if (x === y) {
     return true;
   }
@@ -16,7 +16,7 @@ function Basics$_eq(x, y) {
   }
 
   for (prop in x) {
-    if (!Basics$_eq(x[prop], y[prop])) {
+    if (!Bool$_eq(x[prop], y[prop])) {
       return false;
     }
   }

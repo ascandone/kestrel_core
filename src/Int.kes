@@ -1,0 +1,13 @@
+extern pub type Int
+
+extern pub let (+): Fn(Int, Int) -> Int
+
+extern pub let (-): Fn(Int, Int) -> Int
+
+extern pub let (*): Fn(Int, Int) -> Int
+
+extern pub let (/): Fn(Int, Int) -> Int
+
+extern pub let (^): Fn(Int, Int) -> Int
+
+extern pub let (%): Fn(Int, Int) -> Int

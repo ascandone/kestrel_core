@@ -1,6 +1,7 @@
-import Basics.{Int, Unit(..)}
+import Int.{Int}
 import Result.{Result(..)}
 import String.{String}
+import Tuple.{Unit(..)}
 
 /// A task represents a computation (either synchronous or asynchronous) that yiels a value of type `a`.
 /// Unlike javascript's `Promise`, creating a `Task` doesn't actually do anything.

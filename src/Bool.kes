@@ -1,0 +1,22 @@
+pub(..) type Bool {
+  True,
+  False,
+}
+
+extern pub let (&&): Fn(Bool, Bool) -> Bool
+
+extern pub let (||): Fn(Bool, Bool) -> Bool
+
+extern pub let (!): Fn(Bool) -> Bool
+
+extern pub let (==): Fn(a, a) -> Bool
+
+extern pub let (!=): Fn(a, a) -> Bool
+
+extern pub let (>): Fn(a, a) -> Bool
+
+extern pub let (>=): Fn(a, a) -> Bool
+
+extern pub let (<): Fn(a, a) -> Bool
+
+extern pub let (<=): Fn(a, a) -> Bool
