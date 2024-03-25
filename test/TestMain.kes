@@ -41,14 +41,14 @@ let debug_tests = Test.describe("Debug", [
       |> Expect.equal("[1, 2, 3]")
     }),
     Test.test("inspect boxed value", fn {
-      Just(True)
+      Some(True)
       |> Debug.inspect()
-      |> Expect.equal("Just(True)")
+      |> Expect.equal("Some(True)")
     }),
     Test.test("inspect singleton", fn {
-      Nothing
+      None
       |> Debug.inspect()
-      |> Expect.equal("Nothing")
+      |> Expect.equal("None")
     }),
     Test.test("inspect internal", fn {
       Task.none
@@ -105,19 +105,19 @@ let basics_test = Test.describe("Basics", [
   ]),
   Test.describe("structural equality", [
     Test.test("of boxed type that are equal", fn {
-      Just(42) == Just(42)
+      Some(42) == Some(42)
       |> Expect.equal(True)
     }),
     Test.test("of boxed type that are not equal", fn {
-      Just(42) == Just(100)
+      Some(42) == Some(100)
       |> Expect.equal(False)
     }),
     Test.test("of nested types that are equal", fn {
-      Ok(Just(42)) == Ok(Just(42))
+      Ok(Some(42)) == Ok(Some(42))
       |> Expect.equal(True)
     }),
     Test.test("of different variants", fn {
-      Just(42) == Nothing
+      Some(42) == None
       |> Expect.equal(False)
     }),
   ]),
@@ -150,15 +150,15 @@ let string_tests = Test.describe("String", [
   Test.describe("parse_int", [
     Test.test("when the input is an int", fn {
       String.parse_int("42")
-      |> Expect.equal(Just(42))
+      |> Expect.equal(Some(42))
     }),
     Test.test("when the input is not a number", fn {
       String.parse_int("abc")
-      |> Expect.equal(Nothing)
+      |> Expect.equal(None)
     }),
     Test.test("when input is a float", fn {
       String.parse_int("42.2")
-      |> Expect.equal(Nothing)
+      |> Expect.equal(None)
     }),
   ]),
   Test.describe("split", [
@@ -173,35 +173,35 @@ let string_tests = Test.describe("String", [
   ]),
 ])
 
-let maybe_tests = Test.describe("Maybe", [
+let option_tests = Test.describe("Option", [
   Test.describe("map", [
-    Test.test("of Just", fn {
-      Just(100)
-      |> Maybe.map(fn x {
+    Test.test("of Some", fn {
+      Some(100)
+      |> Option.map(fn x {
         x + 1
       })
-      |> Expect.equal(Just(101))
+      |> Expect.equal(Some(101))
     }),
-    Test.test("of Nothing", fn {
-      Nothing
-      |> Maybe.map(fn x {
+    Test.test("of None", fn {
+      None
+      |> Option.map(fn x {
         x + 1
       })
-      |> Expect.equal(Nothing)
+      |> Expect.equal(None)
     }),
   ]),
   Test.describe("map2", [
-    Test.test("Just and Just", fn {
-      Maybe.map2(Just(10), Just(20), fn a, b {
+    Test.test("Some and Some", fn {
+      Option.map2(Some(10), Some(20), fn a, b {
         a + b
       })
-      |> Expect.equal(Just(30))
+      |> Expect.equal(Some(30))
     }),
-    Test.test("Nothing and Just", fn {
-      Maybe.map2(Nothing, Just(20), fn a, b {
+    Test.test("None and Some", fn {
+      Option.map2(None, Some(20), fn a, b {
         a + b
       })
-      |> Expect.equal(Nothing)
+      |> Expect.equal(None)
     }),
   ]),
 ])
@@ -222,19 +222,19 @@ let list_tests = Test.describe("List", [
       List.find([], fn _ {
         False
       })
-      |> Expect.equal(Nothing)
+      |> Expect.equal(None)
     }),
     Test.test("when value is not found", fn {
       List.find([1, 2, 3], fn _ {
         False
       })
-      |> Expect.equal(Nothing)
+      |> Expect.equal(None)
     }),
     Test.test("when value is found", fn {
       List.find([1, 2, 3], fn x {
         x == 2
       })
-      |> Expect.equal(Just(2))
+      |> Expect.equal(Some(2))
     }),
   ]),
   Test.describe("List.map", [
@@ -266,7 +266,7 @@ let list_tests = Test.describe("List", [
 ])
 
 pub let main = {
-  [debug_tests, basics_test, char_tests, string_tests, maybe_tests, list_tests]
+  [debug_tests, basics_test, char_tests, string_tests, option_tests, list_tests]
   |> Test.concat()
   |> Test.run()
 }

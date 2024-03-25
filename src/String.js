@@ -18,15 +18,13 @@ function String$parse_int(str) {
   for (; i < str.length; ++i) {
     let code = str.charCodeAt(i);
     if (code < 0x30 || 0x39 < code) {
-      return Maybe$Nothing;
+      return Option$None;
     }
 
     total = 10 * total + code - 0x30;
   }
 
-  return i == start
-    ? Maybe$Nothing
-    : Maybe$Just(code0 == 0x2d ? -total : total);
+  return i == start ? Option$None : Option$Some(code0 == 0x2d ? -total : total);
 }
 
 function String$split(src, splitWith) {
