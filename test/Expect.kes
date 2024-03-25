@@ -19,9 +19,9 @@ pub let to_result = fn expectation {
   match expectation {
     Pass => Ok(Unit),
     Fail(left, right) => {
-      let l = "     Got:  " <> left;
-      let r = "Expected:  " <> right;
-      Err(l <> "\n" <> r)
+      let l = "     Got:  " ++ left;
+      let r = "Expected:  " ++ right;
+      Err(l ++ "\n" ++ r)
     },
   }
 }

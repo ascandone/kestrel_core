@@ -1,0 +1,7 @@
+import Basics.{Int}
+
+extern pub type Char
+
+extern pub let to_code: Fn(Char) -> Int
+
+extern pub let from_code: Fn(Int) -> Char

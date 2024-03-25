@@ -1,7 +1,79 @@
 import Basics
+import Debug
 import Expect
 import IO
 import Test
+
+let debug_tests = Test.describe("Debug", [
+  Test.describe("inspect", [
+    Test.test("inspect True", {
+      True
+      |> Debug.inspect()
+      |> Expect.equal("True")
+    }),
+    Test.test("inspect False", {
+      True
+      |> Debug.inspect()
+      |> Expect.equal("True")
+    }),
+    Test.test("inspect int", {
+      42
+      |> Debug.inspect()
+      |> Expect.equal("42")
+    }),
+    Test.test("inspect float", {
+      42.2
+      |> Debug.inspect()
+      |> Expect.equal("42.2")
+    }),
+    Test.test("inspect Tuple2", {
+      (0, 42)
+      |> Debug.inspect()
+      |> Expect.equal("(0, 42)")
+    }),
+    Test.test("inspect Nil", {
+      []
+      |> Debug.inspect()
+      |> Expect.equal("[]")
+    }),
+    Test.test("inspect Cons list", {
+      [1, 2, 3]
+      |> Debug.inspect()
+      |> Expect.equal("[1, 2, 3]")
+    }),
+    Test.test("inspect boxed value", {
+      Just(True)
+      |> Debug.inspect()
+      |> Expect.equal("Just(True)")
+    }),
+    Test.test("inspect singleton", {
+      Nothing
+      |> Debug.inspect()
+      |> Expect.equal("Nothing")
+    }),
+    Test.test("inspect internal", {
+      Task.none
+      |> Debug.inspect()
+      |> Expect.equal("<internals>")
+    }),
+    Test.test("inspect function", {
+      Debug.inspect(fn {
+        0
+      })
+      |> Expect.equal("#[Function]")
+    }),
+    Test.test("inspect strings", {
+      "abc"
+      |> Debug.inspect()
+      |> Expect.equal("\"abc\"")
+    }),
+    Test.test("inspect chars", {
+      Char.from_code(97)
+      |> Debug.inspect()
+      |> Expect.equal("\'a\'")
+    }),
+  ]),
+])
 
 let basics_test = Test.describe("Basics", [
   Test.test("+ of ints", {
@@ -48,6 +120,23 @@ let basics_test = Test.describe("Basics", [
     Test.test("of different variants", {
       Just(42) == Nothing
       |> Expect.equal(False)
+    }),
+  ]),
+])
+
+let char_tests = Test.describe("Char", [
+  Test.describe("from_code", [
+    Test.test("of alpha char", {
+      let code = 123;
+      Char.from_code(code)
+      |> Char.to_code()
+      |> Expect.equal(code)
+    }),
+  ]),
+  Test.describe("to_code", [
+    Test.test("of alpha char", {
+      Char.to_code('a')
+      |> Expect.equal(97)
     }),
   ]),
 ])
@@ -178,7 +267,7 @@ let list_tests = Test.describe("List", [
 ])
 
 pub let main = {
-  [basics_test, string_tests, maybe_tests, list_tests]
+  [debug_tests, basics_test, char_tests, string_tests, maybe_tests, list_tests]
   |> Test.concat()
   |> Test.run()
 }

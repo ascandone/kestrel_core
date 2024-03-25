@@ -11,6 +11,8 @@ function Debug$inspect(x) {
     return "#[Function]";
   } else if (typeof x === "string") {
     return `"${x}"`;
+  } else if (x instanceof String) {
+    return `'${x}'`;
   } else if (x.type === undefined) {
     return "<internals>";
   } else {

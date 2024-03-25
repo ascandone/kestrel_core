@@ -23,7 +23,7 @@ extern pub let never: Task<a>
 /// ```kestrel
 /// IO.readline
 /// |> Task.await(fn value {
-///   IO.println("Input: " <> value)
+///   IO.println("Input: " ++ value)
 /// })
 /// ```
 extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>

@@ -1,10 +1,11 @@
 import Basics.{Int}
+import Char.{Char}
 import List.{List}
 import Maybe.{Maybe}
 
 extern pub type String
 
-extern pub let (<>): Fn(String, String) -> String
+extern pub let (++): Fn(String, String) -> String
 
 extern pub let from_int: Fn(Int) -> String
 
@@ -13,3 +14,7 @@ extern pub let length: Fn(String) -> Int
 extern pub let parse_int: Fn(String) -> Maybe<Int>
 
 extern pub let split: Fn(String, String) -> List<String>
+
+extern pub let from_char: Fn(Char) -> String
+
+extern pub let cons: Fn(Char, String) -> String

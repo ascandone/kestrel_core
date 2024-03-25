@@ -33,3 +33,11 @@ function String$split(src, splitWith) {
   const str = src.split(splitWith);
   return str.reduceRight((acc, str) => List$Cons(str, acc), List$Nil);
 }
+
+function String$from_char(ch) {
+  return ch;
+}
+
+function String$cons(ch, str) {
+  return ch + str;
+}

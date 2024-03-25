@@ -5,19 +5,19 @@ import Task.{await}
 let color_reset_code = "\x1b[39m"
 
 let dim = fn str {
-  "\x1b[2m" <> str <> "\x1b[22m"
+  "\x1b[2m" ++ str ++ "\x1b[22m"
 }
 
 let col_bright_red = fn str {
-  "\x1b[91m" <> str <> color_reset_code
+  "\x1b[91m" ++ str ++ color_reset_code
 }
 
 let col_bright_green = fn str {
-  "\x1b[92m" <> str <> color_reset_code
+  "\x1b[92m" ++ str ++ color_reset_code
 }
 
 let underline = fn str {
-  "\x1b[4m" <> str <> "\x1b[24m"
+  "\x1b[4m" ++ str ++ "\x1b[24m"
 }
 
 pub type Test {
@@ -40,9 +40,9 @@ let test_recap = fn passed_count, failed_count {
   } else {
     underline(col_bright_red("TEST RUN FAILED"))
   };
-  let passed_msg = dim("Passed: ") <> String.from_int(passed_count);
-  let failed_msg = dim("Failed: ") <> String.from_int(failed_count);
-  recap_msg <> "\n\n" <> passed_msg <> "\n" <> failed_msg
+  let passed_msg = dim("Passed: ") ++ String.from_int(passed_count);
+  let failed_msg = dim("Failed: ") ++ String.from_int(failed_count);
+  recap_msg ++ "\n\n" ++ passed_msg ++ "\n" ++ failed_msg
 }
 
 let sum_counts = fn x, y {
@@ -58,11 +58,11 @@ let collect_tests = fn suite, descr_stack {
       Ok(Unit) => Task.of((1, 0)),
       Err(failure_desc) => {
         let stack_msg = List.reduce_right(descr_stack, "", fn x, acc {
-          acc <> "↓ " <> x <> "\n"
+          acc ++ "↓ " ++ x ++ "\n"
         });
-        let failure_msg = col_bright_red("✗ " <> descr <> "\n");
+        let failure_msg = col_bright_red("✗ " ++ descr ++ "\n");
         let#await _unit = IO.println(
-          dim(stack_msg) <> failure_msg <> failure_desc <> "\n\n",
+          dim(stack_msg) ++ failure_msg ++ failure_desc ++ "\n\n",
         );
         Task.of((0, 1))
       },
