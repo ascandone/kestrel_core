@@ -48,5 +48,5 @@ function Debug$inspect(x) {
 }
 
 function Debug$todo(description) {
-  throw new Error(`TODO: ${description}`);
+  throw new Error(`TODO ${description}`);
 }

@@ -6,68 +6,68 @@ import Test
 
 let debug_tests = Test.describe("Debug", [
   Test.describe("inspect", [
-    Test.test("inspect True", {
+    Test.test("inspect True", fn {
       True
       |> Debug.inspect()
       |> Expect.equal("True")
     }),
-    Test.test("inspect False", {
-      True
+    Test.test("inspect False", fn {
+      False
       |> Debug.inspect()
-      |> Expect.equal("True")
+      |> Expect.equal("False")
     }),
-    Test.test("inspect int", {
+    Test.test("inspect int", fn {
       42
       |> Debug.inspect()
       |> Expect.equal("42")
     }),
-    Test.test("inspect float", {
+    Test.test("inspect float", fn {
       42.2
       |> Debug.inspect()
       |> Expect.equal("42.2")
     }),
-    Test.test("inspect Tuple2", {
+    Test.test("inspect Tuple2", fn {
       (0, 42)
       |> Debug.inspect()
       |> Expect.equal("(0, 42)")
     }),
-    Test.test("inspect Nil", {
+    Test.test("inspect Nil", fn {
       []
       |> Debug.inspect()
       |> Expect.equal("[]")
     }),
-    Test.test("inspect Cons list", {
+    Test.test("inspect Cons list", fn {
       [1, 2, 3]
       |> Debug.inspect()
       |> Expect.equal("[1, 2, 3]")
     }),
-    Test.test("inspect boxed value", {
+    Test.test("inspect boxed value", fn {
       Just(True)
       |> Debug.inspect()
       |> Expect.equal("Just(True)")
     }),
-    Test.test("inspect singleton", {
+    Test.test("inspect singleton", fn {
       Nothing
       |> Debug.inspect()
       |> Expect.equal("Nothing")
     }),
-    Test.test("inspect internal", {
+    Test.test("inspect internal", fn {
       Task.none
       |> Debug.inspect()
       |> Expect.equal("<internals>")
     }),
-    Test.test("inspect function", {
+    Test.test("inspect function", fn {
       Debug.inspect(fn {
         0
       })
       |> Expect.equal("#[Function]")
     }),
-    Test.test("inspect strings", {
+    Test.test("inspect strings", fn {
       "abc"
       |> Debug.inspect()
       |> Expect.equal("\"abc\"")
     }),
-    Test.test("inspect chars", {
+    Test.test("inspect chars", fn {
       Char.from_code(97)
       |> Debug.inspect()
       |> Expect.equal("\'a\'")
@@ -76,48 +76,48 @@ let debug_tests = Test.describe("Debug", [
 ])
 
 let basics_test = Test.describe("Basics", [
-  Test.test("+ of ints", {
+  Test.test("+ of ints", fn {
     1 + 2
     |> Expect.equal(3)
   }),
-  Test.test("+. of floats", {
+  Test.test("+. of floats", fn {
     1.1 +. 2.1
     |> Expect.equal(3.2)
   }),
   Test.describe("Logic &&", [
-    Test.test("True && False", {
+    Test.test("True && False", fn {
       True && True
       |> Expect.equal(True)
     }),
-    Test.test("True && False", {
+    Test.test("True && False", fn {
       True && False
       |> Expect.equal(False)
     }),
   ]),
   Test.describe("Logic ||", [
-    Test.test("True || False", {
+    Test.test("True || False", fn {
       True || True
       |> Expect.equal(True)
     }),
-    Test.test("True || False", {
+    Test.test("True || False", fn {
       True || False
       |> Expect.equal(True)
     }),
   ]),
   Test.describe("structural equality", [
-    Test.test("of boxed type that are equal", {
+    Test.test("of boxed type that are equal", fn {
       Just(42) == Just(42)
       |> Expect.equal(True)
     }),
-    Test.test("of boxed type that are not equal", {
+    Test.test("of boxed type that are not equal", fn {
       Just(42) == Just(100)
       |> Expect.equal(False)
     }),
-    Test.test("of nested types that are equal", {
+    Test.test("of nested types that are equal", fn {
       Ok(Just(42)) == Ok(Just(42))
       |> Expect.equal(True)
     }),
-    Test.test("of different variants", {
+    Test.test("of different variants", fn {
       Just(42) == Nothing
       |> Expect.equal(False)
     }),
@@ -126,7 +126,7 @@ let basics_test = Test.describe("Basics", [
 
 let char_tests = Test.describe("Char", [
   Test.describe("from_code", [
-    Test.test("of alpha char", {
+    Test.test("of alpha char", fn {
       let code = 123;
       Char.from_code(code)
       |> Char.to_code()
@@ -134,7 +134,7 @@ let char_tests = Test.describe("Char", [
     }),
   ]),
   Test.describe("to_code", [
-    Test.test("of alpha char", {
+    Test.test("of alpha char", fn {
       Char.to_code('a')
       |> Expect.equal(97)
     }),
@@ -143,31 +143,31 @@ let char_tests = Test.describe("Char", [
 
 let string_tests = Test.describe("String", [
   Test.describe("length", [
-    Test.test("of a non-empty string", {
+    Test.test("of a non-empty string", fn {
       String.length("abc")
       |> Expect.equal(3)
     }),
   ]),
   Test.describe("parse_int", [
-    Test.test("when the input is an int", {
+    Test.test("when the input is an int", fn {
       String.parse_int("42")
       |> Expect.equal(Just(42))
     }),
-    Test.test("when the input is not a number", {
+    Test.test("when the input is not a number", fn {
       String.parse_int("abc")
       |> Expect.equal(Nothing)
     }),
-    Test.test("when input is a float", {
+    Test.test("when input is a float", fn {
       String.parse_int("42.2")
       |> Expect.equal(Nothing)
     }),
   ]),
   Test.describe("split", [
-    Test.test("empty string", {
+    Test.test("empty string", fn {
       String.split("", "-")
       |> Expect.equal([""])
     }),
-    Test.test("split string", {
+    Test.test("split string", fn {
       String.split("ab-cde-fg", "-")
       |> Expect.equal(["ab", "cde", "fg"])
     }),
@@ -176,14 +176,14 @@ let string_tests = Test.describe("String", [
 
 let maybe_tests = Test.describe("Maybe", [
   Test.describe("map", [
-    Test.test("of Just", {
+    Test.test("of Just", fn {
       Just(100)
       |> Maybe.map(fn x {
         x + 1
       })
       |> Expect.equal(Just(101))
     }),
-    Test.test("of Nothing", {
+    Test.test("of Nothing", fn {
       Nothing
       |> Maybe.map(fn x {
         x + 1
@@ -192,13 +192,13 @@ let maybe_tests = Test.describe("Maybe", [
     }),
   ]),
   Test.describe("map2", [
-    Test.test("Just and Just", {
+    Test.test("Just and Just", fn {
       Maybe.map2(Just(10), Just(20), fn a, b {
         a + b
       })
       |> Expect.equal(Just(30))
     }),
-    Test.test("Nothing and Just", {
+    Test.test("Nothing and Just", fn {
       Maybe.map2(Nothing, Just(20), fn a, b {
         a + b
       })
@@ -209,29 +209,29 @@ let maybe_tests = Test.describe("Maybe", [
 
 let list_tests = Test.describe("List", [
   Test.describe("List.range", [
-    Test.test("empty", {
+    Test.test("empty", fn {
       List.range(0, 2)
       |> Expect.equal([0, 1])
     }),
-    Test.test("not empty", {
+    Test.test("not empty", fn {
       List.range(0, 3)
       |> Expect.equal([0, 1, 2])
     }),
   ]),
   Test.describe("List.find", [
-    Test.test("on an empty list", {
+    Test.test("on an empty list", fn {
       List.find([], fn _ {
         False
       })
       |> Expect.equal(Nothing)
     }),
-    Test.test("when value is not found", {
+    Test.test("when value is not found", fn {
       List.find([1, 2, 3], fn _ {
         False
       })
       |> Expect.equal(Nothing)
     }),
-    Test.test("when value is found", {
+    Test.test("when value is found", fn {
       List.find([1, 2, 3], fn x {
         x == 2
       })
@@ -239,27 +239,27 @@ let list_tests = Test.describe("List", [
     }),
   ]),
   Test.describe("List.map", [
-    Test.test("empty", {
+    Test.test("empty", fn {
       List.map([0, 1, 2], fn x {
         x * 10
       })
       |> Expect.equal([0, 10, 20])
     }),
-    Test.test("not empty", {
+    Test.test("not empty", fn {
       List.range(0, 3)
       |> Expect.equal([0, 1, 2])
     }),
   ]),
   Test.describe("List.zip", [
-    Test.test("when the first list is shorter, truncate the second", {
+    Test.test("when the first list is shorter, truncate the second", fn {
       List.zip([0, 1], ["a", "b", "c", "d"])
       |> Expect.equal([(0, "a"), (1, "b")])
     }),
-    Test.test("when the second list is shorter, truncate the first", {
+    Test.test("when the second list is shorter, truncate the first", fn {
       List.zip([0, 1, 2], ["a"])
       |> Expect.equal([(0, "a")])
     }),
-    Test.test("same len", {
+    Test.test("same len", fn {
       List.zip([0, 1], ["a", "b"])
       |> Expect.equal([(0, "a"), (1, "b")])
     }),

@@ -2,23 +2,27 @@ import Debug
 
 pub type Expectation {
   Pass,
-  Fail(String, String),
+  Fail(String),
+  EqFail(String, String),
 }
 
 pub let pass = Pass
+
+pub let fail = Fail
 
 pub let equal = fn x, y {
   if x == y {
     Pass
   } else {
-    Fail(Debug.inspect(x), Debug.inspect(y))
+    EqFail(Debug.inspect(x), Debug.inspect(y))
   }
 }
 
 pub let to_result = fn expectation {
   match expectation {
     Pass => Ok(Unit),
-    Fail(left, right) => {
+    Fail(reason) => Err(reason),
+    EqFail(left, right) => {
       let l = "     Got:  " ++ left;
       let r = "Expected:  " ++ right;
       Err(l ++ "\n" ++ r)
