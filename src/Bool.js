@@ -3,14 +3,13 @@ function Bool$_eq(x, y) {
     return true;
   }
 
-  const t = typeof x;
   if (
-    t === "boolean" ||
-    t === "number" ||
-    t === "string" ||
-    t === "undefined" ||
-    t === "function" ||
-    x.type === undefined
+    typeof x === "boolean" ||
+    typeof x === "number" ||
+    typeof x === "string" ||
+    typeof x === "undefined" ||
+    typeof x === "function" ||
+    x.$ === undefined
   ) {
     return false;
   }
