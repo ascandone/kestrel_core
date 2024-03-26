@@ -1,5 +1,6 @@
-import Basics.{Bool(..), (+), (-), (>=), (<=)}
-import Maybe.{Maybe(..)}
+import Bool.{Bool(..), (>=), (<=)}
+import Int.{(+), (-)}
+import Option.{Option(..)}
 import Tuple.{Tuple2(..)}
 
 pub(..) type List<a> {
@@ -31,9 +32,9 @@ pub let map2 = fn lst1, lst2, f {
 
 pub let find = fn lst, pred {
   match lst {
-    Nil => Nothing,
+    Nil => None,
     hd :: tl => if pred(hd) {
-      Just(hd)
+      Some(hd)
     } else {
       find(tl, pred)
     },
@@ -88,8 +89,8 @@ pub let flat_map = fn lst, f {
 pub let filter_map = fn lst, f {
   reduce_right(lst, [], fn x, xs {
     match f(x) {
-      Nothing => xs,
-      Just(hd) => hd :: xs,
+      None => xs,
+      Some(hd) => hd :: xs,
     }
   })
 }

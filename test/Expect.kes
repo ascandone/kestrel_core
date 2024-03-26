@@ -1,4 +1,10 @@
+import Bool.{Bool(..), (==)}
 import Debug
+import List.{List(..)}
+import Option.{Option(..)}
+import Result.{Result(..)}
+import String.{String, (++)}
+import Tuple.{Unit(..)}
 
 pub type Expectation {
   Pass,

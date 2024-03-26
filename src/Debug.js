@@ -13,23 +13,23 @@ function Debug$inspect(x) {
     return `"${x}"`;
   } else if (x instanceof String) {
     return `'${x}'`;
-  } else if (x.type === undefined) {
+  } else if (x.$ === undefined) {
     return "<internals>";
   } else {
-    const { type, ...args } = x;
-    if (type === "Nil") {
+    const { $, ...args } = x;
+    if (x.$ === "Nil") {
       return "[]";
     }
 
     const keys = Object.keys(args).sort();
 
     if (keys.length === 0) {
-      return `${type}`;
+      return `${x.$}`;
     }
 
-    if (type === "Cons") {
+    if (x.$ === "Cons") {
       const buf = [];
-      while (x.type === "Cons") {
+      while (x.$ === "Cons") {
         buf.push(Debug$inspect(x.a0));
         x = x.a1;
       }
@@ -39,11 +39,11 @@ function Debug$inspect(x) {
 
     const keysList = keys.map((k) => Debug$inspect(args[k])).join(", ");
 
-    if (type.startsWith("Tuple")) {
+    if (x.$.startsWith("Tuple")) {
       return `(${keysList})`;
     }
 
-    return `${type}(${keysList})`;
+    return `${x.$}(${keysList})`;
   }
 }
 

@@ -1,0 +1,9 @@
+extern pub type Float
+
+extern pub let (+.): Fn(Float, Float) -> Float
+
+extern pub let (-.): Fn(Float, Float) -> Float
+
+extern pub let (*.): Fn(Float, Float) -> Float
+
+extern pub let (/.): Fn(Float, Float) -> Float

@@ -1,7 +1,14 @@
+import Bool.{Bool(..), (==)}
 import Expect.{Expectation}
 import IO
+import Int.{(+), (-)}
+import List.{List(..)}
+import Option.{Option(..)}
+import Result.{Result(..)}
+import String.{String, (++)}
 import Task.{await}
 import Time
+import Tuple.{Unit(..)}
 
 let color_reset_code = "\x1b[39m"
 

@@ -1,41 +1,41 @@
 import Tuple.{Tuple2(..)}
 
 /// A type representing an optional value.
-pub(..) type Maybe<a> {
-  Just(a),
-  Nothing,
+pub(..) type Option<a> {
+  Some(a),
+  None,
 }
 
 pub let map = fn m, f {
   match m {
-    Just(x) => Just(f(x)),
-    Nothing => Nothing,
+    Some(x) => Some(f(x)),
+    None => None,
   }
 }
 
 pub let and_then = fn m, f {
   match m {
-    Just(x) => f(x),
-    Nothing => Nothing,
+    Some(x) => f(x),
+    None => None,
   }
 }
 
 pub let map2 = fn m1, m2, f {
   let#and_then x1 = m1;
   let#and_then x2 = m2;
-  Just(f(x1, x2))
+  Some(f(x1, x2))
 }
 
 pub let map3 = fn m1, m2, m3, f {
   let#and_then x1 = m1;
   let#and_then x2 = m2;
   let#and_then x3 = m3;
-  Just(f(x1, x2, x3))
+  Some(f(x1, x2, x3))
 }
 
 pub let with_default = fn m, x {
   match m {
-    Nothing => x,
-    Just(x) => x,
+    None => x,
+    Some(x) => x,
   }
 }

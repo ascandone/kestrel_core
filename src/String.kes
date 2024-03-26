@@ -1,7 +1,7 @@
-import Basics.{Int}
 import Char.{Char}
+import Int.{Int}
 import List.{List}
-import Maybe.{Maybe}
+import Option.{Option}
 
 extern pub type String
 
@@ -11,7 +11,7 @@ extern pub let from_int: Fn(Int) -> String
 
 extern pub let length: Fn(String) -> Int
 
-extern pub let parse_int: Fn(String) -> Maybe<Int>
+extern pub let parse_int: Fn(String) -> Option<Int>
 
 extern pub let split: Fn(String, String) -> List<String>
 

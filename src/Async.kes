@@ -2,7 +2,9 @@
 
 import List
 import MVar
+import Result.{Result(..)}
 import Task.{await}
+import Tuple
 
 type Position {
   First,
