@@ -1,0 +1,10 @@
+{
+  "name": "kestrel_core",
+  "version": "0.0.1",
+  "repository": "https://github.com/ascandone/kestrel-core.git",
+  "author": "Alessandro Scandone",
+  "license": "MIT",
+  "devDependencies": {
+    "kestrel-lang": "^0.0.20"
+  }
+}

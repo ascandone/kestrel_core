@@ -8,15 +8,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install kestrel cli
-        run: npm install -g kestrel-lang
+      - name: Install deps
+        run: yarn install
       - name: Check if project is formatted
-        run: kestrel format
+        run: npx kestrel format
       - name: Typecheck the project
-        run: kestrel check
+        run: npx kestrel check
       - name: Run unit tests
-        run: kestrel run TestMain
+        run: npx kestrel run TestMain
       - name: Check docs.json
-        run: kestrel docs check
+        run: npx kestrel docs check
       - name: Run integration tests
         run: node integration/Task.test.mjs
