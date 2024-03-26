@@ -1,6 +1,5 @@
 import Int.{Int}
 import Result.{Result(..)}
-import String.{String}
 import Tuple.{Unit(..)}
 
 /// A task represents a computation (either synchronous or asynchronous) that yiels a value of type `a`.

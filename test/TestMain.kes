@@ -1,7 +1,16 @@
+import Bool.{Bool(..), (==), (||), (&&)}
+import Char
 import Debug
 import Expect
-import IO
+import Float.{(+.)}
+import Int.{(+), (*)}
+import List
+import Option.{Option(..)}
+import Result.{Result(..)}
+import String
+import Task
 import Test
+import Tuple
 
 let debug_tests = Test.describe("Debug", [
   Test.describe("inspect", [
@@ -191,6 +200,14 @@ let string_tests = Test.describe("String", [
     Test.test("split string", fn {
       String.split("ab-cde-fg", "-")
       |> Expect.equal(["ab", "cde", "fg"])
+    }),
+  ]),
+  Test.describe("from_char", [
+    Test.test("returns a string", fn {
+      'a'
+      |> String.from_char()
+      |> Debug.inspect()
+      |> Expect.equal("\"a\"")
     }),
   ]),
 ])
