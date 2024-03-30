@@ -1,11 +1,18 @@
 import Tuple.{Tuple2(..)}
 
-/// A type representing an optional value.
+/// A type representing an value that might be either present (`Some`) or absent (`None`)
 pub(..) type Option<a> {
   Some(a),
   None,
 }
 
+/// Maps the option using the given functions
+/// 
+/// ### Examples
+/// ```kestrel
+/// map(None, fn x { x + 1 }) // => None
+/// map(Some(42), fn x { x + 1 }) // => Some(43)
+/// ```
 pub let map = fn m, f {
   match m {
     Some(x) => Some(f(x)),
@@ -13,6 +20,15 @@ pub let map = fn m, f {
   }
 }
 
+/// Maps the option using the given functions, and flattens the results
+/// 
+/// It holds the property `and_then(x, Some) == x`
+/// ### Examples
+/// ```kestrel
+/// and_then(None, fn x { Some(42) }) // => None
+/// and_then(Some(42), fn x { None }) // => None
+/// and_then(Some(42), fn x { Some(x + 1) }) // => Some(42)
+/// ```
 pub let and_then = fn m, f {
   match m {
     Some(x) => f(x),
@@ -20,12 +36,23 @@ pub let and_then = fn m, f {
   }
 }
 
+/// If both of the options are `Some`, maps their value using the
+/// given function. Else, returns `None`
+/// 
+/// ### Examples
+/// ```kestrel
+/// map2(None, None, fn a, b { a + b }) // => None
+/// map2(Some(42), None, fn a, b { a + b }) // => None
+/// map2(None, Some(42), fn a, b { a + b }) // => None
+/// map2(Some(1), Some(2), fn a, b { a + b }) // => Some(3)
+/// ```
 pub let map2 = fn m1, m2, f {
   let#and_then x1 = m1;
   let#and_then x2 = m2;
   Some(f(x1, x2))
 }
 
+/// Like `map2`, but with 3 options
 pub let map3 = fn m1, m2, m3, f {
   let#and_then x1 = m1;
   let#and_then x2 = m2;
@@ -33,6 +60,12 @@ pub let map3 = fn m1, m2, m3, f {
   Some(f(x1, x2, x3))
 }
 
+/// Returns wrapped value when option is `Some`, else returns the default value
+/// ### Examples
+/// ```kestrel
+/// with_default(Some("value"), "default value") // => "value"
+/// with_default(None, "default value") // => "default value"
+/// ```
 pub let with_default = fn m, x {
   match m {
     None => x,
