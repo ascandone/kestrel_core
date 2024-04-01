@@ -1,9 +1,17 @@
+/// A floating point number.
+/// 
+/// Infix operations that deal with `Float` follow the convention of having a trailing `.`
+/// This is necessary to distinguish them from `Int` operators
 extern pub type Float
 
+/// Add two floats
 extern pub let (+.): Fn(Float, Float) -> Float
 
+/// Substract two floats
 extern pub let (-.): Fn(Float, Float) -> Float
 
+/// Multiply two floats
 extern pub let (*.): Fn(Float, Float) -> Float
 
+/// Divide two floats
 extern pub let (/.): Fn(Float, Float) -> Float

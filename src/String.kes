@@ -3,18 +3,31 @@ import Int.{Int}
 import List.{List}
 import Option.{Option}
 
+/// A value representing an unicode string
 extern pub type String
 
+/// Concatenate two strings
+/// 
+/// ```kestrel
+/// "abc" ++ "def" // => "abcdef"
+/// ```
 extern pub let (++): Fn(String, String) -> String
 
-extern pub let from_int: Fn(Int) -> String
-
+/// Returns the length of the string.
+/// It takes `O(1)` time
+/// 
+/// ```kestrel
+/// length("abc") // => 3
+/// ```
 extern pub let length: Fn(String) -> Int
-
-extern pub let parse_int: Fn(String) -> Option<Int>
 
 extern pub let split: Fn(String, String) -> List<String>
 
+/// Casts a `Char` into a `String`
 extern pub let from_char: Fn(Char) -> String
 
 extern pub let cons: Fn(Char, String) -> String
+
+extern pub let parse_int: Fn(String) -> Option<Int>
+
+extern pub let from_int: Fn(Int) -> String

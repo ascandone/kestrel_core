@@ -1,16 +1,54 @@
+/// A boolean value that can either be `True` or `False`.
+/// 
+/// Note that this isn't a builtin type, but a regular union type
 pub(..) type Bool {
   True,
   False,
 }
 
+/// Logic `and` between booleans
+/// 
+/// ```kestrel
+/// True && True // => True
+/// True && False // => False
+/// False && True // => False
+/// False && False // => False
+/// ```
 extern pub let (&&): Fn(Bool, Bool) -> Bool
 
+/// Logic `or` between booleans
+/// 
+/// ```kestrel
+/// True && True // => True
+/// True && False // => True
+/// False && True // => True
+/// False && False // => False
+/// ```
 extern pub let (||): Fn(Bool, Bool) -> Bool
 
+/// Logic `not`
+/// 
+/// ```kestrel
+/// !True // => False
+/// !False // => True
+/// ```
 extern pub let (!): Fn(Bool) -> Bool
 
+/// Perform structural equality between values.
+/// 
+/// Equality is only supported for values of type:
+/// * `Int`
+/// * `Float`
+/// * `Char`
+/// * Union types whose constructors arguments support equality
+/// 
+/// This mean that equality is supported, for example, for values of type `List<(String, Char)>`
+/// 
+/// Equality between all the other values (for example functions or internal opaque types)
+/// has an undefined behaviour
 extern pub let (==): Fn(a, a) -> Bool
 
+/// Same as `==`, but with negation
 extern pub let (!=): Fn(a, a) -> Bool
 
 extern pub let (>): Fn(a, a) -> Bool

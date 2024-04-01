@@ -39,6 +39,7 @@ pub let both = fn t1, t2 {
   Task.of((value1, value2))
 }
 
+/// Like [both](#both), but for more than two tasks
 pub let all = fn tasks {
   List.reduce(tasks, Task.of([]), fn acc, t {
     let#await pair = Async.both(acc, t);
@@ -99,6 +100,7 @@ pub let both_ok = fn t1, t2 {
   }
 }
 
+/// Like [both_ok](#both_ok), but for more than two tasks
 pub let all_ok = fn tasks {
   List.reduce(tasks, Task.of(Ok([])), fn acc, t {
     let#await pair = Async.both_ok(acc, t);

@@ -1,13 +1,29 @@
+/// An integer number
 extern pub type Int
 
+/// Add two ints
 extern pub let (+): Fn(Int, Int) -> Int
 
+/// Substract two ints
 extern pub let (-): Fn(Int, Int) -> Int
 
+/// Multiply two ints
 extern pub let (*): Fn(Int, Int) -> Int
 
+/// Divide two ints
 extern pub let (/): Fn(Int, Int) -> Int
 
+/// Exponentiation
+/// 
+/// ```kestrel
+/// 2 ^ 3 // => 8
+/// ```
 extern pub let (^): Fn(Int, Int) -> Int
 
+/// Modulo operator
+/// 
+/// ```kestrel
+/// 10 % 2 // => 0
+/// 11 % 2 // => 1
+/// ```
 extern pub let (%): Fn(Int, Int) -> Int

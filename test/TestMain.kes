@@ -1,3 +1,6 @@
+//// Internal module used for testing.
+//// This will be removed in future versions of this package
+
 import Bool.{Bool(..), (==), (||), (&&)}
 import Char
 import Debug

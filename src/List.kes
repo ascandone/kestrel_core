@@ -3,11 +3,17 @@ import Int.{(+), (-)}
 import Option.{Option(..)}
 import Tuple.{Tuple2(..)}
 
+/// This type represents a singly linked list
 pub(..) type List<a> {
   Nil,
   Cons(a, List<a>),
 }
 
+/// `range(a, b)` is a list from `a` to `b` exclusive
+/// 
+/// ```kestrel
+/// range(0, 3) // => [0, 1, 2]
+/// ```
 pub let range = fn from, to {
   if from >= to {
     []
@@ -16,10 +22,34 @@ pub let range = fn from, to {
   }
 }
 
+/// Applies the given function to every element of the list, and return a new list
+/// with the mapped elements.
+/// It takes `O(n)` time
+/// 
+/// ```kestrel
+/// map([1, 2, 3], fn x { x * 10 }) // => [10, 20, 30]
+/// ```
 pub let map = fn lst, f {
   match lst {
     Nil => [],
     hd :: tl => f(hd) :: map(tl, f),
+  }
+}
+
+/// Returns a new list containing only the elements that match the given predicate, in the same order
+/// It takes `O(n)` time
+/// 
+/// ```kestrel
+/// filter(['a', 'b', 'c'], fn x { x == 'b' }) // => ['b']
+/// ````
+pub let filter = fn lst, pred {
+  match lst {
+    Nil => [],
+    hd :: tl => if pred(hd) {
+      hd :: filter(tl, pred)
+    } else {
+      filter(tl, pred)
+    },
   }
 }
 
@@ -37,17 +67,6 @@ pub let find = fn lst, pred {
       Some(hd)
     } else {
       find(tl, pred)
-    },
-  }
-}
-
-pub let filter = fn lst, pred {
-  match lst {
-    Nil => [],
-    hd :: tl => if pred(hd) {
-      hd :: filter(tl, pred)
-    } else {
-      filter(tl, pred)
     },
   }
 }
