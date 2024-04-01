@@ -1,3 +1,8 @@
+//// This module contains functions used to create tests.
+//// You can create assertion using the `Expect` module.
+//// 
+//// **note**: this module is temporary and will be removed from the `core` package
+
 import Bool.{Bool(..), (==)}
 import Expect.{Expectation}
 import IO
@@ -34,10 +39,13 @@ pub type Test {
   Describe(String, Test),
 }
 
+/// Test the given expectation
 pub let test = Test
 
+/// Concat many tests
 pub let concat = Concat
 
+/// Wrap a test within a description
 pub let describe = fn descr, tests {
   Describe(descr, Concat(tests))
 }
@@ -96,6 +104,8 @@ let collect_tests = fn suite, descr_stack {
   }
 }
 
+/// Run the tests and print the tests result.
+/// Exits with the appropriate error code depending on the tests outcome
 pub let run = fn test {
   let#await start_time = Time.now;
   let#await results = collect_tests(test, []);

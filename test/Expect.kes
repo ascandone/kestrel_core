@@ -12,10 +12,13 @@ pub type Expectation {
   EqFail(String, String),
 }
 
+/// An expectation that always passes
 pub let pass = Pass
 
+/// An expectation that always fails with the given reason
 pub let fail = Fail
 
+/// Asserts that the given types are structurally equal. It uses `==` under the hood.
 pub let equal = fn x, y {
   if x == y {
     Pass
@@ -24,6 +27,8 @@ pub let equal = fn x, y {
   }
 }
 
+/// Converts the expectation to a result.
+/// This function is meant to be used internally
 pub let to_result = fn expectation {
   match expectation {
     Pass => Ok(Unit),
