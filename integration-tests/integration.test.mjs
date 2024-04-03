@@ -17,7 +17,9 @@ assert(content.length !== 0, "empty test suite");
 
 for (const fileName of content) {
   test(fileName, async () => {
-    const { stdout } = await exec(`kestrel run ${fileName}`, { cwd: wdir });
+    const { stdout } = await exec(`npx kestrel run ${fileName}`, {
+      cwd: wdir,
+    });
 
     const expected = await readFile(`${wdir}/src/${fileName}.out`);
     assert.strictEqual(stdout, expected.toString());
