@@ -1,0 +1,17 @@
+import Log.{log}
+import Task.{await}
+
+pub let main = {
+  let#await _ = log("string", "string");
+  let#await _ = log("char", 'c');
+  let#await _ = log("int", 42);
+  let#await _ = log("int.0", 42.0);
+  let#await _ = log("float", 42.8);
+  let#await _ = log("tuple", (1, 2));
+  let#await _ = log("True", True);
+  let#await _ = log("False", False);
+  let#await _ = log("None", None);
+  let#await _ = log("nested Some", Some(Some("nested")));
+  let#await _ = log("list", [10, 20, 30]);
+  Task.none
+}

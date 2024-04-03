@@ -1,0 +1,16 @@
+import Log.{log}
+import Task.{await}
+
+pub let main = {
+  let#await _ = log("True && True", True && True);
+  let#await _ = log("True && False", True && False);
+  let#await _ = log("False && True", False && True);
+  let#await _ = log("False && False", False && False);
+  let#await _ = log("True || True", True || True);
+  let#await _ = log("True || False", True || False);
+  let#await _ = log("False || True", False || True);
+  let#await _ = log("False || False", False || False);
+  let#await _ = log("!True", !True);
+  let#await _ = log("!False", !False);
+  Task.none
+}

@@ -1,0 +1,11 @@
+string: "string"
+char: 'c'
+int: 42
+int.0: 42
+float: 42.8
+tuple: (1, 2)
+True: True
+False: False
+None: None
+nested Some: Some(Some("nested"))
+list: [10, 20, 30]

@@ -1,0 +1,22 @@
+import Async
+import Log.{log}
+import Task.{await}
+import Time
+
+pub let main = {
+  let#await start = Time.now;
+  let#await values = Async.all([
+    Task.sleep(100)
+    |> Task.map(fn _ {
+      'a'
+    }),
+    Task.sleep(80)
+    |> Task.map(fn _ {
+      'b'
+    }),
+  ]);
+  let#await end = Time.now;
+  let#await _ = log("resolved", values);
+  let#await _ = log("par", end - start < 150);
+  Task.none
+}

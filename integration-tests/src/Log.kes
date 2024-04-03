@@ -1,0 +1,8 @@
+import Debug
+
+extern let log_str: Fn(String) -> Task<Unit>
+
+pub let log = fn label, x {
+  let str_x = Debug.inspect(x);
+  log_str(label ++ ": " ++ str_x)
+}
