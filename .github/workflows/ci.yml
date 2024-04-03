@@ -18,5 +18,5 @@ jobs:
         run: npx kestrel run TestMain
       - name: Check docs.json
         run: npx kestrel docs check
-      - name: Run integration tests
-        run: node integration/Task.test.mjs
+      - name: Run js integration tests
+        run: node --test

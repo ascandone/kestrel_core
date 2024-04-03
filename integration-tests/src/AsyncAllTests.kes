@@ -3,20 +3,26 @@ import Log.{log}
 import Task.{await}
 import Time
 
+let time_a = 10
+
+let time_b = 8
+
+let err_treshold = 1
+
 pub let main = {
   let#await start = Time.now;
   let#await values = Async.all([
-    Task.sleep(100)
+    Task.sleep(time_a)
     |> Task.map(fn _ {
       'a'
     }),
-    Task.sleep(80)
+    Task.sleep(time_b)
     |> Task.map(fn _ {
       'b'
     }),
   ]);
   let#await end = Time.now;
   let#await _ = log("resolved", values);
-  let#await _ = log("par", end - start < 150);
+  let#await _ = log("par", end - start <= time_a + err_treshold);
   Task.none
 }
