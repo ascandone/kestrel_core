@@ -1,7 +1,7 @@
 import Bool.{Bool(..), (>=), (<=)}
 import Int.{(+), (-)}
 import Option.{Option(..)}
-import Tuple.{Tuple2(..)}
+import Tuple.{Tuple2(..), Unit(..)}
 
 /// This type represents a singly linked list
 pub(..) type List<a> {
@@ -154,5 +154,22 @@ pub let zip = fn lst1, lst2 {
     (Nil, _) => [],
     (_, Nil) => [],
     (hd1 :: lst1, hd2 :: lst2) => (hd1, hd2) :: zip(lst1, lst2),
+  }
+}
+
+/// This function is meant to be used with `let#` syntax
+/// ```kestrel
+/// {
+///   let#List.flat_map x = [1, 2];
+///   let#List.flat_map y = ['a', 'b'];
+///   let#List.guard _unit = x == 1;
+///   [(x, y)]
+/// }
+/// ```
+pub let guard = fn pred, body {
+  if pred {
+    body(Unit)
+  } else {
+    []
   }
 }

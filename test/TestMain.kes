@@ -305,6 +305,17 @@ let list_tests = Test.describe("List", [
       |> Expect.equal([(0, "a"), (1, "b")])
     }),
   ]),
+  Test.describe("List comprehnsion", [
+    Test.test("flat_map + guard", fn {
+      let comprehension = {
+        let#List.flat_map x = [1, 2];
+        let#List.flat_map y = ['a', 'b'];
+        let#List.guard _unit = x == 1;
+        [(x, y)]
+      };
+      Expect.equal(comprehension, [(1, 'a'), (1, 'b')])
+    }),
+  ]),
 ])
 
 pub let main = {
