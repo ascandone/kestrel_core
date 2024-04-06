@@ -51,7 +51,7 @@ function Debug$todo(description) {
   throw new Error(`TODO ${description}`);
 }
 
-function Debug$log(description, value) {
-  console.log(description, Debug$inspect(value));
+function Debug$log(value, description) {
+  console.log(description + ":", Debug$inspect(value));
   return value;
 }

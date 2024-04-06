@@ -19,8 +19,8 @@ extern pub let todo: Fn(String) -> a
 /// `console.log` some value with a label, and return the value
 /// As this function performs side effects outside the `Task` type, it won't be available on production development
 /// ```kestrel
-/// let x = Debug.log("my number", 42)
+/// let x = Debug.log(42, "my number")
 /// // this logs `my number: 42`
 /// // and returns `42`
 /// ```
-extern pub let log: Fn(String, a) -> a
+extern pub let log: Fn(a, String) -> a
