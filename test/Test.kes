@@ -62,12 +62,6 @@ let test_recap = fn passed_count, failed_count, duration {
   recap_msg ++ "\n\n" ++ duration_msg ++ "\n" ++ passed_msg ++ "\n" ++ failed_msg
 }
 
-let sum_counts = fn x, y {
-  match (x, y) {
-    ((pass_x, fail_x), (pass_y, fail_y)) => (pass_x + pass_y, fail_x + fail_y),
-  }
-}
-
 extern let unwrap_panic: Fn(Fn() -> a) -> Result<a, String>
 
 let run_assertion = fn to_exp {
@@ -87,7 +81,7 @@ let collect_tests = fn suite, descr_stack {
           acc ++ "↓ " ++ x ++ "\n"
         });
         let failure_msg = col_bright_red("✗ " ++ descr ++ "\n");
-        let#await _unit = IO.println(
+        let#await Unit = IO.println(
           dim(stack_msg) ++ failure_msg ++ failure_desc ++ "\n\n",
         );
         Task.of((0, 1))
@@ -96,9 +90,9 @@ let collect_tests = fn suite, descr_stack {
     Concat(tests) => match tests {
       Nil => Task.of((0, 0)),
       hd :: tl => {
-        let#await hd_counts = collect_tests(hd, descr_stack);
-        let#await tl_counts = collect_tests(Concat(tl), descr_stack);
-        Task.of(sum_counts(hd_counts, tl_counts))
+        let#await (hd_x, hd_y) = collect_tests(hd, descr_stack);
+        let#await (tl_x, tl_y) = collect_tests(Concat(tl), descr_stack);
+        Task.of((hd_x + tl_x, hd_y + tl_y))
       },
     },
   }
@@ -110,16 +104,13 @@ pub let run = fn test {
   let#await start_time = Time.now;
   let#await results = collect_tests(test, []);
   let#await end_time = Time.now;
-  match results {
-    (passed_count, failed_count) => {
-      let#await _unit = IO.println(
-        test_recap(passed_count, failed_count, end_time - start_time),
-      );
-      if failed_count == 0 {
-        Task.of(Unit)
-      } else {
-        IO.exit(1)
-      }
-    },
+  let (passed_count, failed_count) = results;
+  let#await Unit = IO.println(
+    test_recap(passed_count, failed_count, end_time - start_time),
+  );
+  if failed_count == 0 {
+    Task.of(Unit)
+  } else {
+    IO.exit(1)
   }
 }

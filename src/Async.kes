@@ -4,7 +4,7 @@ import List
 import MVar
 import Result.{Result(..)}
 import Task.{await}
-import Tuple
+import Tuple.{Unit(..)}
 
 type Position {
   First,
@@ -42,10 +42,8 @@ pub let both = fn t1, t2 {
 /// Like [both](#both), but for more than two tasks
 pub let all = fn tasks {
   List.reduce(tasks, Task.of([]), fn acc, t {
-    let#await pair = Async.both(acc, t);
-    match pair {
-      (acc, t) => Task.of(t :: acc),
-    }
+    let#await (acc, t) = Async.both(acc, t);
+    Task.of(t :: acc)
   })
 }
 
@@ -70,11 +68,11 @@ pub let both_ok = fn t1, t2 {
     let#await either = MVar.take(mvar);
     match either {
       Left(Err(err)) => {
-        let#await _unit = Task.kill(right_id);
+        let#await Unit = Task.kill(right_id);
         Task.of(Err(err))
       },
       Right(Err(err)) => {
-        let#await _unit = Task.kill(left_id);
+        let#await Unit = Task.kill(left_id);
         Task.of(Err(err))
       },
       Left(Ok(value)) => Task.of(Ok(Left(value))),
@@ -121,16 +119,12 @@ let race_2 = fn t1, t2 {
   };
   let#await id1 = fork_task(t1, First);
   let#await id2 = fork_task(t2, Second);
-  let#await res = MVar.take(mvar);
-  match res {
-    (res, position) => {
-      let#await _unit = Task.kill(match position {
-        First => id2,
-        Second => id1,
-      });
-      Task.of(res)
-    },
-  }
+  let#await (res, position) = MVar.take(mvar);
+  let#await Unit = Task.kill(match position {
+    First => id2,
+    Second => id1,
+  });
+  Task.of(res)
 }
 
 /// Run the tasks concurrently and yield the value of the first `Task` to complete.

@@ -84,6 +84,6 @@ pub let discard = fn t {
 }
 
 pub let forever = fn t {
-  let#await _unit = t;
+  let#await Unit = t;
   forever(t)
 }

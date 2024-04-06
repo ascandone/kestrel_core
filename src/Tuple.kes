@@ -22,16 +22,12 @@ pub(..) type Tuple2<a, b> {
   Tuple2(a, b),
 }
 
-pub let first = fn tuple2 {
-  match tuple2 {
-    (x, _) => x,
-  }
+pub let first = fn (x, _) {
+  x
 }
 
-pub let second = fn tuple2 {
-  match tuple2 {
-    (_, x) => x,
-  }
+pub let second = fn (_, x) {
+  x
 }
 
 /// A tuple containing 3 values

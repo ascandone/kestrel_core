@@ -1,5 +1,5 @@
 import Task.{Task, await}
-import Tuple.{Unit}
+import Tuple.{Unit(..)}
 
 /// A `MVar` is a synchronization primitives, useful for communicating from different forked tasks.
 /// Represents a mutable cell that can either be empty or filled with a value of type `a`.
@@ -25,7 +25,7 @@ extern pub let take: Fn(MVar<a>) -> Task<a>
 /// Create a `MVar` filled with the given value.
 pub let of = fn a {
   let#await mvar = empty;
-  let#await _unit = put(mvar, a);
+  let#await Unit = put(mvar, a);
   Task.of(mvar)
 }
 
@@ -33,7 +33,7 @@ pub let update_returning = fn mvar, f {
   let#await value = take(mvar);
   match f(value) {
     (returning, new_value) => {
-      let#await _unit = put(mvar, new_value);
+      let#await Unit = put(mvar, new_value);
       Task.of(returning)
     },
   }
