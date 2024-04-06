@@ -34,6 +34,14 @@ pub let map = fn task, f {
   })
 }
 
+/// If task is a `Result`, map error value.
+/// Equivalent of composing `Task.map` and `Result.map_err`
+pub let map_err = fn task, f {
+  map(task, fn e {
+    Result.map_err(e, f)
+  })
+}
+
 /// Pause the execution for the given number of milliseconds
 extern pub let sleep: Fn(Int) -> Task<Unit>
 
