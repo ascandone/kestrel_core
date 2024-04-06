@@ -157,6 +157,13 @@ pub let zip = fn lst1, lst2 {
   }
 }
 
+/// Reverse a list.
+pub let reverse = fn lst {
+  List.reduce(lst, [], fn acc, x {
+    x :: acc
+  })
+}
+
 /// This function is meant to be used with `let#` syntax
 /// ```kestrel
 /// {

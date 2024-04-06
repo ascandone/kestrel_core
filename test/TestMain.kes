@@ -305,6 +305,16 @@ let list_tests = Test.describe("List", [
       |> Expect.equal([(0, "a"), (1, "b")])
     }),
   ]),
+  Test.describe("List.reverse", [
+    Test.test("on the empty list", fn {
+      List.reverse([])
+      |> Expect.equal([])
+    }),
+    Test.test("on a non empty list", fn {
+      List.reverse([1, 2, 3])
+      |> Expect.equal([3, 2, 1])
+    }),
+  ]),
   Test.describe("List comprehnsion", [
     Test.test("flat_map + guard", fn {
       let comprehension = {
