@@ -36,7 +36,8 @@ extern pub let (!): Fn(Bool) -> Bool
 
 /// Perform structural equality between values.
 /// 
-/// Equality is only supported for values of type:
+/// Requires values to implement the `Eq` trait, therefore
+/// equality is only supported for values of type:
 /// * `Int`
 /// * `Float`
 /// * `Char`
@@ -45,16 +46,16 @@ extern pub let (!): Fn(Bool) -> Bool
 /// This mean that equality is supported, for example, for values of type `List<(String, Char)>`
 /// 
 /// Equality between all the other values (for example functions or internal opaque types)
-/// has an undefined behaviour
-extern pub let (==): Fn(a, a) -> Bool
+/// is forbidden by the type system
+extern pub let (==): Fn(a, a) -> Bool where a: Eq
 
 /// Same as `==`, but with negation
-extern pub let (!=): Fn(a, a) -> Bool
+extern pub let (!=): Fn(a, a) -> Bool where a: Eq
 
-extern pub let (>): Fn(a, a) -> Bool
+extern pub let (>): Fn(a, a) -> Bool where a: Ord
 
-extern pub let (>=): Fn(a, a) -> Bool
+extern pub let (>=): Fn(a, a) -> Bool where a: Ord
 
-extern pub let (<): Fn(a, a) -> Bool
+extern pub let (<): Fn(a, a) -> Bool where a: Ord
 
-extern pub let (<=): Fn(a, a) -> Bool
+extern pub let (<=): Fn(a, a) -> Bool where a: Ord

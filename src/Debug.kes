@@ -10,7 +10,7 @@ import String.{String}
 /// ```kestrel
 /// inspect(Just(42)) // => "Just(42)"
 /// ```
-extern pub let inspect: Fn(a) -> String
+extern pub let inspect: Fn(a) -> String where a: Show
 
 /// You can use the `todo` function as a placeholder for future implementation.
 /// This will result in an runtime errors
@@ -23,4 +23,4 @@ extern pub let todo: Fn(String) -> a
 /// // this logs `my number: 42`
 /// // and returns `42`
 /// ```
-extern pub let log: Fn(a, String) -> a
+extern pub let log: Fn(a, String) -> a where a: Show

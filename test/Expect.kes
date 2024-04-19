@@ -27,6 +27,20 @@ pub let equal = fn x, y {
   }
 }
 
+pub let ok = fn result {
+  match result {
+    Ok(_) => Expect.pass,
+    Err(_) => EqFail(Debug.inspect(result), "Ok(_)"),
+  }
+}
+
+pub let err = fn result {
+  match result {
+    Err(_) => Expect.pass,
+    Ok(_) => EqFail(Debug.inspect(result), "Err(_)"),
+  }
+}
+
 /// Converts the expectation to a result.
 /// This function is meant to be used internally
 pub let to_result = fn expectation {
