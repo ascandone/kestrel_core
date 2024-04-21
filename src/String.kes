@@ -21,6 +21,8 @@ extern pub let (++): Fn(String, String) -> String
 /// ```
 extern pub let length: Fn(String) -> Int
 
+extern pub let char_at: Fn(String, Int) -> Option<Char>
+
 extern pub let split: Fn(String, String) -> List<String>
 
 /// Casts a `Char` into a `String`

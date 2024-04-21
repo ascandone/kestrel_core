@@ -6,7 +6,7 @@ import Char
 import Debug
 import Expect
 import Float.{(+.)}
-import Int.{(+), (*)}
+import Int.{(+), (*), (-)}
 import List
 import Option.{Option(..)}
 import Result.{Result(..)}
@@ -167,6 +167,20 @@ let string_tests = Test.describe("String", [
     Test.test("of a non-empty string", fn {
       String.length("abc")
       |> Expect.equal(3)
+    }),
+  ]),
+  Test.describe("char_at", [
+    Test.test("is None when index is higher than string's lenght", fn {
+      String.char_at("abc", 3)
+      |> Expect.equal(None)
+    }),
+    Test.test("is None when index is lower than 0", fn {
+      String.char_at("abc", 0 - 1)
+      |> Expect.equal(None)
+    }),
+    Test.test("returns the char otherwise", fn {
+      String.char_at("abc", 1)
+      |> Expect.equal(Some('b'))
     }),
   ]),
   Test.describe("parse_int", [

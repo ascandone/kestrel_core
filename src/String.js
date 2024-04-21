@@ -6,6 +6,15 @@ function String$length(s) {
   return s.length;
 }
 
+function String$char_at(str, index) {
+  const ch = str[index];
+  if (ch === undefined) {
+    return Option$None;
+  }
+
+  return { $: "Some", a0: new String(ch) };
+}
+
 function String$parse_int(str) {
   // Copied from https://github.com/elm/core/blob/84f38891468e8e153fc85a9b63bdafd81b24664e/src/Elm/Kernel/String.js#L278
   // I haven't got the faintest idea what this code does
