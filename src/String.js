@@ -41,6 +41,13 @@ function String$split(src, splitWith) {
   return str.reduceRight((acc, str) => List$Cons(str, acc), List$Nil);
 }
 
+function String$to_list(str) {
+  return [...str].reduceRight(
+    (acc, ch) => List$Cons(new String(ch), acc),
+    List$Nil
+  );
+}
+
 function String$cons(ch, str) {
   return ch + str;
 }
