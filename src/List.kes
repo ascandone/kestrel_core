@@ -1,4 +1,4 @@
-import Bool.{Bool(..), (>=), (<=)}
+import Bool.{Bool(..), (>=), (<=), (==)}
 import Int.{(+), (-)}
 import Option.{Option(..)}
 import Tuple.{Tuple2(..), Unit(..)}
@@ -178,5 +178,18 @@ pub let guard = fn pred, body {
     body(Unit)
   } else {
     []
+  }
+}
+
+/// Returns True wheter a list contains the given value.
+/// `==` is used to match the item
+pub let includes = fn lst, x {
+  match lst {
+    Nil => False,
+    hd :: tl => if hd == x {
+      True
+    } else {
+      includes(tl, x)
+    },
   }
 }

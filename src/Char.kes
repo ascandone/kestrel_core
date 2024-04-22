@@ -13,18 +13,19 @@ extern pub let from_code: Fn(Int) -> Char
 
 pub let is_lower = fn ch {
   let code = to_code(ch);
-  let l = 97 <= code;
-  let r = code <= 122;
-  l && r
+  97 <= code && code <= 122
 }
 
 pub let is_upper = fn ch {
   let code = to_code(ch);
-  let l = code <= 90;
-  let r = 65 <= code;
-  l && r
+  code <= 90 && 65 <= code
 }
 
 pub let is_alpha = fn ch {
   is_lower(ch) || is_upper(ch)
+}
+
+pub let is_digit = fn ch {
+  let code = to_code(ch);
+  code <= 57 && 48 <= code
 }
