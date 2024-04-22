@@ -1,4 +1,4 @@
-import Bool.{(<=), (&&)}
+import Bool.{(<=), (&&), (||)}
 import Int.{Int}
 
 /// A single `unicode` character.
@@ -23,4 +23,8 @@ pub let is_upper = fn ch {
   let l = code <= 90;
   let r = 65 <= code;
   l && r
+}
+
+pub let is_alpha = fn ch {
+  is_lower(ch) || is_upper(ch)
 }

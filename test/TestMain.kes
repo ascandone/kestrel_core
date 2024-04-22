@@ -184,6 +184,18 @@ let char_tests = Test.describe("Char", [
       |> Expect.equal(True)
     }),
   ]),
+  Test.describe("is_alpha", [
+    Test.test("returns False on nums", fn {
+      '2'
+      |> Char.is_alpha()
+      |> Expect.equal(False)
+    }),
+    Test.test("returns True on letters", fn {
+      'x'
+      |> Char.is_alpha()
+      |> Expect.equal(True)
+    }),
+  ]),
 ])
 
 let string_tests = Test.describe("String", [
