@@ -27,6 +27,8 @@ extern pub let split: Fn(String, String) -> List<String>
 
 extern pub let to_list: Fn(String) -> List<Char>
 
+extern pub let from_list: Fn(List<Char>) -> String
+
 /// Casts a `Char` into a `String`
 extern pub let from_char: Fn(Char) -> String
 

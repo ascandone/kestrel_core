@@ -255,6 +255,18 @@ let string_tests = Test.describe("String", [
       |> Expect.equal(['a', 'b', 'c'])
     }),
   ]),
+  Test.describe("from_list", [
+    Test.test("returns an empty string from the empty list", fn {
+      []
+      |> String.from_list()
+      |> Expect.equal("")
+    }),
+    Test.test("returns a non empty str", fn {
+      ['a', 'b', 'c']
+      |> String.from_list()
+      |> Expect.equal("abc")
+    }),
+  ]),
   Test.describe("from_char", [
     Test.test("returns a string", fn {
       'a'

@@ -48,6 +48,15 @@ function String$to_list(str) {
   );
 }
 
+function String$from_list(lst) {
+  let buf = [];
+  while (lst !== List$Nil) {
+    buf.push(lst.a0);
+    lst = lst.a1;
+  }
+  return buf.join("");
+}
+
 function String$cons(ch, str) {
   return ch + str;
 }
