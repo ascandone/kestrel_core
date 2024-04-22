@@ -1,3 +1,4 @@
+import Bool.{(<=), (&&)}
 import Int.{Int}
 
 /// A single `unicode` character.
@@ -9,3 +10,17 @@ extern pub type Char
 extern pub let to_code: Fn(Char) -> Int
 
 extern pub let from_code: Fn(Int) -> Char
+
+pub let is_lower = fn ch {
+  let code = to_code(ch);
+  let l = 97 <= code;
+  let r = code <= 122;
+  l && r
+}
+
+pub let is_upper = fn ch {
+  let code = to_code(ch);
+  let l = code <= 90;
+  let r = 65 <= code;
+  l && r
+}

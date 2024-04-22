@@ -160,6 +160,30 @@ let char_tests = Test.describe("Char", [
       |> Expect.equal(97)
     }),
   ]),
+  Test.describe("is_lower", [
+    Test.test("returns True on lowercase chars", fn {
+      'x'
+      |> Char.is_lower()
+      |> Expect.equal(True)
+    }),
+    Test.test("returns False on uppercase chars", fn {
+      'X'
+      |> Char.is_lower()
+      |> Expect.equal(False)
+    }),
+  ]),
+  Test.describe("is_upper", [
+    Test.test("returns False on lowercase chars", fn {
+      'x'
+      |> Char.is_upper()
+      |> Expect.equal(False)
+    }),
+    Test.test("returns True on uppercase chars", fn {
+      'X'
+      |> Char.is_upper()
+      |> Expect.equal(True)
+    }),
+  ]),
 ])
 
 let string_tests = Test.describe("String", [
