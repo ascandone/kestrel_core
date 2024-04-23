@@ -7,10 +7,10 @@ commander@^11.1.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
   integrity sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
 
-kestrel-lang@0.0.24:
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/kestrel-lang/-/kestrel-lang-0.0.24.tgz#719bd3d092f5f58595e35a01dd0001cbf5ab8e72"
-  integrity sha512-it4PoRG4EaFoWBmagEhjdKkLz/0nEAxYyZQwriclO95pt0kUtmDoVmyyQbCqbXfsFUp/BAlVj4nAAb1+EvyUWw==
+kestrel-lang@0.0.26:
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/kestrel-lang/-/kestrel-lang-0.0.26.tgz#6ff1a7249d4b38c32f07b3a888b04f7832943fe2"
+  integrity sha512-ecI4QCNQR6vg36bACrOrcH2JiVKSf/wDydUXLTbWVhf+HMWgzgI3+mKcSMY9h0KNFIvdYlBhFN1l7Jc0ffMhrQ==
   dependencies:
     commander "^11.1.0"
     ohm-js "^17.1.0"
