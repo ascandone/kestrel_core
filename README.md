@@ -4,7 +4,7 @@
 
 Standard library for [Kestrel lang](https://github.com/ascandone/kestrel-lang).
 
-This module will be needed by every Kestrel module, which will implicitly have the following imports:
+This package will be needed by every Kestrel module, which will implicitly have the following imports:
 
 ```gleam
 import Int.{(+), (-), (*), (/), (^), (%)}
