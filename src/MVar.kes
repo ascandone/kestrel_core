@@ -31,10 +31,7 @@ pub let of = fn a {
 
 pub let update_returning = fn mvar, f {
   let#await value = take(mvar);
-  match f(value) {
-    (returning, new_value) => {
-      let#await Unit = put(mvar, new_value);
-      Task.of(returning)
-    },
-  }
+  let (returning, new_value) = f(value);
+  let#await Unit = put(mvar, new_value);
+  Task.of(returning)
 }
