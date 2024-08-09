@@ -12,7 +12,7 @@ function String$char_at(str, index) {
     return Option$None;
   }
 
-  return { $: "Some", a0: new String(ch) };
+  return { $: "Some", a0: ch };
 }
 
 function String$parse_int(str) {
@@ -42,10 +42,7 @@ function String$split(src, splitWith) {
 }
 
 function String$to_list(str) {
-  return [...str].reduceRight(
-    (acc, ch) => List$Cons(new String(ch), acc),
-    List$Nil
-  );
+  return [...str].reduceRight((acc, ch) => List$Cons(ch, acc), List$Nil);
 }
 
 function String$from_list(lst) {

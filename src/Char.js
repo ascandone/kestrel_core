@@ -1,5 +1,5 @@
 function Char$from_code(code) {
-  return new String(String.fromCharCode(code));
+  return String.fromCharCode(code);
 }
 
 function Char$to_code(ch) {

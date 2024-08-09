@@ -36,6 +36,11 @@ let debug_tests = Test.describe("Debug", [
       |> Debug.inspect()
       |> Expect.equal("42.2")
     }),
+    Test.test("inspect float with trailing zero", fn {
+      42.0
+      |> Debug.inspect()
+      |> Expect.equal("42.0")
+    }),
     Test.test("inspect Tuple2", fn {
       (0, 42)
       |> Debug.inspect()

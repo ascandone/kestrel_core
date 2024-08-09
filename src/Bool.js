@@ -1,28 +1,8 @@
-function Bool$_eq(x, y) {
-  if (x === y) {
-    return true;
-  }
+const Eq_Int$Int = (x, y) => x === y;
+const Eq_Float$Float = (x, y) => x === y;
+const Eq_String$String = (x, y) => x === y;
+const Eq_Char$Char = (x, y) => x === y;
 
-  if (x instanceof String) {
-    return x.toString() === y.toString();
-  }
+const Eq_Bool$Bool = (x, y) => x === y;
 
-  if (
-    typeof x === "boolean" ||
-    typeof x === "number" ||
-    typeof x === "string" ||
-    typeof x === "undefined" ||
-    typeof x === "function" ||
-    x.$ === undefined
-  ) {
-    return false;
-  }
-
-  for (prop in x) {
-    if (!Bool$_eq(x[prop], y[prop])) {
-      return false;
-    }
-  }
-
-  return true;
-}
+const Bool$_eq = (Eq) => (x, y) => Eq(x, y);

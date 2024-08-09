@@ -41,6 +41,7 @@ extern pub let (!): Fn(Bool) -> Bool
 /// * `Int`
 /// * `Float`
 /// * `Char`
+/// * `String`
 /// * Union types whose constructors arguments support equality
 /// 
 /// This mean that equality is supported, for example, for values of type `List<(String, Char)>`
