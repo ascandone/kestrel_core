@@ -6,13 +6,19 @@ import Char
 import Debug
 import Expect
 import Float.{(+.)}
-import Int.{(+), (*), (-)}
-import List
+import Int.{(+), (*), (-), Int}
+import List.{List}
 import Option.{Option(..)}
 import Result.{Result(..)}
 import String
 import Test
-import Tuple
+import Tuple.{Unit(..)}
+
+let int_none: Option<Int> = None
+
+let empty_int_list: List<Int> = []
+
+let showable_err: Result<_, Int> = Ok(Some(42))
 
 let debug_tests = Test.describe("Debug", [
   Test.describe("inspect", [
@@ -47,7 +53,7 @@ let debug_tests = Test.describe("Debug", [
       |> Expect.equal("(0, 42)")
     }),
     Test.test("inspect Nil", fn {
-      []
+      empty_int_list
       |> Debug.inspect()
       |> Expect.equal("[]")
     }),
@@ -62,7 +68,7 @@ let debug_tests = Test.describe("Debug", [
       |> Expect.equal("Some(True)")
     }),
     Test.test("inspect singleton", fn {
-      None
+      int_none
       |> Debug.inspect()
       |> Expect.equal("None")
     }),
@@ -140,7 +146,7 @@ let bool_tests = Test.describe("Bool", [
       |> Expect.equal(False)
     }),
     Test.test("of nested types that are equal", fn {
-      Ok(Some(42)) == Ok(Some(42))
+      showable_err == showable_err
       |> Expect.equal(True)
     }),
     Test.test("of different variants", fn {
@@ -328,7 +334,7 @@ let list_tests = Test.describe("List", [
   ]),
   Test.describe("List.find", [
     Test.test("on an empty list", fn {
-      List.find([], fn _ {
+      List.find(empty_int_list, fn _ {
         False
       })
       |> Expect.equal(None)
@@ -374,8 +380,8 @@ let list_tests = Test.describe("List", [
   ]),
   Test.describe("List.reverse", [
     Test.test("on the empty list", fn {
-      List.reverse([])
-      |> Expect.equal([])
+      List.reverse(empty_int_list)
+      |> Expect.equal(empty_int_list)
     }),
     Test.test("on a non empty list", fn {
       List.reverse([1, 2, 3])
