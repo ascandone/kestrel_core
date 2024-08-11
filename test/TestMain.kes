@@ -10,7 +10,7 @@ import Int.{(+), (*), (-), Int}
 import List.{List}
 import Option.{Option(..)}
 import Result.{Result(..)}
-import String
+import String.{String}
 import Test
 import Tuple.{Unit(..)}
 
@@ -401,6 +401,39 @@ let list_tests = Test.describe("List", [
   ]),
 ])
 
+type Person struct {
+  name: String,
+  age: Int,
+}
+
+type Dog struct {
+  name: String,
+  age: Int,
+}
+
+let struct_tests = Test.describe("structs", [
+  Test.test("read field", fn {
+    let p = Person {
+      name: "hello",
+      age: 42,
+    };
+    p.name
+    |> Expect.equal("hello")
+  }),
+  Test.test("update struct", fn {
+    let p1 = Person {
+      name: "hello",
+      age: 42,
+    };
+    let p2 = Person {
+      age: p1.age + 1,
+      ..p1
+    };
+    p2.age
+    |> Expect.equal(43)
+  }),
+])
+
 pub let main = {
   [
     debug_tests,
@@ -411,6 +444,7 @@ pub let main = {
     string_tests,
     option_tests,
     list_tests,
+    struct_tests,
   ]
   |> Test.concat()
   |> Test.run()
