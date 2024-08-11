@@ -28,16 +28,16 @@ extern pub let never: Task<a>
 /// ```
 extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
 
-pub let map = fn task, f {
-  await(task, fn x {
+pub let map = |task, f| {
+  await(task, |x| {
     of(f(x))
   })
 }
 
 /// If task is a `Result`, map error value.
 /// Equivalent of composing `Task.map` and `Result.map_err`
-pub let map_err = fn task, f {
-  map(task, fn e {
+pub let map_err = |task, f| {
+  map(task, |e| {
     Result.map_err(e, f)
   })
 }
@@ -72,8 +72,8 @@ extern pub let fork: Fn(Task<Unit>) -> Task<Id>
 /// Killing a terminated computation is a noop.
 extern pub let kill: Fn(Id) -> Task<Unit>
 
-pub let await_ok = fn async_res, f {
-  await(async_res, fn err {
+pub let await_ok = |async_res, f| {
+  await(async_res, |err| {
     match err {
       Ok(x) => f(x),
       Err(e) => of(Err(e)),
@@ -85,13 +85,13 @@ pub let await_ok = fn async_res, f {
 /// Same as `Task.of(Unit)`.
 pub let none = of(Unit)
 
-pub let discard = fn t {
-  Task.map(t, fn _ {
+pub let discard = |t| {
+  Task.map(t, |_| {
     Unit
   })
 }
 
-pub let forever = fn t {
+pub let forever = |t| {
   let#await Unit = t;
   forever(t)
 }

@@ -22,11 +22,11 @@ pub(..) type Tuple2<a, b> {
   Tuple2(a, b),
 }
 
-pub let first = fn (x, _) {
+pub let first = |(x, _)| {
   x
 }
 
-pub let second = fn (_, x) {
+pub let second = |(_, x)| {
   x
 }
 

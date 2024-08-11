@@ -14,7 +14,7 @@ extern pub let put: Fn(MVar<a>, a) -> Task<Unit>
 
 /// Non-blocking version of `put`.
 /// Equivalent to wrapping a `put` inside a `Task.fork`
-pub let put_async = fn mvar, value {
+pub let put_async = |mvar, value| {
   Task.fork(put(mvar, value))
 }
 
@@ -23,13 +23,13 @@ pub let put_async = fn mvar, value {
 extern pub let take: Fn(MVar<a>) -> Task<a>
 
 /// Create a `MVar` filled with the given value.
-pub let of = fn a {
+pub let of = |a| {
   let#await mvar = empty;
   let#await Unit = put(mvar, a);
   Task.of(mvar)
 }
 
-pub let update_returning = fn mvar, f {
+pub let update_returning = |mvar, f| {
   let#await value = take(mvar);
   let (returning, new_value) = f(value);
   let#await Unit = put(mvar, new_value);

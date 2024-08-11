@@ -11,21 +11,21 @@ extern pub let to_code: Fn(Char) -> Int
 
 extern pub let from_code: Fn(Int) -> Char
 
-pub let is_lower = fn ch {
+pub let is_lower = |ch| {
   let code = to_code(ch);
   97 <= code && code <= 122
 }
 
-pub let is_upper = fn ch {
+pub let is_upper = |ch| {
   let code = to_code(ch);
   code <= 90 && 65 <= code
 }
 
-pub let is_alpha = fn ch {
+pub let is_alpha = |ch| {
   is_lower(ch) || is_upper(ch)
 }
 
-pub let is_digit = fn ch {
+pub let is_digit = |ch| {
   let code = to_code(ch);
   code <= 57 && 48 <= code
 }

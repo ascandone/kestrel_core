@@ -10,7 +10,7 @@ pub(..) type Result<a, err> {
 /// map(Ok(42), fn x { x + 1 }) // => Ok(43)
 /// map(Err("err"), fn x { x + 1 }) // => Err("err")
 /// ```
-pub let map = fn r, f {
+pub let map = |r, f| {
   match r {
     Ok(x) => Ok(f(x)),
     Err(err) => Err(err),
@@ -18,7 +18,7 @@ pub let map = fn r, f {
 }
 
 /// Like [`Result.map`](#map), but applies to the `Err` value
-pub let map_err = fn r, f {
+pub let map_err = |r, f| {
   match r {
     Ok(x) => Ok(x),
     Err(err) => Err(f(err)),
@@ -34,7 +34,7 @@ pub let map_err = fn r, f {
 /// and_then(Ok(42), fn x { Err("err") }) // => Err("err")
 /// and_then(Ok(42), fn x { Ok(x + 1) }) // => Ok(43)
 /// ```
-pub let and_then = fn r, f {
+pub let and_then = |r, f| {
   match r {
     Ok(x) => f(x),
     Err(err) => Err(err),

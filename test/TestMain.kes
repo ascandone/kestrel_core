@@ -22,62 +22,62 @@ let showable_err: Result<_, Int> = Ok(Some(42))
 
 let debug_tests = Test.describe("Debug", [
   Test.describe("inspect", [
-    Test.test("inspect True", fn {
+    Test.test("inspect True", || {
       True
       |> Debug.inspect()
       |> Expect.equal("True")
     }),
-    Test.test("inspect False", fn {
+    Test.test("inspect False", || {
       False
       |> Debug.inspect()
       |> Expect.equal("False")
     }),
-    Test.test("inspect int", fn {
+    Test.test("inspect int", || {
       42
       |> Debug.inspect()
       |> Expect.equal("42")
     }),
-    Test.test("inspect float", fn {
+    Test.test("inspect float", || {
       42.2
       |> Debug.inspect()
       |> Expect.equal("42.2")
     }),
-    Test.test("inspect float with trailing zero", fn {
+    Test.test("inspect float with trailing zero", || {
       42.0
       |> Debug.inspect()
       |> Expect.equal("42.0")
     }),
-    Test.test("inspect Tuple2", fn {
+    Test.test("inspect Tuple2", || {
       (0, 42)
       |> Debug.inspect()
       |> Expect.equal("(0, 42)")
     }),
-    Test.test("inspect Nil", fn {
+    Test.test("inspect Nil", || {
       empty_int_list
       |> Debug.inspect()
       |> Expect.equal("[]")
     }),
-    Test.test("inspect Cons list", fn {
+    Test.test("inspect Cons list", || {
       [1, 2, 3]
       |> Debug.inspect()
       |> Expect.equal("[1, 2, 3]")
     }),
-    Test.test("inspect boxed value", fn {
+    Test.test("inspect boxed value", || {
       Some(True)
       |> Debug.inspect()
       |> Expect.equal("Some(True)")
     }),
-    Test.test("inspect singleton", fn {
+    Test.test("inspect singleton", || {
       int_none
       |> Debug.inspect()
       |> Expect.equal("None")
     }),
-    Test.test("inspect strings", fn {
+    Test.test("inspect strings", || {
       "abc"
       |> Debug.inspect()
       |> Expect.equal("\"abc\"")
     }),
-    Test.test("inspect chars", fn {
+    Test.test("inspect chars", || {
       Char.from_code(97)
       |> Debug.inspect()
       |> Expect.equal("\'a\'")
@@ -86,14 +86,14 @@ let debug_tests = Test.describe("Debug", [
 ])
 
 let int_tests = Test.describe("Int", [
-  Test.test("+ of ints", fn {
+  Test.test("+ of ints", || {
     1 + 2
     |> Expect.equal(3)
   }),
 ])
 
 let float_tests = Test.describe("Float", [
-  Test.test("+. of floats", fn {
+  Test.test("+. of floats", || {
     1.1 +. 2.1
     |> Expect.equal(3.2)
   }),
@@ -101,55 +101,55 @@ let float_tests = Test.describe("Float", [
 
 let bool_tests = Test.describe("Bool", [
   Test.describe("Logic &&", [
-    Test.test("True && False", fn {
+    Test.test("True && False", || {
       True && True
       |> Expect.equal(True)
     }),
-    Test.test("True && False", fn {
+    Test.test("True && False", || {
       True && False
       |> Expect.equal(False)
     }),
   ]),
   Test.describe("Logic ||", [
-    Test.test("True || False", fn {
+    Test.test("True || False", || {
       True || True
       |> Expect.equal(True)
     }),
-    Test.test("True || False", fn {
+    Test.test("True || False", || {
       True || False
       |> Expect.equal(True)
     }),
   ]),
   Test.describe("structural equality", [
-    Test.test("of strings that are equal", fn {
+    Test.test("of strings that are equal", || {
       Some("ab") == Some("ab")
       |> Expect.equal(True)
     }),
-    Test.test("of strings that are not equal", fn {
+    Test.test("of strings that are not equal", || {
       Some("ab") == Some("abc")
       |> Expect.equal(False)
     }),
-    Test.test("of chars that are equal", fn {
+    Test.test("of chars that are equal", || {
       Some('a') == Some('a')
       |> Expect.equal(True)
     }),
-    Test.test("of chars that are not equal", fn {
+    Test.test("of chars that are not equal", || {
       Some('a') == Some('b')
       |> Expect.equal(False)
     }),
-    Test.test("of boxed type that are equal", fn {
+    Test.test("of boxed type that are equal", || {
       Some(42) == Some(42)
       |> Expect.equal(True)
     }),
-    Test.test("of boxed type that are not equal", fn {
+    Test.test("of boxed type that are not equal", || {
       Some(42) == Some(100)
       |> Expect.equal(False)
     }),
-    Test.test("of nested types that are equal", fn {
+    Test.test("of nested types that are equal", || {
       showable_err == showable_err
       |> Expect.equal(True)
     }),
-    Test.test("of different variants", fn {
+    Test.test("of different variants", || {
       Some(42) == None
       |> Expect.equal(False)
     }),
@@ -158,7 +158,7 @@ let bool_tests = Test.describe("Bool", [
 
 let char_tests = Test.describe("Char", [
   Test.describe("from_code", [
-    Test.test("of alpha char", fn {
+    Test.test("of alpha char", || {
       let code = 123;
       Char.from_code(code)
       |> Char.to_code()
@@ -166,42 +166,42 @@ let char_tests = Test.describe("Char", [
     }),
   ]),
   Test.describe("to_code", [
-    Test.test("of alpha char", fn {
+    Test.test("of alpha char", || {
       Char.to_code('a')
       |> Expect.equal(97)
     }),
   ]),
   Test.describe("is_lower", [
-    Test.test("returns True on lowercase chars", fn {
+    Test.test("returns True on lowercase chars", || {
       'x'
       |> Char.is_lower()
       |> Expect.equal(True)
     }),
-    Test.test("returns False on uppercase chars", fn {
+    Test.test("returns False on uppercase chars", || {
       'X'
       |> Char.is_lower()
       |> Expect.equal(False)
     }),
   ]),
   Test.describe("is_upper", [
-    Test.test("returns False on lowercase chars", fn {
+    Test.test("returns False on lowercase chars", || {
       'x'
       |> Char.is_upper()
       |> Expect.equal(False)
     }),
-    Test.test("returns True on uppercase chars", fn {
+    Test.test("returns True on uppercase chars", || {
       'X'
       |> Char.is_upper()
       |> Expect.equal(True)
     }),
   ]),
   Test.describe("is_alpha", [
-    Test.test("returns False on nums", fn {
+    Test.test("returns False on nums", || {
       '2'
       |> Char.is_alpha()
       |> Expect.equal(False)
     }),
-    Test.test("returns True on letters", fn {
+    Test.test("returns True on letters", || {
       'x'
       |> Char.is_alpha()
       |> Expect.equal(True)
@@ -211,75 +211,75 @@ let char_tests = Test.describe("Char", [
 
 let string_tests = Test.describe("String", [
   Test.describe("length", [
-    Test.test("of a non-empty string", fn {
+    Test.test("of a non-empty string", || {
       String.length("abc")
       |> Expect.equal(3)
     }),
   ]),
   Test.describe("char_at", [
-    Test.test("is None when index is higher than string's lenght", fn {
+    Test.test("is None when index is higher than string's lenght", || {
       String.char_at("abc", 3)
       |> Expect.equal(None)
     }),
-    Test.test("is None when index is lower than 0", fn {
+    Test.test("is None when index is lower than 0", || {
       String.char_at("abc", 0 - 1)
       |> Expect.equal(None)
     }),
-    Test.test("returns the char otherwise", fn {
+    Test.test("returns the char otherwise", || {
       String.char_at("abc", 1)
       |> Expect.equal(Some('b'))
     }),
   ]),
   Test.describe("parse_int", [
-    Test.test("when the input is an int", fn {
+    Test.test("when the input is an int", || {
       String.parse_int("42")
       |> Expect.equal(Some(42))
     }),
-    Test.test("when the input is not a number", fn {
+    Test.test("when the input is not a number", || {
       String.parse_int("abc")
       |> Expect.equal(None)
     }),
-    Test.test("when input is a float", fn {
+    Test.test("when input is a float", || {
       String.parse_int("42.2")
       |> Expect.equal(None)
     }),
   ]),
   Test.describe("split", [
-    Test.test("empty string", fn {
+    Test.test("empty string", || {
       String.split("", "-")
       |> Expect.equal([""])
     }),
-    Test.test("split string", fn {
+    Test.test("split string", || {
       String.split("ab-cde-fg", "-")
       |> Expect.equal(["ab", "cde", "fg"])
     }),
   ]),
   Test.describe("to_list", [
-    Test.test("returns an empty list when string is empty", fn {
+    Test.test("returns an empty list when string is empty", || {
       ""
       |> String.to_list()
       |> Expect.equal([])
     }),
-    Test.test("returns the list of chars when string is not empty", fn {
+    Test.test("returns the list of chars when string is not empty", || {
       "abc"
       |> String.to_list()
       |> Expect.equal(['a', 'b', 'c'])
     }),
   ]),
   Test.describe("from_list", [
-    Test.test("returns an empty string from the empty list", fn {
+    Test.test("returns an empty string from the empty list", || {
       []
       |> String.from_list()
       |> Expect.equal("")
     }),
-    Test.test("returns a non empty str", fn {
+    Test.test("returns a non empty str", || {
       ['a', 'b', 'c']
       |> String.from_list()
       |> Expect.equal("abc")
     }),
   ]),
   Test.describe("from_char", [
-    Test.test("returns a string", fn {
+    Test.test("returns a string", || {
       'a'
       |> String.from_char()
       |> Debug.inspect()
@@ -290,30 +290,30 @@ let string_tests = Test.describe("String", [
 
 let option_tests = Test.describe("Option", [
   Test.describe("map", [
-    Test.test("of Some", fn {
+    Test.test("of Some", || {
       Some(100)
-      |> Option.map(fn x {
+      |> Option.map(|x| {
         x + 1
       })
       |> Expect.equal(Some(101))
     }),
-    Test.test("of None", fn {
+    Test.test("of None", || {
       None
-      |> Option.map(fn x {
+      |> Option.map(|x| {
         x + 1
       })
       |> Expect.equal(None)
     }),
   ]),
   Test.describe("map2", [
-    Test.test("Some and Some", fn {
-      Option.map2(Some(10), Some(20), fn a, b {
+    Test.test("Some and Some", || {
+      Option.map2(Some(10), Some(20), |a, b| {
         a + b
       })
       |> Expect.equal(Some(30))
     }),
-    Test.test("None and Some", fn {
-      Option.map2(None, Some(20), fn a, b {
+    Test.test("None and Some", || {
+      Option.map2(None, Some(20), |a, b| {
         a + b
       })
       |> Expect.equal(None)
@@ -323,73 +323,73 @@ let option_tests = Test.describe("Option", [
 
 let list_tests = Test.describe("List", [
   Test.describe("List.range", [
-    Test.test("empty", fn {
+    Test.test("empty", || {
       List.range(0, 2)
       |> Expect.equal([0, 1])
     }),
-    Test.test("not empty", fn {
+    Test.test("not empty", || {
       List.range(0, 3)
       |> Expect.equal([0, 1, 2])
     }),
   ]),
   Test.describe("List.find", [
-    Test.test("on an empty list", fn {
-      List.find(empty_int_list, fn _ {
+    Test.test("on an empty list", || {
+      List.find(empty_int_list, |_| {
         False
       })
       |> Expect.equal(None)
     }),
-    Test.test("when value is not found", fn {
-      List.find([1, 2, 3], fn _ {
+    Test.test("when value is not found", || {
+      List.find([1, 2, 3], |_| {
         False
       })
       |> Expect.equal(None)
     }),
-    Test.test("when value is found", fn {
-      List.find([1, 2, 3], fn x {
+    Test.test("when value is found", || {
+      List.find([1, 2, 3], |x| {
         x == 2
       })
       |> Expect.equal(Some(2))
     }),
   ]),
   Test.describe("List.map", [
-    Test.test("empty", fn {
-      List.map([0, 1, 2], fn x {
+    Test.test("empty", || {
+      List.map([0, 1, 2], |x| {
         x * 10
       })
       |> Expect.equal([0, 10, 20])
     }),
-    Test.test("not empty", fn {
+    Test.test("not empty", || {
       List.range(0, 3)
       |> Expect.equal([0, 1, 2])
     }),
   ]),
   Test.describe("List.zip", [
-    Test.test("when the first list is shorter, truncate the second", fn {
+    Test.test("when the first list is shorter, truncate the second", || {
       List.zip([0, 1], ["a", "b", "c", "d"])
       |> Expect.equal([(0, "a"), (1, "b")])
     }),
-    Test.test("when the second list is shorter, truncate the first", fn {
+    Test.test("when the second list is shorter, truncate the first", || {
       List.zip([0, 1, 2], ["a"])
       |> Expect.equal([(0, "a")])
     }),
-    Test.test("same len", fn {
+    Test.test("same len", || {
       List.zip([0, 1], ["a", "b"])
       |> Expect.equal([(0, "a"), (1, "b")])
     }),
   ]),
   Test.describe("List.reverse", [
-    Test.test("on the empty list", fn {
+    Test.test("on the empty list", || {
       List.reverse(empty_int_list)
       |> Expect.equal(empty_int_list)
     }),
-    Test.test("on a non empty list", fn {
+    Test.test("on a non empty list", || {
       List.reverse([1, 2, 3])
       |> Expect.equal([3, 2, 1])
     }),
   ]),
   Test.describe("List comprehnsion", [
-    Test.test("flat_map + guard", fn {
+    Test.test("flat_map + guard", || {
       let comprehension = {
         let#List.flat_map x = [1, 2];
         let#List.flat_map y = ['a', 'b'];
@@ -412,7 +412,7 @@ type Dog struct {
 }
 
 let struct_tests = Test.describe("structs", [
-  Test.test("read field", fn {
+  Test.test("read field", || {
     let p = Person {
       name: "hello",
       age: 42,
@@ -420,7 +420,7 @@ let struct_tests = Test.describe("structs", [
     p.name
     |> Expect.equal("hello")
   }),
-  Test.test("update struct", fn {
+  Test.test("update struct", || {
     let p1 = Person {
       name: "hello",
       age: 42,

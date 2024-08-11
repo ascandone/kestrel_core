@@ -9,10 +9,10 @@ pub(..) type Option<a> {
 /// Maps the option's value using the given functions
 /// 
 /// ```kestrel
-/// map(None, fn x { x + 1 }) // => None
-/// map(Some(42), fn x { x + 1 }) // => Some(43)
+/// map(None, |x| x + 1 ) // => None
+/// map(Some(42), |x| x + 1) // => Some(43)
 /// ```
-pub let map = fn m, f {
+pub let map = |m, f| {
   match m {
     Some(x) => Some(f(x)),
     None => None,
@@ -23,11 +23,11 @@ pub let map = fn m, f {
 /// 
 /// It holds the property `and_then(x, Some) == x`
 /// ```kestrel
-/// and_then(None, fn x { Some(42) }) // => None
-/// and_then(Some(42), fn x { None }) // => None
-/// and_then(Some(42), fn x { Some(x + 1) }) // => Some(43)
+/// and_then(None, |x| Some(42)) // => None
+/// and_then(Some(42), |x| None) // => None
+/// and_then(Some(42), |x| Some(x + 1)) // => Some(43)
 /// ```
-pub let and_then = fn m, f {
+pub let and_then = |m, f| {
   match m {
     Some(x) => f(x),
     None => None,
@@ -38,19 +38,19 @@ pub let and_then = fn m, f {
 /// given function. Else, returns `None`
 /// 
 /// ```kestrel
-/// map2(None, None, fn a, b { a + b }) // => None
-/// map2(Some(42), None, fn a, b { a + b }) // => None
-/// map2(None, Some(42), fn a, b { a + b }) // => None
-/// map2(Some(1), Some(2), fn a, b { a + b }) // => Some(3)
+/// map2(None, None, |a, b| a + b) // => None
+/// map2(Some(42), None, |a, b| a + b) // => None
+/// map2(None, Some(42), |a, b| a + b) // => None
+/// map2(Some(1), Some(2), |a, b| a + b) // => Some(3)
 /// ```
-pub let map2 = fn m1, m2, f {
+pub let map2 = |m1, m2, f| {
   let#and_then x1 = m1;
   let#and_then x2 = m2;
   Some(f(x1, x2))
 }
 
 /// Like `map2`, but with 3 options
-pub let map3 = fn m1, m2, m3, f {
+pub let map3 = |m1, m2, m3, f| {
   let#and_then x1 = m1;
   let#and_then x2 = m2;
   let#and_then x3 = m3;
@@ -63,7 +63,7 @@ pub let map3 = fn m1, m2, m3, f {
 /// with_default(Some("value"), "default value") // => "value"
 /// with_default(None, "default value") // => "default value"
 /// ```
-pub let with_default = fn m, x {
+pub let with_default = |m, x| {
   match m {
     None => x,
     Some(x) => x,

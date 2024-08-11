@@ -17,19 +17,19 @@ import Tuple.{Unit(..)}
 
 let color_reset_code = "\x1b[39m"
 
-let dim = fn str {
+let dim = |str| {
   "\x1b[2m" ++ str ++ "\x1b[22m"
 }
 
-let col_bright_red = fn str {
+let col_bright_red = |str| {
   "\x1b[91m" ++ str ++ color_reset_code
 }
 
-let col_bright_green = fn str {
+let col_bright_green = |str| {
   "\x1b[92m" ++ str ++ color_reset_code
 }
 
-let underline = fn str {
+let underline = |str| {
   "\x1b[4m" ++ str ++ "\x1b[24m"
 }
 
@@ -46,11 +46,11 @@ pub let test = Test
 pub let concat = Concat
 
 /// Wrap a test within a description
-pub let describe = fn descr, tests {
+pub let describe = |descr, tests| {
   Describe(descr, Concat(tests))
 }
 
-let test_recap = fn passed_count, failed_count, duration {
+let test_recap = |passed_count, failed_count, duration| {
   let recap_msg = if failed_count == 0 {
     underline(col_bright_green("TEST RUN PASSED"))
   } else {
@@ -64,20 +64,20 @@ let test_recap = fn passed_count, failed_count, duration {
 
 extern let unwrap_panic: Fn(Fn() -> a) -> Result<a, String>
 
-let run_assertion = fn to_exp {
+let run_assertion = |to_exp| {
   match unwrap_panic(to_exp) {
     Err(e) => Err("The test threw an exception:\n" ++ e),
     Ok(exp) => Expect.to_result(exp),
   }
 }
 
-let collect_tests = fn suite, descr_stack {
+let collect_tests = |suite, descr_stack| {
   match suite {
     Describe(descr, test) => collect_tests(test, descr :: descr_stack),
     Test(descr, exp) => match run_assertion(exp) {
       Ok(Unit) => Task.of((1, 0)),
       Err(failure_desc) => {
-        let stack_msg = List.reduce_right(descr_stack, "", fn x, acc {
+        let stack_msg = List.reduce_right(descr_stack, "", |x, acc| {
           acc ++ "↓ " ++ x ++ "\n"
         });
         let failure_msg = col_bright_red("✗ " ++ descr ++ "\n");
@@ -100,7 +100,7 @@ let collect_tests = fn suite, descr_stack {
 
 /// Run the tests and print the tests result.
 /// Exits with the appropriate error code depending on the tests outcome
-pub let run = fn test {
+pub let run = |test| {
   let#await start_time = Time.now;
   let#await results = collect_tests(test, []);
   let#await end_time = Time.now;

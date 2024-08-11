@@ -19,7 +19,7 @@ pub let pass = Pass
 pub let fail = Fail
 
 /// Asserts that the given types are structurally equal. It uses `==` under the hood.
-pub let equal = fn x, y {
+pub let equal = |x, y| {
   if x == y {
     Pass
   } else {
@@ -27,14 +27,14 @@ pub let equal = fn x, y {
   }
 }
 
-pub let ok = fn result {
+pub let ok = |result| {
   match result {
     Ok(_) => Expect.pass,
     Err(_) => EqFail(Debug.inspect(result), "Ok(_)"),
   }
 }
 
-pub let err = fn result {
+pub let err = |result| {
   match result {
     Err(_) => Expect.pass,
     Ok(_) => EqFail(Debug.inspect(result), "Err(_)"),
@@ -43,7 +43,7 @@ pub let err = fn result {
 
 /// Converts the expectation to a result.
 /// This function is meant to be used internally
-pub let to_result = fn expectation {
+pub let to_result = |expectation| {
   match expectation {
     Pass => Ok(Unit),
     Fail(reason) => Err(reason),

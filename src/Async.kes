@@ -16,10 +16,10 @@ type Position {
 /// ```kestrel
 /// pub let main = {
 ///   let#await (a, b) = Async.both(
-///     Task.map(Task.sleep(1000), fn _ {
+///     Task.map(Task.sleep(1000), |_| {
 ///       0
 ///     }),
-///     Task.map(Task.sleep(1000), fn _ {
+///     Task.map(Task.sleep(1000), |_| {
 ///       1
 ///     }),
 ///   );
@@ -28,7 +28,7 @@ type Position {
 ///   Task.none
 /// }
 /// ```
-pub let both = fn t1, t2 {
+pub let both = |t1, t2| {
   let#await mvar = MVar.empty;
   let#await _id = Task.fork({
     let#await res = t2;
@@ -40,8 +40,8 @@ pub let both = fn t1, t2 {
 }
 
 /// Like [both](#both), but for more than two tasks
-pub let all = fn tasks {
-  List.reduce(tasks, Task.of([]), fn acc, t {
+pub let all = |tasks| {
+  List.reduce(tasks, Task.of([]), |acc, t| {
     let#await (acc, t) = Async.both(acc, t);
     Task.of(t :: acc)
   })
@@ -54,7 +54,7 @@ type Either<a, b> {
 
 /// Run the two `Task`s concurrently.
 /// Return `Ok` if both `Task`s succeeed, otherwise return `Err` with the first task that fails, and cancel the other.
-pub let both_ok = fn t1, t2 {
+pub let both_ok = |t1, t2| {
   let#await mvar = MVar.empty;
   let#await left_id = Task.fork({
     let#await res = t1;
@@ -99,8 +99,8 @@ pub let both_ok = fn t1, t2 {
 }
 
 /// Like [both_ok](#both_ok), but for more than two tasks
-pub let all_ok = fn tasks {
-  List.reduce(tasks, Task.of(Ok([])), fn acc, t {
+pub let all_ok = |tasks| {
+  List.reduce(tasks, Task.of(Ok([])), |acc, t| {
     let#await pair = Async.both_ok(acc, t);
     match pair {
       Ok((acc, t)) => Task.of(Ok(t :: acc)),
@@ -109,9 +109,9 @@ pub let all_ok = fn tasks {
   })
 }
 
-let race_2 = fn t1, t2 {
+let race_2 = |t1, t2| {
   let#await mvar = MVar.empty;
-  let fork_task = fn t, position {
+  let fork_task = |t, position| {
     Task.fork({
       let#await res = t;
       MVar.put(mvar, (res, position))
@@ -133,10 +133,10 @@ let race_2 = fn t1, t2 {
 /// ```kestrel
 /// pub let main = {
 ///   let#await a = Async.race([
-///     Task.map(Task.sleep(1000), fn _ {
+///     Task.map(Task.sleep(1000), |_| {
 ///       0
 ///     }),
-///     Task.map(Task.sleep(200), fn _ {
+///     Task.map(Task.sleep(200), |_| {
 ///       1
 ///     }),
 ///   ]);
@@ -144,6 +144,6 @@ let race_2 = fn t1, t2 {
 ///   Task.none
 /// }
 /// ```
-pub let race = fn tasks {
+pub let race = |tasks| {
   List.reduce(tasks, Task.never, race_2)
 }
