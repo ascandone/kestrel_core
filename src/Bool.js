@@ -5,4 +5,4 @@ const Eq_Char$Char = (x, y) => x === y;
 
 const Eq_Bool$Bool = (x, y) => x === y;
 
-const Bool$_eq = (Eq) => (x, y) => Eq(x, y);
+const _eq = (Eq) => (x, y) => Eq(x, y);

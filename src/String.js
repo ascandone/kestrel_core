@@ -12,7 +12,7 @@ function String$char_at(str, index) {
     return Option$None;
   }
 
-  return { $: "Some", a0: ch };
+  return Option$Some(ch);
 }
 
 function String$parse_int(str) {
@@ -48,8 +48,8 @@ function String$to_list(str) {
 function String$from_list(lst) {
   let buf = [];
   while (lst !== List$Nil) {
-    buf.push(lst.a0);
-    lst = lst.a1;
+    buf.push(lst._0);
+    lst = lst._1;
   }
   return buf.join("");
 }

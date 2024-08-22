@@ -18,9 +18,9 @@ const Show_Bool$Bool = (n) => {
 
 const Show_List$List = (Show_a) => (x) => {
   const buf = [];
-  while (x.$ != "Nil") {
-    buf.push(Show_a(x.a0));
-    x = x.a1;
+  while (x.$ != 0) {
+    buf.push(Show_a(x._0));
+    x = x._1;
   }
   return `[${buf.join(", ")}]`;
 };

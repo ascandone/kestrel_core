@@ -1,7 +1,7 @@
 function Test$unwrap_panic(f) {
   try {
-    return { $: "Ok", a0: f() };
+    return Result$Ok(f());
   } catch (error) {
-    return { $: "Err", a0: error.stack };
+    return Result$Err(error.stack);
   }
 }
