@@ -4,6 +4,7 @@
 //// and it's not going to be supported in production mode
 
 import String.{String}
+import Tuple.{Unit}
 
 /// Convert any given value to a stringified version of it
 /// 
@@ -16,6 +17,8 @@ extern pub let inspect: Fn(a) -> String where a: Show
 /// This will result in an runtime errors
 extern pub let todo: Fn(String) -> a
 
+extern let log_str: Fn(String, String) -> Unit
+
 /// `console.log` some value with a label, and return the value
 /// As this function performs side effects outside the `Task` type, it won't be available on production development
 /// ```kestrel
@@ -23,4 +26,10 @@ extern pub let todo: Fn(String) -> a
 /// // this logs `my number: 42`
 /// // and returns `42`
 /// ```
-extern pub let log: Fn(a, String) -> a where a: Show
+pub let log = fn value, description {
+  let _ = log_str(
+    inspect(value),
+    description,
+  );
+  value
+}
