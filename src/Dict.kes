@@ -1,0 +1,136 @@
+import Bool.{Bool(..), (==), (<)}
+import Int.{(+)}
+import List.{List(..)}
+import Option.{Option(..)}
+import Tuple.{Tuple2(..)}
+
+type Color {
+  Red,
+  Black,
+}
+
+pub type Dict<k, v> {
+  Empty,
+  Node(Color, Dict<k, v>, k, v, Dict<k, v>),
+}
+
+pub let empty = Empty
+
+pub let member = fn set, elem {
+  match set {
+    Empty => False,
+    Node(_, left, key, _, right) => if elem == key {
+      True
+    } else {
+      if elem < key {
+        member(left, elem)
+      } else {
+        member(right, elem)
+      }
+    },
+  }
+}
+
+pub let get = fn set, elem {
+  match set {
+    Empty => None,
+    Node(_, left, key, v, right) => if elem == key {
+      Some(v)
+    } else {
+      if elem < key {
+        get(left, elem)
+      } else {
+        get(right, elem)
+      }
+    },
+  }
+}
+
+/// Turn a node to black
+let make_black = fn set {
+  match set {
+    Empty => Empty,
+    Node(_, l, x, v, r) => Node(Black, l, x, v, r),
+  }
+}
+
+let balance = fn dict {
+  match dict {
+    Node(Black, Node(Red, Node(Red, a, x, vx, b), y, vy, c), z, vz, d) => Node(
+      Red,
+      Node(Black, a, x, vx, b),
+      y,
+      vy,
+      Node(Black, c, z, vz, d),
+    ),
+    Node(Black, Node(Red, a, x, vx, Node(Red, b, y, vy, c)), z, vz, d) => Node(
+      Red,
+      Node(Black, a, x, vx, b),
+      y,
+      vy,
+      Node(Black, c, z, vz, d),
+    ),
+    Node(Black, a, x, vx, Node(Red, Node(Red, b, y, vy, c), z, vz, d)) => Node(
+      Red,
+      Node(Black, a, x, vx, b),
+      y,
+      vy,
+      Node(Black, c, z, vz, d),
+    ),
+    Node(Black, a, x, vx, Node(Red, b, y, vy, Node(Red, c, z, vz, d))) => Node(
+      Red,
+      Node(Black, a, x, vx, b),
+      y,
+      vy,
+      Node(Black, c, z, vz, d),
+    ),
+    _ => dict,
+  }
+}
+
+pub let insert = fn dict, k, v {
+  let insert_ = fn dict {
+    match dict {
+      Empty => Node(Red, Empty, k, v, Empty),
+      Node(color, a, k2, v2, b) => if k == k2 {
+        dict
+      } else {
+        if k < k2 {
+          balance(Node(color, insert_(a), k2, v2, b))
+        } else {
+          balance(Node(color, a, k2, v2, insert_(b)))
+        }
+      },
+    }
+  };
+
+  dict
+  |> insert_()
+  |> make_black()
+}
+
+pub let is_empty = fn dict {
+  match dict {
+    Empty => True,
+    _ => False,
+  }
+}
+
+pub let reduce_right = fn dict, acc, f {
+  match dict {
+    Empty => acc,
+    Node(_, l, k, v, r) => reduce_right(l, f(k, v, reduce_right(r, acc, f)), f),
+  }
+}
+
+pub let size = fn dict {
+  reduce_right(dict, 0, fn _, _, acc {
+    acc + 1
+  })
+}
+
+pub let to_list = fn dict {
+  reduce_right(dict, [], fn k, v, acc {
+    (k, v) :: acc
+  })
+}

@@ -4,6 +4,7 @@
 import Bool.{Bool(..), (==), (||), (&&)}
 import Char
 import Debug
+import Dict.{Dict}
 import Expect
 import Float.{(+.)}
 import Int.{(+), (*), (-), Int}
@@ -435,6 +436,95 @@ let struct_tests = Test.describe("structs", [
   }),
 ])
 
+let int_str_empty_dict: Dict<Int, String> = Dict.empty
+
+let dict_tests = Test.describe("Dict", [
+  Test.test("member of empty set is False", fn {
+    int_str_empty_dict
+    |> Dict.get(42)
+    |> Expect.equal(None)
+  }),
+  Test.test("insert once", fn {
+    Dict.empty
+    |> Dict.insert(42, "42")
+    |> Dict.get(42)
+    |> Expect.equal(Some("42"))
+  }),
+  Test.test("insert once and search for higher number", fn {
+    Dict.empty
+    |> Dict.insert(42, "42")
+    |> Dict.get(100)
+    |> Expect.equal(None)
+  }),
+  Test.test("insert once and search for lower number", fn {
+    Dict.empty
+    |> Dict.insert(42, "42")
+    |> Dict.get(1)
+    |> Expect.equal(None)
+  }),
+  Test.test("insert higher number", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(0, "0")
+      |> Dict.insert(1, "1")
+    };
+
+    Expect.all([
+      dict
+      |> Dict.get(0)
+      |> Expect.equal(Some("0")),
+      dict
+      |> Dict.get(1)
+      |> Expect.equal(Some("1")),
+    ])
+  }),
+  Test.test("insert lower number", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(10, "10")
+      |> Dict.insert(1, "1")
+    };
+    Expect.all([
+      dict
+      |> Dict.get(10)
+      |> Expect.equal(Some("10")),
+      dict
+      |> Dict.get(1)
+      |> Expect.equal(Some("1")),
+    ])
+  }),
+  Test.test("compute size of a dict", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(10, "10")
+      |> Dict.insert(20, "20")
+      |> Dict.insert(30, "30")
+      |> Dict.insert(11, "11")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(50, "50")
+    };
+
+    dict
+    |> Dict.size()
+    |> Expect.equal(5)
+  }),
+  Test.test("returns sorted list of values", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(10, "10")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(20, "20")
+      |> Dict.insert(30, "30")
+    };
+
+    dict
+    |> Dict.to_list()
+    |> Expect.equal([(10, "10"), (20, "20"), (30, "30"), (50, "50")])
+  }),
+])
+
 let set_tests = Test.describe("Set", [
   Test.test("member of empty set is False", fn {
     Set.empty
@@ -532,6 +622,7 @@ pub let main = {
     option_tests,
     list_tests,
     struct_tests,
+    dict_tests,
     set_tests,
   ]
   |> Test.concat()
