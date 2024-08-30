@@ -1,117 +1,43 @@
-import Bool.{Bool(..), (==), (<)}
-import Int.{(+)}
+import Bool.{Bool(..)}
+import Dict.{Dict}
 import List.{List(..)}
-import Tuple.{Tuple2(..)}
-
-type Color {
-  Red,
-  Black,
-}
+import Tuple.{Tuple2(..), Unit(..)}
 
 pub type Set<a> {
-  Empty,
-  Node(Color, Set<a>, a, Set<a>),
+  Set(Dict<a, Unit>),
 }
 
-pub let empty = Empty
+pub let empty = Set(Dict.empty)
 
-pub let member = fn set, elem {
-  match set {
-    Empty => False,
-    Node(_, left, value, right) => if elem == value {
-      True
-    } else {
-      if elem < value {
-        member(left, elem)
-      } else {
-        member(right, elem)
-      }
-    },
-  }
+pub let member = fn Set(dict), elem {
+  Dict.member(dict, elem)
 }
 
-/// Turn a node to black
-let make_black = fn set {
-  match set {
-    Empty => Empty,
-    Node(_, l, x, r) => Node(Black, l, x, r),
-  }
+pub let insert = fn Set(dict), value {
+  dict
+  |> Dict.insert(value, Unit)
+  |> Set()
 }
 
-let balance = fn tree {
-  match tree {
-    Node(Black, Node(Red, Node(Red, a, x, b), y, c), z, d) => Node(
-      Red,
-      Node(Black, a, x, b),
-      y,
-      Node(Black, c, z, d),
-    ),
-    Node(Black, Node(Red, a, x, Node(Red, b, y, c)), z, d) => Node(
-      Red,
-      Node(Black, a, x, b),
-      y,
-      Node(Black, c, z, d),
-    ),
-    Node(Black, a, x, Node(Red, Node(Red, b, y, c), z, d)) => Node(
-      Red,
-      Node(Black, a, x, b),
-      y,
-      Node(Black, c, z, d),
-    ),
-    Node(Black, a, x, Node(Red, b, y, Node(Red, c, z, d))) => Node(
-      Red,
-      Node(Black, a, x, b),
-      y,
-      Node(Black, c, z, d),
-    ),
-    _ => tree,
-  }
-}
-
-pub let insert = fn set, x {
-  let insert_ = fn set {
-    match set {
-      Empty => Node(Red, Empty, x, Empty),
-      Node(color, a, y, b) => if x == y {
-        set
-      } else {
-        if x < y {
-          balance(Node(color, insert_(a), y, b))
-        } else {
-          balance(Node(color, a, y, insert_(b)))
-        }
-      },
-    }
-  };
-
-  set
-  |> insert_()
-  |> make_black()
-}
-
-pub let is_empty = fn set {
-  match set {
-    Empty => True,
-    _ => False,
-  }
+pub let is_empty = fn Set(dict) {
+  Dict.is_empty(dict)
 }
 
 /// Fold over the values in a set, in order from highest to lowest.
-pub let reduce_right = fn set, acc, f {
-  match set {
-    Empty => acc,
-    Node(_, l, x, r) => reduce_right(l, f(x, reduce_right(r, acc, f)), f),
-  }
-}
-
-pub let size = fn set {
-  reduce_right(set, 0, fn _, acc {
-    acc + 1
+pub let reduce_right = fn Set(dict), acc, f {
+  Dict.reduce_right(dict, acc, fn k, _, acc {
+    f(k, acc)
   })
 }
 
-pub let to_list = fn set {
-  reduce_right(set, [], fn x, acc {
-    x :: acc
+pub let size = fn Set(dict) {
+  Dict.size(dict)
+}
+
+pub let to_list = fn Set(dict) {
+  dict
+  |> Dict.to_list()
+  |> List.map(fn (k, Unit) {
+    k
   })
 }
