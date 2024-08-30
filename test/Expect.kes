@@ -1,4 +1,4 @@
-import Bool.{Bool(..), (==)}
+import Bool.{Bool(..), (==), (!)}
 import Debug
 import List.{List(..)}
 import Option.{Option(..)}
@@ -53,4 +53,31 @@ pub let to_result = fn expectation {
       Err(l ++ "\n" ++ r)
     },
   }
+}
+
+pub let and_then = fn expectation, f {
+  match expectation {
+    Pass => f(Unit),
+    _ => expectation,
+  }
+}
+
+pub let all = fn expectations {
+  match expectations {
+    Pass :: expectations => all(expectations),
+    failure :: _ => failure,
+    Nil => Pass,
+  }
+}
+
+pub let true = fn value, descr {
+  if value {
+    Pass
+  } else {
+    Fail(descr)
+  }
+}
+
+pub let false = fn value, descr {
+  true(!value, descr)
 }

@@ -10,6 +10,7 @@ import Int.{(+), (*), (-), Int}
 import List.{List}
 import Option.{Option(..)}
 import Result.{Result(..)}
+import Set
 import String.{String}
 import Test
 import Tuple.{Unit(..)}
@@ -434,6 +435,92 @@ let struct_tests = Test.describe("structs", [
   }),
 ])
 
+let set_tests = Test.describe("Set", [
+  Test.test("member of empty set is False", fn {
+    Set.empty
+    |> Set.member(42)
+    |> Expect.equal(False)
+  }),
+  Test.test("insert once", fn {
+    Set.empty
+    |> Set.insert(42)
+    |> Set.member(42)
+    |> Expect.equal(True)
+  }),
+  Test.test("insert once and search for higher number", fn {
+    Set.empty
+    |> Set.insert(42)
+    |> Set.member(100)
+    |> Expect.equal(False)
+  }),
+  Test.test("insert once and search for lower number", fn {
+    Set.empty
+    |> Set.insert(42)
+    |> Set.member(1)
+    |> Expect.equal(False)
+  }),
+  Test.test("insert higher number", fn {
+    let tree = {
+      Set.empty
+      |> Set.insert(0)
+      |> Set.insert(1)
+    };
+    Expect.all([
+      tree
+      |> Set.member(0)
+      |> Expect.true("0 should be member"),
+      tree
+      |> Set.member(1)
+      |> Expect.true("1 should be member"),
+    ])
+  }),
+  Test.test("insert lower number", fn {
+    let tree = {
+      Set.empty
+      |> Set.insert(10)
+      |> Set.insert(1)
+    };
+    Expect.all([
+      tree
+      |> Set.member(10)
+      |> Expect.true("10 should be member"),
+      tree
+      |> Set.member(1)
+      |> Expect.true("1 should be member"),
+    ])
+  }),
+  Test.test("compute size of a set", fn {
+    let set = {
+      Set.empty
+      |> Set.insert(10)
+      |> Set.insert(20)
+      |> Set.insert(30)
+      |> Set.insert(11)
+      |> Set.insert(50)
+      |> Set.insert(50)
+      |> Set.insert(50)
+      |> Set.insert(50)
+    };
+
+    set
+    |> Set.size()
+    |> Expect.equal(5)
+  }),
+  Test.test("returns sorted list of values", fn {
+    let set = {
+      Set.empty
+      |> Set.insert(10)
+      |> Set.insert(50)
+      |> Set.insert(20)
+      |> Set.insert(30)
+    };
+
+    set
+    |> Set.to_list()
+    |> Expect.equal([10, 20, 30, 50])
+  }),
+])
+
 pub let main = {
   [
     debug_tests,
@@ -445,6 +532,7 @@ pub let main = {
     option_tests,
     list_tests,
     struct_tests,
+    set_tests,
   ]
   |> Test.concat()
   |> Test.run()
