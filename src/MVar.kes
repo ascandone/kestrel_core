@@ -1,5 +1,5 @@
 import Bool.{Bool}
-import Option.{Option}
+import Option.{Option(..)}
 import Task.{Task, await}
 import Tuple.{Unit(..)}
 
@@ -33,6 +33,23 @@ extern pub let take: Fn(MVar<a>) -> Task<a>
 /// 
 /// Note: after `try_take` the value is empty
 extern pub let try_take: Fn(MVar<a>) -> Task<Option<a>>
+
+pub let read = fn mvar {
+  let#await value = take(mvar);
+  let#await Unit = put(mvar, value);
+  Task.of(value)
+}
+
+pub let try_read = fn mvar {
+  let#await value = try_take(mvar);
+  match value {
+    None => Task.of(None),
+    Some(value) => {
+      let#await Unit = put(mvar, value);
+      Task.of(Some(value))
+    },
+  }
+}
 
 /// Create a `MVar` filled with the given value.
 pub let of = fn a {
