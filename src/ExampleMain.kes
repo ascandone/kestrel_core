@@ -1,0 +1,45 @@
+import Bool.{Bool(..), (==), (!)}
+import Debug
+import IO
+import MVar
+import Option.{Option(..)}
+import Result.{Result(..)}
+import Stream
+import String.{(++)}
+import Task
+import Tuple.{Unit(..)}
+
+pub let main = {
+  let#Task.await (push, stream) = Stream.controlled;
+  let mapped_stream = {
+    stream
+    |> Stream.filter(fn x {
+      !(String.length(x) == 0)
+    })
+    |> Stream.map(fn x {
+      x ++ "!"
+    })
+  };
+
+  let#Task.await Unit = push("Mario");
+  let#Task.await Unit = push("");
+  let#Task.await Unit = push("John");
+  let#Task.await Unit = {
+    mapped_stream
+    |> Stream.subscribe(fn x {
+      IO.println("hello, " ++ x)
+    })
+  };
+  let#Task.await Unit = push("<after subscribe>");
+  Task.none
+}
+
+pub let main2 = {
+  let#Task.await mvar = MVar.empty;
+  let#Task.await _ = Task.fork({
+    let#Task.await _ = MVar.put(mvar, "hello");
+    Task.none
+  });
+  let#Task.await ok = MVar.try_put(mvar, "hello");
+  IO.println("ok: " ++ Debug.inspect(ok))
+}

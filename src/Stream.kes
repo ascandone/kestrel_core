@@ -1,0 +1,59 @@
+import List.{List}
+import MVar
+import Task.{Task}
+import Tuple.{Unit}
+
+/// A stream of values of type a
+pub type Stream<a> {
+  Stream(Fn(Fn(a) -> Task<Unit>) -> Task<Unit>),
+}
+
+pub let controlled = {
+  let#Task.await mvar = MVar.empty;
+  let push = fn x {
+    mvar
+    |> MVar.put_async(x)
+    |> Task.discard()
+  };
+  let stream = Stream(fn call {
+    Task.forever({
+      let#Task.await x = MVar.take(mvar);
+      call(x)
+    })
+  });
+  Task.of((push, stream))
+}
+
+extern pub let from_list: Fn(List<a>) -> Stream<a>
+
+pub let of = fn x {
+  Stream(fn call {
+    call(x)
+  })
+}
+
+pub let subscribe = fn Stream(on_call), f {
+  on_call(f)
+  |> Task.fork()
+  |> Task.discard()
+}
+
+pub let map = fn stream, f {
+  Stream(fn call {
+    subscribe(stream, fn x {
+      call(f(x))
+    })
+  })
+}
+
+pub let filter = fn stream, pred {
+  Stream(fn call {
+    subscribe(stream, fn x {
+      if pred(x) {
+        call(x)
+      } else {
+        Task.none
+      }
+    })
+  })
+}
