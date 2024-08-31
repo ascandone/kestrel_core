@@ -13,6 +13,7 @@ function MVar$put(mvar, value) {
     const pendingTake = mvar.pendingTakes.shift();
     if (pendingTake !== undefined) {
       pendingTake(value);
+      resolve(null);
       return;
     }
 
@@ -20,7 +21,7 @@ function MVar$put(mvar, value) {
       mvar.pendingPuts.push([resolve, value]);
       return () => {
         mvar.pendingPuts = mvar.pendingPuts.filter(
-          ([resolve_, _]) => resolve_ !== resolve
+          ([resolve_, _]) => resolve_ !== resolve,
         );
       };
     }
