@@ -147,3 +147,18 @@ let race_2 = fn t1, t2 {
 pub let race = fn tasks {
   List.reduce(tasks, Task.never, race_2)
 }
+
+pub let debounce = fn task, interval {
+  let#await mvar = MVar.empty;
+  let#await _id = Task.fork(
+    Task.forever({
+      let#await Unit = MVar.take(mvar);
+      let#await Unit = Task.sleep(interval);
+      let#await _id = MVar.take_async(mvar);
+      task
+    }),
+  );
+  MVar.put_async(mvar, Unit)
+  |> Task.discard()
+  |> Task.of()
+}

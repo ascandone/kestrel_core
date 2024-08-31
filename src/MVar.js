@@ -88,3 +88,27 @@ function MVar$try_take(mvar) {
     resolve(mvar.tryTake());
   });
 }
+
+function MVar$take_async(mvar) {
+  return new Task$Task((resolve) => {
+    const opt = mvar.tryTake();
+    switch (opt.$) {
+      case /* Some */ 0:
+        resolve(opt._0);
+        return;
+      case /* None */ 1:
+        mvar.pendingTakes.push(resolve);
+        return () => {
+          mvar.pendingTakes = mvar.pendingTakes.filter((resolve_) => {
+            resolve_ !== resolve;
+          });
+        };
+    }
+  });
+}
+
+function MVar$try_take(mvar) {
+  return new Task$Task((resolve) => {
+    resolve(mvar.tryTake());
+  });
+}

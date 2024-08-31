@@ -1,0 +1,11 @@
+import Async
+import IO
+import Task.{await}
+
+pub let main = {
+  let#await debounced_print = Async.debounce(IO.print("hi"), 1000);
+  let#await _unit = debounced_print;
+  let#await _unit = debounced_print;
+  let#await _unit = debounced_print;
+  Task.none
+}
