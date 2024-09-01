@@ -2,6 +2,7 @@
 
 import List
 import MVar
+import Option.{Option(..)}
 import Result.{Result(..)}
 import Task.{await}
 import Tuple.{Unit(..)}
@@ -148,17 +149,28 @@ pub let race = fn tasks {
   List.reduce(tasks, Task.never, race_2)
 }
 
-pub let debounce = fn task, interval {
+pub let debounce = fn interval, to_task {
   let#await mvar = MVar.empty;
   let#await _id = Task.fork(
     Task.forever({
-      let#await Unit = MVar.take(mvar);
-      let#await Unit = Task.sleep(interval);
-      let#await _id = MVar.take_async(mvar);
-      task
+      let#await arg = MVar.take(mvar);
+      let loop = fn arg {
+        let#await opt = race([
+          MVar.take(mvar)
+          |> Task.map(Some),
+          Task.sleep(interval)
+          |> Task.map_to(None),
+        ]);
+        match opt {
+          Some(new_arg) => loop(new_arg),
+          None => to_task(arg),
+        }
+      };
+      loop(arg)
     }),
   );
-  MVar.put_async(mvar, Unit)
-  |> Task.discard()
-  |> Task.of()
+  Task.of(fn arg {
+    MVar.put_async(mvar, arg)
+    |> Task.discard()
+  })
 }

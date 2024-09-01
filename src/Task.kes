@@ -34,6 +34,12 @@ pub let map = fn task, f {
   })
 }
 
+pub let map_to = fn task, x {
+  map(task, fn _ {
+    x
+  })
+}
+
 /// If task is a `Result`, map error value.
 /// Equivalent of composing `Task.map` and `Result.map_err`
 pub let map_err = fn task, f {
