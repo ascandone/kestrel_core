@@ -61,6 +61,8 @@ extern pub type Id
 /// `fork` is a low-level primitive and you probably might want to use the higher-level `Async` module to perform concurrent computation.
 extern pub let fork: Fn(Task<Unit>) -> Task<Id>
 
+extern pub let invincible: Fn(Task<a>) -> Task<a>
+
 /// Kill the computation with the given `Id`. Cancellation will be propagated recursively though its forks and awaited tasks.
 /// For example:
 /// ```kestrel

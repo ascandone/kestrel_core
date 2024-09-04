@@ -59,6 +59,14 @@ function Task$fork(t) {
   });
 }
 
+function Task$invincible(t) {
+  return new Task$Task((resolve) => {
+    // ignore cancel function
+    t.run(resolve);
+    return;
+  });
+}
+
 function Task$kill(id) {
   return new Task$Task((resolve) => {
     id.cancel();
