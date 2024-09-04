@@ -27,9 +27,6 @@ extern let log_str: Fn(String, String) -> Unit
 /// // and returns `42`
 /// ```
 pub let log = fn value, description {
-  let _ = log_str(
-    inspect(value),
-    description,
-  );
+  let _ = log_str(inspect(value), description);
   value
 }
