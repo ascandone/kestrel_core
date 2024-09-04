@@ -4,15 +4,23 @@
 import Bool.{Bool(..), (==), (||), (&&)}
 import Char
 import Debug
+import Dict.{Dict}
 import Expect
 import Float.{(+.)}
-import Int.{(+), (*), (-)}
-import List
+import Int.{(+), (*), (-), Int}
+import List.{List}
 import Option.{Option(..)}
 import Result.{Result(..)}
-import String
+import Set
+import String.{String}
 import Test
-import Tuple
+import Tuple.{Unit(..)}
+
+let int_none: Option<Int> = None
+
+let empty_int_list: List<Int> = []
+
+let showable_err: Result<_, Int> = Ok(Some(42))
 
 let debug_tests = Test.describe("Debug", [
   Test.describe("inspect", [
@@ -36,13 +44,18 @@ let debug_tests = Test.describe("Debug", [
       |> Debug.inspect()
       |> Expect.equal("42.2")
     }),
+    Test.test("inspect float with trailing zero", fn {
+      42.0
+      |> Debug.inspect()
+      |> Expect.equal("42.0")
+    }),
     Test.test("inspect Tuple2", fn {
       (0, 42)
       |> Debug.inspect()
       |> Expect.equal("(0, 42)")
     }),
     Test.test("inspect Nil", fn {
-      []
+      empty_int_list
       |> Debug.inspect()
       |> Expect.equal("[]")
     }),
@@ -57,7 +70,7 @@ let debug_tests = Test.describe("Debug", [
       |> Expect.equal("Some(True)")
     }),
     Test.test("inspect singleton", fn {
-      None
+      int_none
       |> Debug.inspect()
       |> Expect.equal("None")
     }),
@@ -135,7 +148,7 @@ let bool_tests = Test.describe("Bool", [
       |> Expect.equal(False)
     }),
     Test.test("of nested types that are equal", fn {
-      Ok(Some(42)) == Ok(Some(42))
+      showable_err == showable_err
       |> Expect.equal(True)
     }),
     Test.test("of different variants", fn {
@@ -323,7 +336,7 @@ let list_tests = Test.describe("List", [
   ]),
   Test.describe("List.find", [
     Test.test("on an empty list", fn {
-      List.find([], fn _ {
+      List.find(empty_int_list, fn _ {
         False
       })
       |> Expect.equal(None)
@@ -369,8 +382,8 @@ let list_tests = Test.describe("List", [
   ]),
   Test.describe("List.reverse", [
     Test.test("on the empty list", fn {
-      List.reverse([])
-      |> Expect.equal([])
+      List.reverse(empty_int_list)
+      |> Expect.equal(empty_int_list)
     }),
     Test.test("on a non empty list", fn {
       List.reverse([1, 2, 3])
@@ -390,6 +403,214 @@ let list_tests = Test.describe("List", [
   ]),
 ])
 
+type Person struct {
+  name: String,
+  age: Int,
+}
+
+type Dog struct {
+  name: String,
+  age: Int,
+}
+
+let struct_tests = Test.describe("structs", [
+  Test.test("read field", fn {
+    let p = Person {
+      name: "hello",
+      age: 42,
+    };
+    p.name
+    |> Expect.equal("hello")
+  }),
+  Test.test("update struct", fn {
+    let p1 = Person {
+      name: "hello",
+      age: 42,
+    };
+    let p2 = Person {
+      age: p1.age + 1,
+      ..p1
+    };
+    p2.age
+    |> Expect.equal(43)
+  }),
+])
+
+let int_str_empty_dict: Dict<Int, String> = Dict.empty
+
+let dict_tests = Test.describe("Dict", [
+  Test.test("member of empty set is False", fn {
+    int_str_empty_dict
+    |> Dict.get(42)
+    |> Expect.equal(None)
+  }),
+  Test.test("insert once", fn {
+    Dict.empty
+    |> Dict.insert(42, "42")
+    |> Dict.get(42)
+    |> Expect.equal(Some("42"))
+  }),
+  Test.test("insert once and search for higher number", fn {
+    Dict.empty
+    |> Dict.insert(42, "42")
+    |> Dict.get(100)
+    |> Expect.equal(None)
+  }),
+  Test.test("insert once and search for lower number", fn {
+    Dict.empty
+    |> Dict.insert(42, "42")
+    |> Dict.get(1)
+    |> Expect.equal(None)
+  }),
+  Test.test("insert higher number", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(0, "0")
+      |> Dict.insert(1, "1")
+    };
+
+    Expect.all([
+      dict
+      |> Dict.get(0)
+      |> Expect.equal(Some("0")),
+      dict
+      |> Dict.get(1)
+      |> Expect.equal(Some("1")),
+    ])
+  }),
+  Test.test("insert lower number", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(10, "10")
+      |> Dict.insert(1, "1")
+    };
+    Expect.all([
+      dict
+      |> Dict.get(10)
+      |> Expect.equal(Some("10")),
+      dict
+      |> Dict.get(1)
+      |> Expect.equal(Some("1")),
+    ])
+  }),
+  Test.test("compute size of a dict", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(10, "10")
+      |> Dict.insert(20, "20")
+      |> Dict.insert(30, "30")
+      |> Dict.insert(11, "11")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(50, "50")
+    };
+
+    dict
+    |> Dict.size()
+    |> Expect.equal(5)
+  }),
+  Test.test("returns sorted list of values", fn {
+    let dict = {
+      Dict.empty
+      |> Dict.insert(10, "10")
+      |> Dict.insert(50, "50")
+      |> Dict.insert(20, "20")
+      |> Dict.insert(30, "30")
+    };
+
+    dict
+    |> Dict.to_list()
+    |> Expect.equal([(10, "10"), (20, "20"), (30, "30"), (50, "50")])
+  }),
+])
+
+let set_tests = Test.describe("Set", [
+  Test.test("member of empty set is False", fn {
+    Set.empty
+    |> Set.member(42)
+    |> Expect.equal(False)
+  }),
+  Test.test("insert once", fn {
+    Set.empty
+    |> Set.insert(42)
+    |> Set.member(42)
+    |> Expect.equal(True)
+  }),
+  Test.test("insert once and search for higher number", fn {
+    Set.empty
+    |> Set.insert(42)
+    |> Set.member(100)
+    |> Expect.equal(False)
+  }),
+  Test.test("insert once and search for lower number", fn {
+    Set.empty
+    |> Set.insert(42)
+    |> Set.member(1)
+    |> Expect.equal(False)
+  }),
+  Test.test("insert higher number", fn {
+    let tree = {
+      Set.empty
+      |> Set.insert(0)
+      |> Set.insert(1)
+    };
+    Expect.all([
+      tree
+      |> Set.member(0)
+      |> Expect.true("0 should be member"),
+      tree
+      |> Set.member(1)
+      |> Expect.true("1 should be member"),
+    ])
+  }),
+  Test.test("insert lower number", fn {
+    let tree = {
+      Set.empty
+      |> Set.insert(10)
+      |> Set.insert(1)
+    };
+    Expect.all([
+      tree
+      |> Set.member(10)
+      |> Expect.true("10 should be member"),
+      tree
+      |> Set.member(1)
+      |> Expect.true("1 should be member"),
+    ])
+  }),
+  Test.test("compute size of a set", fn {
+    let set = {
+      Set.empty
+      |> Set.insert(10)
+      |> Set.insert(20)
+      |> Set.insert(30)
+      |> Set.insert(11)
+      |> Set.insert(50)
+      |> Set.insert(50)
+      |> Set.insert(50)
+      |> Set.insert(50)
+    };
+
+    set
+    |> Set.size()
+    |> Expect.equal(5)
+  }),
+  Test.test("returns sorted list of values", fn {
+    let set = {
+      Set.empty
+      |> Set.insert(10)
+      |> Set.insert(50)
+      |> Set.insert(20)
+      |> Set.insert(30)
+    };
+
+    set
+    |> Set.to_list()
+    |> Expect.equal([10, 20, 30, 50])
+  }),
+])
+
 pub let main = {
   [
     debug_tests,
@@ -400,6 +621,9 @@ pub let main = {
     string_tests,
     option_tests,
     list_tests,
+    struct_tests,
+    dict_tests,
+    set_tests,
   ]
   |> Test.concat()
   |> Test.run()

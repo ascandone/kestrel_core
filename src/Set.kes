@@ -1,0 +1,43 @@
+import Bool.{Bool(..)}
+import Dict.{Dict}
+import List.{List(..)}
+import Tuple.{Tuple2(..), Unit(..)}
+
+pub type Set<a> {
+  Set(Dict<a, Unit>),
+}
+
+pub let empty = Set(Dict.empty)
+
+pub let member = fn Set(dict), elem {
+  Dict.member(dict, elem)
+}
+
+pub let insert = fn Set(dict), value {
+  dict
+  |> Dict.insert(value, Unit)
+  |> Set()
+}
+
+pub let is_empty = fn Set(dict) {
+  Dict.is_empty(dict)
+}
+
+/// Fold over the values in a set, in order from highest to lowest.
+pub let reduce_right = fn Set(dict), acc, f {
+  Dict.reduce_right(dict, acc, fn k, _, acc {
+    f(k, acc)
+  })
+}
+
+pub let size = fn Set(dict) {
+  Dict.size(dict)
+}
+
+pub let to_list = fn Set(dict) {
+  dict
+  |> Dict.to_list()
+  |> List.map(fn (k, Unit) {
+    k
+  })
+}

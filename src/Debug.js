@@ -1,57 +1,37 @@
-function Debug$inspect(x) {
-  if (x === true) {
-    return "True";
-  } else if (x === false) {
-    return "False";
-  } else if (x === null) {
-    return "Unit";
-  } else if (typeof x === "number") {
-    return x.toString();
-  } else if (typeof x === "function") {
-    return "#[Function]";
-  } else if (typeof x === "string") {
-    return `"${x}"`;
-  } else if (x instanceof String) {
-    return `'${x}'`;
-  } else if (x.$ === undefined) {
-    return "<internals>";
-  } else {
-    const { $, ...args } = x;
-    if (x.$ === "Nil") {
-      return "[]";
-    }
-
-    const keys = Object.keys(args).sort();
-
-    if (keys.length === 0) {
-      return `${x.$}`;
-    }
-
-    if (x.$ === "Cons") {
-      const buf = [];
-      while (x.$ === "Cons") {
-        buf.push(Debug$inspect(x.a0));
-        x = x.a1;
-      }
-
-      return `[${buf.join(", ")}]`;
-    }
-
-    const keysList = keys.map((k) => Debug$inspect(args[k])).join(", ");
-
-    if (x.$.startsWith("Tuple")) {
-      return `(${keysList})`;
-    }
-
-    return `${x.$}(${keysList})`;
+const Show_Int$Int = (n) => n.toString();
+const Show_Float$Float = (n) => {
+  if (Math.round(n) === n) {
+    return `${n}.0`;
   }
-}
+
+  return n.toString();
+};
+const Show_String$String = (s) => `"${s}"`;
+const Show_Char$Char = (c) => `'${c}'`;
+
+const Show_Bool$Bool = (n) => {
+  if (n) {
+    return "True";
+  }
+  return "False";
+};
+
+const Show_List$List = (Show_a) => (x) => {
+  const buf = [];
+  while (x.$ != 0) {
+    buf.push(Show_a(x._0));
+    x = x._1;
+  }
+  return `[${buf.join(", ")}]`;
+};
+
+const Debug$inspect = (Show) => (x) => Show(x);
 
 function Debug$todo(description) {
   throw new Error(`TODO ${description}`);
 }
 
-function Debug$log(value, description) {
-  console.log(description + ":", Debug$inspect(value));
-  return value;
+function Debug$log_str(value, description) {
+  console.log(description + ":", value);
+  return Tuple$Unit;
 }
