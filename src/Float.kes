@@ -1,3 +1,5 @@
+import Int.{Int}
+
 /// A floating point number.
 /// 
 /// Infix operations that deal with `Float` follow the convention of having a trailing `.`
@@ -15,3 +17,9 @@ extern pub let (*.): Fn(Float, Float) -> Float
 
 /// Divide two floats
 extern pub let (/.): Fn(Float, Float) -> Float
+
+extern pub let ceil: Fn(Float) -> Int
+
+extern pub let floor: Fn(Float) -> Int
+
+extern pub let from_int: Fn(Int) -> Float
