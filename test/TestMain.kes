@@ -14,7 +14,7 @@ import Result.{Result(..)}
 import Set
 import String.{String}
 import Test
-import Tuple.{Unit(..)}
+import Tuple
 
 let int_none: Option<Int> = None
 

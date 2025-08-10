@@ -1,5 +1,3 @@
-import Tuple.{Tuple2(..)}
-
 /// A type representing an value that might be either present (`Some`) or absent (`None`)
 pub(..) type Option<a> {
   Some(a),
