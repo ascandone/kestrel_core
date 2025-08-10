@@ -1,8 +1,8 @@
 import Bool.{Bool(..), (==), (<)}
 import Int.{(+)}
-import List.{List(..)}
+import List
 import Option.{Option(..)}
-import Tuple.{Tuple2(..)}
+import Tuple
 
 type Color {
   Red,

@@ -3,12 +3,11 @@
 //// 
 //// **note**: this module is temporary and will be removed from the `core` package
 
-import Bool.{Bool(..), (==)}
+import Bool.{(==)}
 import Expect.{Expectation}
 import IO
 import Int.{(+), (-)}
 import List.{List(..)}
-import Option.{Option(..)}
 import Result.{Result(..)}
 import String.{String, (++)}
 import Task.{await}
@@ -51,11 +50,13 @@ pub let describe = fn descr, tests {
 }
 
 let test_recap = fn passed_count, failed_count, duration {
-  let recap_msg = if failed_count == 0 {
-    underline(col_bright_green("TEST RUN PASSED"))
-  } else {
-    underline(col_bright_red("TEST RUN FAILED"))
-  };
+  let recap_msg =
+    if failed_count == 0 {
+      underline(col_bright_green("TEST RUN PASSED"))
+    } else {
+      underline(col_bright_red("TEST RUN FAILED"))
+    }
+  ;
   let duration_msg = dim("Duration: ") ++ String.from_int(duration) ++ "ms";
   let passed_msg = dim("Passed:   ") ++ String.from_int(passed_count);
   let failed_msg = dim("Failed:   ") ++ String.from_int(failed_count);

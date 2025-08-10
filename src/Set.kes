@@ -1,7 +1,6 @@
-import Bool.{Bool(..)}
 import Dict.{Dict}
-import List.{List(..)}
-import Tuple.{Tuple2(..), Unit(..)}
+import List
+import Tuple.{Unit(..)}
 
 pub type Set<a> {
   Set(Dict<a, Unit>),
