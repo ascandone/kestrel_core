@@ -6,7 +6,7 @@ Standard library for [Kestrel lang](https://github.com/ascandone/kestrel-lang).
 
 This package will be needed by every Kestrel module, which will implicitly have the following imports:
 
-```gleam
+```kestrel
 import Int.{(+), (-), (*), (/), (^), (%)}
 import Float.{(+.), (-.), (*.), (/.)}
 import Bool.{Bool(..), (&&), (||), (!), (==), (!=), (<), (<=), (>), (>=)}
