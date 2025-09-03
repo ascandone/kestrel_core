@@ -13,7 +13,7 @@ extern pub type Task<a>
 
 /// Lift a value into a `Task`.
 /// The resulting `Task` might be either synchronous or asynchronous (the behaviour is unspecified).
-extern pub let of: Fn(a) -> Task<a>
+extern pub let of: (a) -> Task<a>
 
 /// A task that never resolves.
 extern pub let never: Task<a>
@@ -26,7 +26,7 @@ extern pub let never: Task<a>
 ///   IO.println("Input: " ++ value)
 /// })
 /// ```
-extern pub let await: Fn(Task<a>, Fn(a) -> Task<b>) -> Task<b>
+extern pub let await: (Task<a>, (a) -> Task<b>) -> Task<b>
 
 pub let map = fn task, f {
   await(task, fn x {
@@ -43,7 +43,7 @@ pub let map_err = fn task, f {
 }
 
 /// Pause the execution for the given number of milliseconds
-extern pub let sleep: Fn(Int) -> Task<Unit>
+extern pub let sleep: (Int) -> Task<Unit>
 
 /// Identifier of a forked `Task`.
 extern pub type Id
@@ -53,7 +53,7 @@ extern pub type Id
 /// In order to accomplish that, the `MVar` synchronization primitive is provided in the `MVar` module.
 ///
 /// `fork` is a low-level primitive and you probably might want to use the higher-level `Async` module to perform concurrent computation.
-extern pub let fork: Fn(Task<Unit>) -> Task<Id>
+extern pub let fork: (Task<Unit>) -> Task<Id>
 
 /// Kill the computation with the given `Id`. Cancellation will be propagated recursively though its forks and awaited tasks.
 /// For example:
@@ -70,7 +70,7 @@ extern pub let fork: Fn(Task<Unit>) -> Task<Id>
 /// ```
 /// 
 /// Killing a terminated computation is a noop.
-extern pub let kill: Fn(Id) -> Task<Unit>
+extern pub let kill: (Id) -> Task<Unit>
 
 pub let await_ok = fn async_res, f {
   await(async_res, fn err {

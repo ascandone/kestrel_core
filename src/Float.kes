@@ -7,19 +7,19 @@ import Int.{Int}
 extern pub type Float
 
 /// Add two floats
-extern pub let (+.): Fn(Float, Float) -> Float
+extern pub let (+.): (Float, Float) -> Float
 
 /// Substract two floats
-extern pub let (-.): Fn(Float, Float) -> Float
+extern pub let (-.): (Float, Float) -> Float
 
 /// Multiply two floats
-extern pub let (*.): Fn(Float, Float) -> Float
+extern pub let (*.): (Float, Float) -> Float
 
 /// Divide two floats
-extern pub let (/.): Fn(Float, Float) -> Float
+extern pub let (/.): (Float, Float) -> Float
 
-extern pub let ceil: Fn(Float) -> Int
+extern pub let ceil: (Float) -> Int
 
-extern pub let floor: Fn(Float) -> Int
+extern pub let floor: (Float) -> Int
 
-extern pub let from_int: Fn(Int) -> Float
+extern pub let from_int: (Int) -> Float

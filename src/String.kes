@@ -11,7 +11,7 @@ extern pub type String
 /// ```kestrel
 /// "abc" ++ "def" // => "abcdef"
 /// ```
-extern pub let (++): Fn(String, String) -> String
+extern pub let (++): (String, String) -> String
 
 /// Returns the length of the string.
 /// It takes `O(1)` time
@@ -19,21 +19,21 @@ extern pub let (++): Fn(String, String) -> String
 /// ```kestrel
 /// length("abc") // => 3
 /// ```
-extern pub let length: Fn(String) -> Int
+extern pub let length: (String) -> Int
 
-extern pub let char_at: Fn(String, Int) -> Option<Char>
+extern pub let char_at: (String, Int) -> Option<Char>
 
-extern pub let split: Fn(String, String) -> List<String>
+extern pub let split: (String, String) -> List<String>
 
-extern pub let to_list: Fn(String) -> List<Char>
+extern pub let to_list: (String) -> List<Char>
 
-extern pub let from_list: Fn(List<Char>) -> String
+extern pub let from_list: (List<Char>) -> String
 
 /// Casts a `Char` into a `String`
-extern pub let from_char: Fn(Char) -> String
+extern pub let from_char: (Char) -> String
 
-extern pub let cons: Fn(Char, String) -> String
+extern pub let cons: (Char, String) -> String
 
-extern pub let parse_int: Fn(String) -> Option<Int>
+extern pub let parse_int: (String) -> Option<Int>
 
-extern pub let from_int: Fn(Int) -> String
+extern pub let from_int: (Int) -> String

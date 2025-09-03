@@ -7,9 +7,9 @@ import Int.{Int}
 /// (note the single quote, unlike in javascript)
 extern pub type Char
 
-extern pub let to_code: Fn(Char) -> Int
+extern pub let to_code: (Char) -> Int
 
-extern pub let from_code: Fn(Int) -> Char
+extern pub let from_code: (Int) -> Char
 
 pub let is_lower = fn ch {
   let code = to_code(ch);

@@ -2,23 +2,23 @@
 extern pub type Int
 
 /// Add two ints
-extern pub let (+): Fn(Int, Int) -> Int
+extern pub let (+): (Int, Int) -> Int
 
 /// Substract two ints
-extern pub let (-): Fn(Int, Int) -> Int
+extern pub let (-): (Int, Int) -> Int
 
 /// Multiply two ints
-extern pub let (*): Fn(Int, Int) -> Int
+extern pub let (*): (Int, Int) -> Int
 
 /// Divide two ints
-extern pub let (/): Fn(Int, Int) -> Int
+extern pub let (/): (Int, Int) -> Int
 
 /// Exponentiation
 /// 
 /// ```kestrel
 /// 2 ^ 3 // => 8
 /// ```
-extern pub let (^): Fn(Int, Int) -> Int
+extern pub let (^): (Int, Int) -> Int
 
 /// Modulo operator
 /// 
@@ -26,4 +26,4 @@ extern pub let (^): Fn(Int, Int) -> Int
 /// 10 % 2 // => 0
 /// 11 % 2 // => 1
 /// ```
-extern pub let (%): Fn(Int, Int) -> Int
+extern pub let (%): (Int, Int) -> Int

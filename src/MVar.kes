@@ -12,11 +12,11 @@ extern pub let empty: Task<MVar<a>>
 
 /// Put a value into the given `MVar`.
 /// If the `MVar` is filled, it will block until it is possible to put.
-extern pub let put: Fn(MVar<a>, a) -> Task<Unit>
+extern pub let put: (MVar<a>, a) -> Task<Unit>
 
 /// A non-blocking version of `put`. Try putting the value into the MVar,
 /// returning `True` wheter the value was put, `False` otherwise.
-extern pub let try_put: Fn(MVar<a>, a) -> Task<Bool>
+extern pub let try_put: (MVar<a>, a) -> Task<Bool>
 
 /// Non-blocking version of `put`.
 /// Equivalent to wrapping a `put` inside a `Task.fork`
@@ -26,13 +26,13 @@ pub let put_async = fn mvar, value {
 
 /// Take the value from the given `MVar`.
 /// If the `MVar` is not filled, it will block until it is possible to take.
-extern pub let take: Fn(MVar<a>) -> Task<a>
+extern pub let take: (MVar<a>) -> Task<a>
 
 /// A non-blocking version of `take`.
 /// Returns `None` if the `MVar` was empty, `Option(a)` otherwise.
 /// 
 /// Note: after `try_take` the value is empty
-extern pub let try_take: Fn(MVar<a>) -> Task<Option<a>>
+extern pub let try_take: (MVar<a>) -> Task<Option<a>>
 
 pub let read = fn mvar {
   let#await value = take(mvar);

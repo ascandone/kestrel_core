@@ -3,10 +3,10 @@ import String.{String}
 import Task.{Task}
 import Tuple.{Unit}
 
-extern pub let println: Fn(String) -> Task<Unit>
+extern pub let println: (String) -> Task<Unit>
 
-extern pub let print: Fn(String) -> Task<Unit>
+extern pub let print: (String) -> Task<Unit>
 
 extern pub let readline: Task<String>
 
-extern pub let exit: Fn(Int) -> a
+extern pub let exit: (Int) -> a

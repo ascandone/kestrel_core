@@ -14,7 +14,7 @@ pub(..) type Bool {
 /// False && True // => False
 /// False && False // => False
 /// ```
-extern pub let (&&): Fn(Bool, Bool) -> Bool
+extern pub let (&&): (Bool, Bool) -> Bool
 
 /// Logic `or` between booleans
 /// 
@@ -24,7 +24,7 @@ extern pub let (&&): Fn(Bool, Bool) -> Bool
 /// False && True // => True
 /// False && False // => False
 /// ```
-extern pub let (||): Fn(Bool, Bool) -> Bool
+extern pub let (||): (Bool, Bool) -> Bool
 
 /// Logic `not`
 /// 
@@ -32,7 +32,7 @@ extern pub let (||): Fn(Bool, Bool) -> Bool
 /// !True // => False
 /// !False // => True
 /// ```
-extern pub let (!): Fn(Bool) -> Bool
+extern pub let (!): (Bool) -> Bool
 
 /// Perform structural equality between values.
 /// 
@@ -48,15 +48,15 @@ extern pub let (!): Fn(Bool) -> Bool
 /// 
 /// Equality between all the other values (for example functions or internal opaque types)
 /// is forbidden by the type system
-extern pub let (==): Fn(a, a) -> Bool where a: Eq
+extern pub let (==): (a, a) -> Bool where a: Eq
 
 /// Same as `==`, but with negation
-extern pub let (!=): Fn(a, a) -> Bool where a: Eq
+extern pub let (!=): (a, a) -> Bool where a: Eq
 
-extern pub let (>): Fn(a, a) -> Bool where a: Ord
+extern pub let (>): (a, a) -> Bool where a: Ord
 
-extern pub let (>=): Fn(a, a) -> Bool where a: Ord
+extern pub let (>=): (a, a) -> Bool where a: Ord
 
-extern pub let (<): Fn(a, a) -> Bool where a: Ord
+extern pub let (<): (a, a) -> Bool where a: Ord
 
-extern pub let (<=): Fn(a, a) -> Bool where a: Ord
+extern pub let (<=): (a, a) -> Bool where a: Ord
