@@ -11,13 +11,19 @@ import Tuple.{Unit}
 /// ```kestrel
 /// inspect(Just(42)) // => "Just(42)"
 /// ```
-extern pub let inspect: (a) -> String where a: Show
+@extern
+@type (a) -> String where a: Show
+pub let inspect
 
 /// You can use the `todo` function as a placeholder for future implementation.
 /// This will result in an runtime errors
-extern pub let todo: (String) -> a
+@extern
+@type (String) -> a
+pub let todo
 
-extern let log_str: (String, String) -> Unit
+@extern
+@type (String, String) -> Unit
+let log_str
 
 /// `console.log` some value with a label, and return the value
 /// As this function performs side effects outside the `Task` type, it won't be available on production development

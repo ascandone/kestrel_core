@@ -7,9 +7,13 @@ import Int.{Int}
 /// (note the single quote, unlike in javascript)
 extern pub type Char
 
-extern pub let to_code: (Char) -> Int
+@extern
+@type (Char) -> Int
+pub let to_code
 
-extern pub let from_code: (Int) -> Char
+@extern
+@type (Int) -> Char
+pub let from_code
 
 pub let is_lower = fn ch {
   let code = to_code(ch);

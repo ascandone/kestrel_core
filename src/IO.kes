@@ -3,10 +3,18 @@ import String.{String}
 import Task.{Task}
 import Tuple.{Unit}
 
-extern pub let println: (String) -> Task<Unit>
+@extern
+@type (String) -> Task<Unit>
+pub let println
 
-extern pub let print: (String) -> Task<Unit>
+@extern
+@type (String) -> Task<Unit>
+pub let print
 
-extern pub let readline: Task<String>
+@extern
+@type Task<String>
+pub let readline
 
-extern pub let exit: (Int) -> a
+@extern
+@type (Int) -> a
+pub let exit

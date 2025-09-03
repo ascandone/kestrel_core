@@ -14,7 +14,9 @@ pub(..) type Bool {
 /// False && True // => False
 /// False && False // => False
 /// ```
-extern pub let (&&): (Bool, Bool) -> Bool
+@extern
+@type (Bool, Bool) -> Bool
+pub let (&&)
 
 /// Logic `or` between booleans
 /// 
@@ -24,7 +26,9 @@ extern pub let (&&): (Bool, Bool) -> Bool
 /// False || True // => True
 /// False || False // => False
 /// ```
-extern pub let (||): (Bool, Bool) -> Bool
+@extern
+@type (Bool, Bool) -> Bool
+pub let (||)
 
 /// Logic `not`
 /// 
@@ -32,7 +36,9 @@ extern pub let (||): (Bool, Bool) -> Bool
 /// !True // => False
 /// !False // => True
 /// ```
-extern pub let (!): (Bool) -> Bool
+@extern
+@type (Bool) -> Bool
+pub let (!)
 
 /// Perform structural equality between values.
 /// 
@@ -48,15 +54,27 @@ extern pub let (!): (Bool) -> Bool
 /// 
 /// Equality between all the other values (for example functions or internal opaque types)
 /// is forbidden by the type system
-extern pub let (==): (a, a) -> Bool where a: Eq
+@extern
+@type (a, a) -> Bool where a: Eq
+pub let (==)
 
 /// Same as `==`, but with negation
-extern pub let (!=): (a, a) -> Bool where a: Eq
+@extern
+@type (a, a) -> Bool where a: Eq
+pub let (!=)
 
-extern pub let (>): (a, a) -> Bool where a: Ord
+@extern
+@type (a, a) -> Bool where a: Ord
+pub let (>)
 
-extern pub let (>=): (a, a) -> Bool where a: Ord
+@extern
+@type (a, a) -> Bool where a: Ord
+pub let (>=)
 
-extern pub let (<): (a, a) -> Bool where a: Ord
+@extern
+@type (a, a) -> Bool where a: Ord
+pub let (<)
 
-extern pub let (<=): (a, a) -> Bool where a: Ord
+@extern
+@type (a, a) -> Bool where a: Ord
+pub let (<=)

@@ -63,7 +63,9 @@ let test_recap = fn passed_count, failed_count, duration {
   recap_msg ++ "\n\n" ++ duration_msg ++ "\n" ++ passed_msg ++ "\n" ++ failed_msg
 }
 
-extern let unwrap_panic: (() -> a) -> Result<a, String>
+@extern
+@type (() -> a) -> Result<a, String>
+let unwrap_panic
 
 let run_assertion = fn to_exp {
   match unwrap_panic(to_exp) {

@@ -7,19 +7,33 @@ import Int.{Int}
 extern pub type Float
 
 /// Add two floats
-extern pub let (+.): (Float, Float) -> Float
+@extern
+@type (Float, Float) -> Float
+pub let (+.)
 
 /// Substract two floats
-extern pub let (-.): (Float, Float) -> Float
+@extern
+@type (Float, Float) -> Float
+pub let (-.)
 
 /// Multiply two floats
-extern pub let (*.): (Float, Float) -> Float
+@extern
+@type (Float, Float) -> Float
+pub let (*.)
 
 /// Divide two floats
-extern pub let (/.): (Float, Float) -> Float
+@extern
+@type (Float, Float) -> Float
+pub let (/.)
 
-extern pub let ceil: (Float) -> Int
+@extern
+@type (Float) -> Int
+pub let ceil
 
-extern pub let floor: (Float) -> Int
+@extern
+@type (Float) -> Int
+pub let floor
 
-extern pub let from_int: (Int) -> Float
+@extern
+@type (Int) -> Float
+pub let from_int

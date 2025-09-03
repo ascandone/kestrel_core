@@ -1,4 +1,6 @@
 import Int.{Int}
 import Task.{Task}
 
-extern pub let now: Task<Int>
+@extern
+@type Task<Int>
+pub let now

@@ -16,11 +16,14 @@ import String.{String}
 import Test
 import Tuple
 
-let int_none: Option<Int> = None
+@type Option<Int>
+let int_none = None
 
-let empty_int_list: List<Int> = []
+@type List<Int>
+let empty_int_list = []
 
-let showable_err: Result<_, Int> = Ok(Some(42))
+@type Result<_, Int>
+let showable_err = Ok(Some(42))
 
 let debug_tests = Test.describe("Debug", [
   Test.describe("inspect", [
@@ -448,7 +451,8 @@ let struct_tests = Test.describe("structs", [
   }),
 ])
 
-let int_str_empty_dict: Dict<Int, String> = Dict.empty
+@type Dict<Int, String>
+let int_str_empty_dict = Dict.empty
 
 let dict_tests = Test.describe("Dict", [
   Test.test("member of empty set is False", fn {

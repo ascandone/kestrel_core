@@ -11,7 +11,9 @@ extern pub type String
 /// ```kestrel
 /// "abc" ++ "def" // => "abcdef"
 /// ```
-extern pub let (++): (String, String) -> String
+@extern
+@type (String, String) -> String
+pub let (++)
 
 /// Returns the length of the string.
 /// It takes `O(1)` time
@@ -19,21 +21,39 @@ extern pub let (++): (String, String) -> String
 /// ```kestrel
 /// length("abc") // => 3
 /// ```
-extern pub let length: (String) -> Int
+@extern
+@type (String) -> Int
+pub let length
 
-extern pub let char_at: (String, Int) -> Option<Char>
+@extern
+@type (String, Int) -> Option<Char>
+pub let char_at
 
-extern pub let split: (String, String) -> List<String>
+@extern
+@type (String, String) -> List<String>
+pub let split
 
-extern pub let to_list: (String) -> List<Char>
+@extern
+@type (String) -> List<Char>
+pub let to_list
 
-extern pub let from_list: (List<Char>) -> String
+@extern
+@type (List<Char>) -> String
+pub let from_list
 
 /// Casts a `Char` into a `String`
-extern pub let from_char: (Char) -> String
+@extern
+@type (Char) -> String
+pub let from_char
 
-extern pub let cons: (Char, String) -> String
+@extern
+@type (Char, String) -> String
+pub let cons
 
-extern pub let parse_int: (String) -> Option<Int>
+@extern
+@type (String) -> Option<Int>
+pub let parse_int
 
-extern pub let from_int: (Int) -> String
+@extern
+@type (Int) -> String
+pub let from_int
