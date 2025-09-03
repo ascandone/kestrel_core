@@ -19,10 +19,10 @@ extern pub let (&&): (Bool, Bool) -> Bool
 /// Logic `or` between booleans
 /// 
 /// ```kestrel
-/// True && True // => True
-/// True && False // => True
-/// False && True // => True
-/// False && False // => False
+/// True || True // => True
+/// True || False // => True
+/// False || True // => True
+/// False || False // => False
 /// ```
 extern pub let (||): (Bool, Bool) -> Bool
 
