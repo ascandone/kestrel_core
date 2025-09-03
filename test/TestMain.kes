@@ -418,12 +418,12 @@ let list_tests = Test.describe("List", [
   ]),
 ])
 
-type Person struct {
+struct Person {
   name: String,
   age: Int,
 }
 
-type Dog struct {
+struct Dog {
   name: String,
   age: Int,
 }
