@@ -1,5 +1,5 @@
 /// A type representing an value that might be either present (`Some`) or absent (`None`)
-pub(..) type Option<a> {
+pub(..) enum Option<a> {
   Some(a),
   None,
 }

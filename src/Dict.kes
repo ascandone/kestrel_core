@@ -4,12 +4,12 @@ import List
 import Option.{Option(..)}
 import Tuple
 
-type Color {
+enum Color {
   Red,
   Black,
 }
 
-pub type Dict<k, v> {
+pub enum Dict<k, v> {
   Empty,
   Node(Color, Dict<k, v>, k, v, Dict<k, v>),
 }

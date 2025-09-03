@@ -1,5 +1,5 @@
 /// A type representing a value that could be either succesful or not.
-pub(..) type Result<a, err> {
+pub(..) enum Result<a, err> {
   Ok(a),
   Err(err),
 }

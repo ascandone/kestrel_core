@@ -4,7 +4,7 @@ import Option.{Option(..)}
 import Tuple.{Unit(..)}
 
 /// This type represents a singly linked list
-pub(..) type List<a> {
+pub(..) enum List<a> {
   Nil,
   Cons(a, List<a>),
 }

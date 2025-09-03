@@ -2,7 +2,7 @@ import Dict.{Dict}
 import List
 import Tuple.{Unit(..)}
 
-pub type Set<a> {
+pub enum Set<a> {
   Set(Dict<a, Unit>),
 }
 

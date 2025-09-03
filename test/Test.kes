@@ -32,7 +32,7 @@ let underline = fn str {
   "\x1b[4m" ++ str ++ "\x1b[24m"
 }
 
-pub type Test {
+pub enum Test {
   Test(String, () -> Expectation),
   Concat(List<Test>),
   Describe(String, Test),

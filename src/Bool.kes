@@ -1,7 +1,7 @@
 /// A boolean value that can either be `True` or `False`.
 /// 
 /// Note that this isn't a builtin type, but a regular union type
-pub(..) type Bool {
+pub(..) enum Bool {
   True,
   False,
 }

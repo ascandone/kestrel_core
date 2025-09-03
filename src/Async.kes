@@ -6,7 +6,7 @@ import Result.{Result(..)}
 import Task.{await}
 import Tuple.{Unit(..)}
 
-type Position {
+enum Position {
   First,
   Second,
 }
@@ -47,7 +47,7 @@ pub let all = fn tasks {
   })
 }
 
-type Either<a, b> {
+enum Either<a, b> {
   Left(a),
   Right(b),
 }

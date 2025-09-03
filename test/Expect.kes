@@ -5,7 +5,7 @@ import Result.{Result(..)}
 import String.{String, (++)}
 import Tuple.{Unit(..)}
 
-pub type Expectation {
+pub enum Expectation {
   Pass,
   Fail(String),
   EqFail(String, String),

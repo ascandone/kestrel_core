@@ -13,12 +13,12 @@
 /// * You can use the type `Task<Unit>` to represent a computation the doesn't yield any value. This is actually the type required by the `main` value
 /// 
 /// **note** if you are trying to represent a value that can either be of the type `T` or undefined, `Maybe<T>` might be what you are looking for.
-pub(..) type Unit {
+pub(..) enum Unit {
   Unit,
 }
 
 /// A tuple containing 2 values
-pub(..) type Tuple2<a, b> {
+pub(..) enum Tuple2<a, b> {
   Tuple2(a, b),
 }
 
@@ -31,11 +31,11 @@ pub let second = fn (_, x) {
 }
 
 /// A tuple containing 3 values
-pub(..) type Tuple3<a, b, c> {
+pub(..) enum Tuple3<a, b, c> {
   Tuple3(a, b, c),
 }
 
 /// A tuple containing 4 values
-pub(..) type Tuple4<a, b, c, d> {
+pub(..) enum Tuple4<a, b, c, d> {
   Tuple4(a, b, c, d),
 }
