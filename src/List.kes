@@ -18,7 +18,7 @@ pub let range = fn from, to {
   if from >= to {
     []
   } else {
-    from :: range(from + 1, to)
+    [from, ..range(from + 1, to)]
   }
 }
 
@@ -31,8 +31,8 @@ pub let range = fn from, to {
 /// ```
 pub let map = fn lst, f {
   match lst {
-    Nil => [],
-    hd :: tl => f(hd) :: map(tl, f),
+    [] => [],
+    [hd, ..tl] => [f(hd), ..map(tl, f)],
   }
 }
 
@@ -44,9 +44,9 @@ pub let map = fn lst, f {
 /// ````
 pub let filter = fn lst, pred {
   match lst {
-    Nil => [],
-    hd :: tl => if pred(hd) {
-      hd :: filter(tl, pred)
+    [] => [],
+    [hd, ..tl] => if pred(hd) {
+      [hd, ..filter(tl, pred)]
     } else {
       filter(tl, pred)
     },
@@ -55,15 +55,15 @@ pub let filter = fn lst, pred {
 
 pub let map2 = fn lst1, lst2, f {
   match (lst1, lst2) {
-    (hd1 :: tl1, hd2 :: tl2) => f(hd1, hd2) :: map2(tl1, tl2, f),
+    ([hd1, ..tl1], [hd2, ..tl2]) => [f(hd1, hd2), ..map2(tl1, tl2, f)],
     _ => [],
   }
 }
 
 pub let find = fn lst, pred {
   match lst {
-    Nil => None,
-    hd :: tl => if pred(hd) {
+    [] => None,
+    [hd, ..tl] => if pred(hd) {
       Some(hd)
     } else {
       find(tl, pred)
@@ -73,15 +73,15 @@ pub let find = fn lst, pred {
 
 pub let reduce = fn lst, acc, f {
   match lst {
-    Nil => acc,
-    hd :: tl => reduce(tl, f(acc, hd), f),
+    [] => acc,
+    [hd, ..tl] => reduce(tl, f(acc, hd), f),
   }
 }
 
 pub let reduce_right = fn lst, acc, f {
   match lst {
-    Nil => acc,
-    hd :: tl => f(hd, reduce_right(tl, acc, f)),
+    [] => acc,
+    [hd, ..tl] => f(hd, reduce_right(tl, acc, f)),
   }
 }
 
@@ -109,18 +109,18 @@ pub let filter_map = fn lst, f {
   reduce_right(lst, [], fn x, xs {
     match f(x) {
       None => xs,
-      Some(hd) => hd :: xs,
+      Some(hd) => [hd, ..xs],
     }
   })
 }
 
 pub let take = fn lst, n {
   match lst {
-    Nil => [],
-    hd :: tl => if n <= 0 {
+    [] => [],
+    [hd, ..tl] => if n <= 0 {
       []
     } else {
-      hd :: take(tl, n - 1)
+      [hd, ..take(tl, n - 1)]
     },
   }
 }
@@ -130,16 +130,16 @@ pub let drop = fn lst, n {
     lst
   } else {
     match lst {
-      Nil => [],
-      _ :: tl => drop(tl, n - 1),
+      [] => [],
+      [_, ..tl] => drop(tl, n - 1),
     }
   }
 }
 
 pub let is_empty = fn lst {
   match lst {
-    Nil => True,
-    _ :: _ => False,
+    [] => True,
+    [_, .._] => False,
   }
 }
 
@@ -151,16 +151,16 @@ pub let length = fn lst {
 
 pub let zip = fn lst1, lst2 {
   match (lst1, lst2) {
-    (Nil, _) => [],
-    (_, Nil) => [],
-    (hd1 :: lst1, hd2 :: lst2) => (hd1, hd2) :: zip(lst1, lst2),
+    ([], _) => [],
+    (_, []) => [],
+    ([hd1, ..lst1], [hd2, ..lst2]) => [(hd1, hd2), ..zip(lst1, lst2)],
   }
 }
 
 /// Reverse a list.
 pub let reverse = fn lst {
   List.reduce(lst, [], fn acc, x {
-    x :: acc
+    [x, ..acc]
   })
 }
 
@@ -185,8 +185,8 @@ pub let guard = fn pred, body {
 /// `==` is used to match the item
 pub let includes = fn lst, x {
   match lst {
-    Nil => False,
-    hd :: tl => if hd == x {
+    [] => False,
+    [hd, ..tl] => if hd == x {
       True
     } else {
       includes(tl, x)

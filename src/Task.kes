@@ -49,7 +49,7 @@ pub let map_err = fn task, f {
 }
 
 /// Pause the execution for the given number of milliseconds
-@extern 
+@extern
 @type (Int) -> Task<Unit>
 pub let sleep
 
@@ -61,7 +61,7 @@ extern pub type Id
 /// In order to accomplish that, the `MVar` synchronization primitive is provided in the `MVar` module.
 ///
 /// `fork` is a low-level primitive and you probably might want to use the higher-level `Async` module to perform concurrent computation.
-@extern 
+@extern
 @type (Task<Unit>) -> Task<Id>
 pub let fork
 

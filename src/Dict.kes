@@ -1,6 +1,5 @@
 import Bool.{Bool(..), (==), (<)}
 import Int.{(+)}
-import List
 import Option.{Option(..)}
 import Tuple
 
@@ -131,6 +130,6 @@ pub let size = fn dict {
 
 pub let to_list = fn dict {
   reduce_right(dict, [], fn k, v, acc {
-    (k, v) :: acc
+    [(k, v), ..acc]
   })
 }

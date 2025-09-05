@@ -43,7 +43,7 @@ pub let both = fn t1, t2 {
 pub let all = fn tasks {
   List.reduce(tasks, Task.of([]), fn acc, t {
     let#await (acc, t) = Async.both(acc, t);
-    Task.of(t :: acc)
+    Task.of([t, ..acc])
   })
 }
 
@@ -103,7 +103,7 @@ pub let all_ok = fn tasks {
   List.reduce(tasks, Task.of(Ok([])), fn acc, t {
     let#await pair = Async.both_ok(acc, t);
     match pair {
-      Ok((acc, t)) => Task.of(Ok(t :: acc)),
+      Ok((acc, t)) => Task.of(Ok([t, ..acc])),
       Err(e) => Task.of(Err(e)),
     }
   })

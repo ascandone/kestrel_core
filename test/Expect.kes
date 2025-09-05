@@ -63,8 +63,8 @@ pub let and_then = fn expectation, f {
 
 pub let all = fn expectations {
   match expectations {
-    Pass :: expectations => all(expectations),
-    failure :: _ => failure,
+    [Pass ,.. expectations] => all(expectations),
+    [failure ,.. _] => failure,
     Nil => Pass,
   }
 }

@@ -76,7 +76,7 @@ let run_assertion = fn to_exp {
 
 let collect_tests = fn suite, descr_stack {
   match suite {
-    Describe(descr, test) => collect_tests(test, descr :: descr_stack),
+    Describe(descr, test) => collect_tests(test, [descr, ..descr_stack]),
     Test(descr, exp) => match run_assertion(exp) {
       Ok(Unit) => Task.of((1, 0)),
       Err(failure_desc) => {
@@ -91,8 +91,8 @@ let collect_tests = fn suite, descr_stack {
       },
     },
     Concat(tests) => match tests {
-      Nil => Task.of((0, 0)),
-      hd :: tl => {
+      [] => Task.of((0, 0)),
+      [hd, ..tl] => {
         let#await (hd_x, hd_y) = collect_tests(hd, descr_stack);
         let#await (tl_x, tl_y) = collect_tests(Concat(tl), descr_stack);
         Task.of((hd_x + tl_x, hd_y + tl_y))
