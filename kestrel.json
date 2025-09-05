@@ -2,5 +2,9 @@
   "type": "package",
   "name": "kestrel_core",
   "version": "0.0.1",
-  "source-directories": ["src", "test"]
+  "description": "The Kestrel standard library",
+  "sources": ["src", "test"],
+  "entrypoints": {
+    "test": "TestMain"
+  }
 }
