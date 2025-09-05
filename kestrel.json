@@ -4,6 +4,25 @@
   "version": "0.0.1",
   "description": "The Kestrel standard library",
   "sources": ["src", "test"],
+  "exposedModules": [
+    "Async",
+    "Bool",
+    "Char",
+    "Debug",
+    "Dict",
+    "Float",
+    "Int",
+    "IO",
+    "List",
+    "MVar",
+    "Option",
+    "Result",
+    "Set",
+    "String",
+    "Task",
+    "Time",
+    "Tuple"
+  ],
   "entrypoints": {
     "test": "TestMain"
   }
