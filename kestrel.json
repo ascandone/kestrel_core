@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "description": "The Kestrel standard library",
   "sources": ["src", "test"],
+  "licence": "MIT",
   "exposedModules": [
     "Async",
     "Bool",
