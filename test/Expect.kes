@@ -1,6 +1,6 @@
 import Bool.{(==), (!)}
 import Debug
-import List.{List(..)}
+import List
 import Result.{Result(..)}
 import String.{String, (++)}
 import Tuple.{Unit(..)}
