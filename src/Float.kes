@@ -4,7 +4,8 @@ import Int.{Int}
 /// 
 /// Infix operations that deal with `Float` follow the convention of having a trailing `.`
 /// This is necessary to distinguish them from `Int` operators
-extern pub type Float
+@extern
+pub enum Float { }
 
 /// Add two floats
 @extern

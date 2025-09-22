@@ -4,6 +4,7 @@ import Option.{Option(..)}
 import Tuple.{Unit(..)}
 
 /// This type represents a singly linked list
+@derive(Eq, Show)
 pub(..) enum List<a> {
   Nil,
   Cons(a, List<a>),

@@ -4,7 +4,8 @@ import List.{List}
 import Option.{Option}
 
 /// A value representing an unicode string
-extern pub type String
+@extern
+pub enum String { }
 
 /// Concatenate two strings
 /// 

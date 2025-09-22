@@ -1,4 +1,5 @@
 /// A type representing an value that might be either present (`Some`) or absent (`None`)
+@derive(Eq, Show)
 pub(..) enum Option<a> {
   Some(a),
   None,

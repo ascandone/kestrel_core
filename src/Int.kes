@@ -1,5 +1,6 @@
 /// An integer number
-extern pub type Int
+@extern
+pub enum Int { }
 
 /// Add two ints
 @extern

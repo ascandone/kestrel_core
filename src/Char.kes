@@ -5,7 +5,8 @@ import Int.{Int}
 /// 
 /// You can write chars with the `'` syntax, e.g. `'a'`
 /// (note the single quote, unlike in javascript)
-extern pub type Char
+@extern
+pub enum Char { }
 
 @extern
 @type (Char) -> Int

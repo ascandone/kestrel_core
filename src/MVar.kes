@@ -5,7 +5,8 @@ import Tuple.{Unit(..)}
 
 /// A `MVar` is a synchronization primitive, useful for communicating from different forked tasks.
 /// Represents a mutable cell that can either be empty or filled with a value of type `a`.
-extern pub type MVar<a>
+@extern
+pub enum MVar<a> { }
 
 /// Create an empty `MVar`
 @extern
