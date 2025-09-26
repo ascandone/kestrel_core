@@ -3,7 +3,6 @@
 
 import Bool.{Bool(..), (==), (||), (&&)}
 import Char
-import Debug
 import Dict.{Dict}
 import Expect
 import Float.{(+.)}
@@ -26,65 +25,65 @@ let empty_int_list = []
 let showable_err = Ok(Some(42))
 
 let debug_tests = Test.describe("Debug", [
-  Test.describe("inspect", [
-    Test.test("inspect True", fn {
+  Test.describe("show", [
+    Test.test("show True", fn {
       True
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("True")
     }),
-    Test.test("inspect False", fn {
+    Test.test("show False", fn {
       False
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("False")
     }),
-    Test.test("inspect int", fn {
+    Test.test("show int", fn {
       42
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("42")
     }),
-    Test.test("inspect float", fn {
+    Test.test("show float", fn {
       42.2
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("42.2")
     }),
-    Test.test("inspect float with trailing zero", fn {
+    Test.test("show float with trailing zero", fn {
       42.0
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("42.0")
     }),
-    Test.test("inspect Tuple2", fn {
+    Test.test("show Tuple2", fn {
       (0, 42)
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("(0, 42)")
     }),
-    Test.test("inspect Nil", fn {
+    Test.test("show Nil", fn {
       empty_int_list
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("[]")
     }),
-    Test.test("inspect Cons list", fn {
+    Test.test("show Cons list", fn {
       [1, 2, 3]
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("[1, 2, 3]")
     }),
-    Test.test("inspect boxed value", fn {
+    Test.test("show boxed value", fn {
       Some(True)
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("Some(True)")
     }),
-    Test.test("inspect singleton", fn {
+    Test.test("show singleton", fn {
       int_none
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("None")
     }),
-    Test.test("inspect strings", fn {
+    Test.test("show strings", fn {
       "abc"
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("\"abc\"")
     }),
-    Test.test("inspect chars", fn {
+    Test.test("show chars", fn {
       Char.from_code(97)
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("\'a\'")
     }),
   ]),
@@ -299,7 +298,7 @@ let string_tests = Test.describe("String", [
     Test.test("returns a string", fn {
       'a'
       |> String.from_char()
-      |> Debug.inspect()
+      |> String.show()
       |> Expect.equal("\"a\"")
     }),
   ]),

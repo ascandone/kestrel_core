@@ -1,5 +1,4 @@
 import Bool.{(==), (!)}
-import Debug
 import List
 import Result.{Result(..)}
 import String.{String, (++)}
@@ -22,21 +21,21 @@ pub let equal = fn x, y {
   if x == y {
     Pass
   } else {
-    EqFail(Debug.inspect(x), Debug.inspect(y))
+    EqFail(String.show(x), String.show(y))
   }
 }
 
 pub let ok = fn result {
   match result {
     Ok(_) => Expect.pass,
-    Err(_) => EqFail(Debug.inspect(result), "Ok(_)"),
+    Err(_) => EqFail(String.show(result), "Ok(_)"),
   }
 }
 
 pub let err = fn result {
   match result {
     Err(_) => Expect.pass,
-    Ok(_) => EqFail(Debug.inspect(result), "Err(_)"),
+    Ok(_) => EqFail(String.show(result), "Err(_)"),
   }
 }
 

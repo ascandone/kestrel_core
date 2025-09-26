@@ -58,3 +58,12 @@ pub let parse_int
 @extern
 @type (Int) -> String
 pub let from_int
+
+/// Convert any given value to a stringified version of it
+/// 
+/// ```kestrel
+/// show(Just(42)) // => "Just(42)"
+/// ```
+@extern
+@type (a) -> String where a: Show
+pub let show

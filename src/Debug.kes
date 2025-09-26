@@ -6,15 +6,6 @@
 import String.{String}
 import Tuple.{Unit}
 
-/// Convert any given value to a stringified version of it
-/// 
-/// ```kestrel
-/// inspect(Just(42)) // => "Just(42)"
-/// ```
-@extern
-@type (a) -> String where a: Show
-pub let inspect
-
 /// You can use the `todo` function as a placeholder for future implementation.
 /// This will result in an runtime errors
 @extern
@@ -33,6 +24,6 @@ let log_str
 /// // and returns `42`
 /// ```
 pub let log = fn value, description {
-  let _ = log_str(inspect(value), description);
+  let _ = log_str(String.show(value), description);
   value
 }
